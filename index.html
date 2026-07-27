@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="成长工作台">
+<link rel="apple-touch-icon" href="/icons/apple-icon-180.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<title>一体化成长工作台 · 赵肉肉是个大富婆</title>
+<style>
+:root {
+  --bg: #f7f7f8;
+  --sidebar-bg: #1a1a2e;
+  --sidebar-hover: #252545;
+  --sidebar-active: #0f3460;
+  --accent: #e94560;
+  --accent2: #0f3460;
+  --text: #1a1a2e;
+  --text-secondary: #6b7280;
+  --card-bg: #ffffff;
+  --border: #e5e7eb;
+  --tag-green: #ecfdf5;
+  --tag-green-text: #065f46;
+  --tag-yellow: #fffbeb;
+  --tag-yellow-text: #92400e;
+  --tag-red: #fef2f2;
+  --tag-red-text: #991b1b;
+  --tag-blue: #eff6ff;
+  --tag-blue-text: #1e40af;
+  --tag-gray: #f3f4f6;
+  --tag-gray-text: #6b7280;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── 左侧导航栏 ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--sidebar-bg);
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.sidebar-header {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-header .logo {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.sidebar-header .title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+.sidebar-header .subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 8px 0;
+}
+
+.nav-section {
+  padding: 12px 20px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #475569;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #94a3b8;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: var(--sidebar-hover);
+  color: #e2e8f0;
+}
+
+.nav-item.active {
+  background: var(--sidebar-active);
+  color: #fff;
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-item .icon {
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.nav-item .badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.badge-green { background: var(--tag-green); color: var(--tag-green-text); }
+.badge-yellow { background: var(--tag-yellow); color: var(--tag-yellow-text); }
+.badge-red { background: var(--tag-red); color: var(--tag-red-text); }
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+/* ── 右侧主内容区 ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 36px;
+  max-width: 960px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ── 通用排版 ── */
+h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text);
+}
+
+h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 20px 0 8px;
+  color: var(--text);
+}
+
+.subheading {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-header .label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.tag-green { background: var(--tag-green); color: var(--tag-green-text); }
+.tag-yellow { background: var(--tag-yellow); color: var(--tag-yellow-text); }
+.tag-red { background: var(--tag-red); color: var(--tag-red-text); }
+.tag-blue { background: var(--tag-blue); color: var(--tag-blue-text); }
+.tag-gray { background: var(--tag-gray); color: var(--tag-gray-text); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+th {
+  text-align: left;
+  padding: 8px 10px;
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border);
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+td:first-child { font-weight: 600; }
+
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.task-row:last-child { border-bottom: none; }
+
+.task-check {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 1px;
+  background: #fff;
+}
+
+.task-check:hover { border-color: var(--accent); }
+.task-check.done {
+  background: var(--accent);
+  border-color: var(--accent);
+  position: relative;
+}
+.task-check.done::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.task-body { flex: 1; }
+.task-title { font-size: 14px; font-weight: 600; }
+.task-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 10px 14px;
+  margin: 12px 0;
+  background: #fef2f2;
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  color: #991b1b;
+}
+
+.callout {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.callout-info { background: #eff6ff; color: #1e40af; }
+.callout-warn { background: #fffbeb; color: #92400e; }
+.callout-success { background: #ecfdf5; color: #065f46; }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+.progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.code-block {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 10px 0;
+  white-space: pre-wrap;
+}
+
+.footnote {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 768px) {
+  .sidebar { width: 200px; min-width: 200px; }
+  .main { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ 左侧导航 ═══════════ -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">Growth Workbench</div>
+    <div class="title">一体化成长工作台</div>
+    <div class="subtitle">赵肉肉是个大富婆 · 专属</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">全局</div>
+    <a class="nav-item active" data-page="today" onclick="switchPage('today')">
+      <span class="icon">📋</span> 今日任务
+      <span class="badge badge-green">1</span>
+    </a>
+    <a class="nav-item" data-page="console" onclick="switchPage('console')">
+      <span class="icon">⚙️</span> 控制台
+    </a>
+
+    <div class="nav-section">六大板块</div>
+    <a class="nav-item" data-page="module1" onclick="switchPage('module1')">
+      <span class="icon">📊</span> 新媒体运营
+      <span class="badge badge-green">第1周</span>
+    </a>
+    <a class="nav-item" data-page="module2" onclick="switchPage('module2')">
+      <span class="icon">💪</span> 健身管理
+      <span class="badge badge-green">适应期</span>
+    </a>
+    <a class="nav-item" data-page="module3" onclick="switchPage('module3')">
+      <span class="icon">📖</span> 阅读计划
+      <span class="badge badge-blue">《经济学》</span>
+    </a>
+    <a class="nav-item" data-page="module4" onclick="switchPage('module4')">
+      <span class="icon">🎬</span> 自媒体账号
+      <span class="badge badge-yellow">停更中</span>
+    </a>
+    <a class="nav-item" data-page="module5" onclick="switchPage('module5')">
+      <span class="icon">💰</span> 财务规划
+      <span class="badge badge-yellow">待建档</span>
+    </a>
+    <a class="nav-item" data-page="module6" onclick="switchPage('module6')">
+      <span class="icon">🧭</span> 成长画像
+      <span class="badge badge-blue">V1.0</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    2026-07-27 初始化<br>
+    下次复盘：本周日
+  </div>
+</aside>
+
+<!-- ═══════════ 右侧主内容 ═══════════ -->
+<main class="main">
+
+  <!-- ── 今日任务 ── -->
+  <section class="page active" id="page-today">
+    <h1>📋 今日任务清单</h1>
+    <p class="subheading">2026年7月27日 · 周一 · 启动日 —— 以盘点建档为主，总耗时约2.5小时（含1小时训练）</p>
+
+    <h2>板块1 · 新媒体运营</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">学习「数据指标基准卡」10分钟，能复述5个指标定义</div>
+          <div class="task-meta">⏱ 10min · 📊 指标：CTR / 完播率 / 互动率 / 赞藏比 / 涨粉率</div>
+        </div>
+      </div>
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">实操：在小红书找1篇千赞以上笔记，填「数据速读卡」</div>
+          <div class="task-meta">⏱ 15min · 📋 模板见板块1详情</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>板块2 · 健身管理</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">体测基线：晨起体重 / 腰围 / 臀围 / 大腿围，回填档案</div>
+          <div class="task-meta">⏱ 10min · 📏 空腹测量</div>
+        </div>
+      </div>
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">19:30-20:30 A日训练：深蹲15×3 → 臀桥15×3 → 箭步蹲10×2/侧 → 平板30s×3 → 快走15min</div>
+          <div class="task-meta">⏱ 60min · 🏋️ 力量为主，有氧为辅</div>
+        </div>
+      </div>
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">蛋白质吃够80g（每餐一掌蛋白：蛋/肉/鱼/豆制品）</div>
+          <div class="task-meta">🍳 随餐执行</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>板块3 · 阅读计划</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">读《18岁后，你必须懂点经济学》第4章（博弈论），填3-2-1笔记 + 经济学迁移模板</div>
+          <div class="task-meta">⏱ 20min · 📖 囚徒困境/智猪博弈/协和谬误 → 迁移到用户行为分析</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>板块4 · 自媒体账号</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title"><strong>【优先级最高】</strong>填「账号现状盘点表」发我</div>
+          <div class="task-meta">⏱ 20min · 📋 历史笔记数 / 数据最好的3条 / 粉丝量 / 停更时长 / 停更原因 / 变现方向</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>板块5 · 财务规划</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body">
+          <div class="task-title">填「财务盘点表」（可只写大致数字）+ 选定记账工具，记下今天第一笔</div>
+          <div class="task-meta">⏱ 15min · 💰 收入 / 固定支出 / 弹性支出 / 存款</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>板块6 · 成长画像</h2>
+    <div class="callout callout-info">
+      今日无额外任务 —— 数据回收后自动更新至 V1.1
+    </div>
+
+    <hr class="divider">
+
+    <h2>今日身体提醒</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body"><div class="task-title">🪑 工作每45分钟起身2分钟（久坐腰酸改善）</div></div>
+      </div>
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body"><div class="task-title">😴 23点前睡（肝郁+经期调理的基础）</div></div>
+      </div>
+      <div class="task-row">
+        <div class="task-check" onclick="this.classList.toggle('done')"></div>
+        <div class="task-body"><div class="task-title">💪 力量训练为主，别做成纯有氧——你的体重不需要减</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 控制台 ── -->
+  <section class="page" id="page-console">
+    <h1>⚙️ 控制台</h1>
+    <p class="subheading">全局系统设定 · 交互指令 · 跨板块联动 · 长期记忆存档</p>
+
+    <h2>核心强制规则（永久生效）</h2>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2;">
+        <li><strong>长期记忆</strong>：全部设定、方法论、爆款拆解结论、账号信息、健身参数、财务方案沉淀于此，重复调用直接复用，禁止从零构建。</li>
+        <li><strong>轻量化任务</strong>：每日任务可落地、可完成，难度随执行情况与能力成长动态上调；杜绝过量任务与空洞理论。</li>
+        <li><strong>需求对齐入口</strong>：用户随时可提出目标变更/状态变化/新增诉求，收到后立即同步更新全部关联板块。</li>
+        <li><strong>周期机制</strong>：每周日小复盘，每月末全维度复盘，依据复盘结论迭代方案。</li>
+        <li><strong>输出规范</strong>：排版清晰分层，行动项前置，优先产出立刻能执行的动作。</li>
+      </ol>
+    </div>
+
+    <h2>交互指令表</h2>
+    <table>
+      <tr><th>指令</th><th>响应</th></tr>
+      <tr><td>【今日任务】</td><td>输出六大板块当日待办清单</td></tr>
+      <tr><td>【复盘】</td><td>生成周/月度全模块复盘文档</td></tr>
+      <tr><td>【调整需求】</td><td>开启需求对齐窗口，同步优化全部关联计划</td></tr>
+      <tr><td>【成长画像】</td><td>更新输出1-3年个人发展画像</td></tr>
+      <tr><td>点名某板块</td><td>仅深度输出该板块内容</td></tr>
+    </table>
+
+    <h2>六大板块状态总览</h2>
+    <table>
+      <tr><th>#</th><th>板块</th><th>状态</th></tr>
+      <tr><td>1</td><td>新媒体运营能力提升</td><td><span class="tag tag-green">🟢 已启动 · 第1周</span></td></tr>
+      <tr><td>2</td><td>减脂增肌健身管理</td><td><span class="tag tag-green">🟢 已启动 · 适应期</span></td></tr>
+      <tr><td>3</td><td>工作导向阅读计划</td><td><span class="tag tag-blue">🟢 首月书目已定</span></td></tr>
+      <tr><td>4</td><td>自媒体账号优化</td><td><span class="tag tag-yellow">🟡 停更中 · 盘点重启</span></td></tr>
+      <tr><td>5</td><td>薪资规划 & 攒钱增收</td><td><span class="tag tag-yellow">🟡 待财务盘点回填</span></td></tr>
+      <tr><td>6</td><td>1～3年动态成长画像</td><td><span class="tag tag-blue">🟢 V1.0 基线已建立</span></td></tr>
+    </table>
+
+    <h2>待回填信息（阻塞项）</h2>
+    <div class="card">
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">财务：月收入、固定支出、弹性支出、现有存款 → 板块5</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">账号：历史笔记数、数据最好的3条、粉丝量、停更时长 → 板块4</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">体测：腰围、臀围、大腿围、晨起体重 → 板块2</div></div></div>
+    </div>
+
+    <h2>跨板块联动逻辑</h2>
+    <div class="card">
+      <ul style="padding-left:18px; font-size:13px; line-height:2;">
+        <li>板块1 所学方法 → 直接复用至板块4账号实操</li>
+        <li>板块3 书单优先服务板块1/4 的能力短板</li>
+        <li>板块2/5 的执行力数据 → 汇入板块6画像更新</li>
+        <li>每次复盘结论 → 同步刷新全部板块计划</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 板块1：新媒体运营 ── -->
+  <section class="page" id="page-module1">
+    <h1>📊 板块1 · 新媒体运营竞争力提升</h1>
+    <p class="subheading">核心短板：数据分析 / 用户痛点挖掘 / 商业思维 · 第1周：数据指标筑基</p>
+
+    <h2>4周循环学习路径</h2>
+    <table>
+      <tr><th>周次</th><th>主题</th><th>内容</th></tr>
+      <tr><td>第1周（本周）</td><td>📊 数据指标筑基</td><td>掌握核心指标定义、健康基准、读数方法</td></tr>
+      <tr><td>第2周</td><td>🔍 用户痛点挖掘</td><td>评论区 / 搜索下拉词 / 竞品账号三渠道挖需求</td></tr>
+      <tr><td>第3周</td><td>💡 商业思维</td><td>拆解IP变现模型（广告/带货/知识付费/私域）</td></tr>
+      <tr><td>第4周</td><td>🧪 综合实操</td><td>用前三周方法完整拆解1个对标账号（联动板块4）</td></tr>
+    </table>
+
+    <h2>📦 方法论沉淀区（长期复用）</h2>
+
+    <h3>核心数据指标基准卡</h3>
+    <table>
+      <tr><th>指标</th><th>计算</th><th>健康参考</th><th>说明</th></tr>
+      <tr><td>点击率 CTR</td><td>点击 ÷ 曝光</td><td>小红书封面 5%~10%</td><td>低 → 优化封面/标题</td></tr>
+      <tr><td>完播率</td><td>完整播放 ÷ 总播放</td><td>短视频 ≥30% 合格</td><td>低 → 开头3秒钩子弱</td></tr>
+      <tr><td>互动率</td><td>(赞+评+藏+转) ÷ 播放</td><td>≥5% 优质</td><td>收藏率高=干货型；评论高=争议/共鸣型</td></tr>
+      <tr><td>赞藏比</td><td>点赞 ÷ 收藏</td><td>&lt;1 工具价值高</td><td>收藏>点赞是干货号好信号</td></tr>
+      <tr><td>涨粉率</td><td>涨粉 ÷ 播放</td><td>≥0.5% 健康</td><td>低 → 人设/系列化不足</td></tr>
+    </table>
+
+    <h3>数据速读卡（每日练习模板）</h3>
+    <div class="code-block">笔记/视频：___
+曝光→点击→互动→涨粉 四层漏斗数据：___
+异常层（最低的一环）：___
+我的归因假设：___
+验证方法（如果是我的内容，我会怎么改）：___</div>
+
+    <h3>真实需求 vs 伪需求 · 判断三问</h3>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
+        <li>用户愿意为它<strong>付出成本</strong>吗（时间/钱/行动）？</li>
+        <li>这个问题<strong>反复出现</strong>吗（评论区/搜索框出现≥3次）？</li>
+        <li>现有内容<strong>没解决好</strong>吗（有缺口=机会）？</li>
+      </ol>
+      <div class="callout callout-info" style="margin-top:10px;">
+        三问全过 = 真实需求；只过1-2条 = 存疑，先小成本测试。
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 板块2：健身管理 ── -->
+  <section class="page" id="page-module2">
+    <h1>💪 板块2 · 减脂增肌健身管理</h1>
+    <p class="subheading">女生 · 160cm/51kg（BMI 19.9）· 目标：薄肌体态 · 训练时段 19:30-20:30</p>
+
+    <div class="callout callout-warn">
+      ⚠️ <strong>关键策略</strong>：体重51kg无需减重，禁止大卡缺口+狂有氧路线（会加重经期紊乱）。主线是「力量为主、有氧为辅、蛋白吃够」。
+    </div>
+
+    <h2>体测基线（待回填）</h2>
+    <table>
+      <tr><th>项目</th><th>数据</th><th>项目</th><th>数据</th></tr>
+      <tr><td>晨起体重</td><td style="color:#d1d5db;">___ kg</td><td>腰围</td><td style="color:#d1d5db;">___ cm</td></tr>
+      <tr><td>臀围</td><td style="color:#d1d5db;">___ cm</td><td>大腿围</td><td style="color:#d1d5db;">___ cm</td></tr>
+      <tr><td>上臂围</td><td style="color:#d1d5db;">___ cm</td><td>下次复测</td><td>2周后早晨空腹</td></tr>
+    </table>
+
+    <h2>阶段一：适应期（第1-2周，每周4练）</h2>
+    <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">结构：热身10min → 力量30min → 有氧15min → 拉伸5min</p>
+    <table>
+      <tr><th>训练日</th><th>内容</th></tr>
+      <tr><td>A日（下肢+核心）</td><td>自重深蹲 15×3 · 臀桥 15×3 · 箭步蹲 10×2/侧 · 平板支撑 30s×3</td></tr>
+      <tr><td>B日（上肢+核心）</td><td>跪姿俯卧撑 10×3 · 弹力带划船 15×3 · 哑铃推举 10×3 · 死虫式 12×3</td></tr>
+    </table>
+    <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">有氧：快走/椭圆机/跳操任选，微喘能说话强度。第3周起加重量或次数（渐进超负荷）。</p>
+
+    <h2>饮食框架</h2>
+    <table>
+      <tr><th>项目</th><th>参考值</th></tr>
+      <tr><td>每日热量</td><td>≈1600-1700 kcal（维持量，不制造缺口）</td></tr>
+      <tr><td>蛋白质</td><td><strong>80-100g/天</strong>——每餐一掌蛋白（鸡蛋/鸡胸/鱼虾/豆制品/牛奶）</td></tr>
+      <tr><td>三餐结构</td><td>早餐蛋白+慢碳 ｜ 午餐正常吃7-8分饱 ｜ 晚餐训练后补蛋白+蔬菜</td></tr>
+      <tr><td>饮水</td><td>≥1.5L；少熬夜（23点前睡——肝郁+经期都需要）</td></tr>
+    </table>
+
+    <h2>久坐腰酸改善</h2>
+    <div class="card">
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">每45-60分钟起身2分钟：站立转体10次 + 猫式伸展8次</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">睡前：婴儿式放松1分钟 + 仰卧抱膝1分钟</div></div></div>
+    </div>
+
+    <h2>运动风险提醒</h2>
+    <blockquote>
+      经期第1-2天改为散步+拉伸，禁腹部挤压/大强度。<br>
+      力量动作先学姿势再上量，腰部不适停止弯腰负重。<br>
+      热量缺口>500kcal会直接干扰经期——不过度节食。
+    </blockquote>
+  </section>
+
+  <!-- ── 板块3：阅读计划 ── -->
+  <section class="page" id="page-module3">
+    <h1>📖 板块3 · 工作导向阅读计划</h1>
+    <p class="subheading">节奏：每月1本 · 选书方向：新媒体 / 商业 / 用户洞察 / 内容运营 / 经济学</p>
+
+    <h2>📖 当前在读：《18岁后，你必须懂点经济学》</h2>
+    <p style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">斯凯恩 · 立信会计出版社 · 2015年 · 10章+附录 · 经济学普及读物</p>
+
+    <div class="callout callout-info">
+      推荐理由：无复杂公式，用生活案例讲经济学思维。与板块1/4/5深度联动——成本收益分析 → 内容投入决策；博弈论 → 用户行为分析；储蓄投资 → 板块5财务规划直接对接。
+    </div>
+
+    <div class="callout callout-success" style="margin-top:8px;">
+      ✅ 进度 3/10 已完成（第1-3章），预估 8/19 前读完，比原计划提前约10天。
+    </div>
+
+    <h3>阅读进度（7/27 校准，从第4章继续）</h3>
+    <table>
+      <tr><th>章节</th><th>状态</th><th>日期</th></tr>
+      <tr><td>第1章 经济学常识</td><td><span class="tag tag-green">✅ 已完成</span></td><td>—</td></tr>
+      <tr><td>第2章 金融热点</td><td><span class="tag tag-green">✅ 已完成</span></td><td>—</td></tr>
+      <tr><td>第3章 牛奶可乐经济学</td><td><span class="tag tag-green">✅ 已完成</span></td><td>—</td></tr>
+      <tr><td><strong>第4章 博弈论</strong></td><td><span class="tag tag-blue">⬜ 进行中</span></td><td>7/27-7/29</td></tr>
+      <tr><td>第5章 社交经济学</td><td style="color:#d1d5db;">⬜</td><td>7/30-8/2</td></tr>
+      <tr><td>第6章 职场经济学</td><td style="color:#d1d5db;">⬜</td><td>8/3-8/5</td></tr>
+      <tr><td>第7章 理财观</td><td style="color:#d1d5db;">⬜</td><td>8/6-8/8</td></tr>
+      <tr><td>第8章 投资</td><td style="color:#d1d5db;">⬜</td><td>8/9-8/12</td></tr>
+      <tr><td>第9章 消费陷阱</td><td style="color:#d1d5db;">⬜</td><td>8/13-8/15</td></tr>
+      <tr><td>第10章+附录+书评</td><td style="color:#d1d5db;">⬜</td><td>8/16-8/19</td></tr>
+    </table>
+
+    <h2>📦 方法论沉淀区</h2>
+
+    <h3>3-2-1 笔记模板（每日阅读后填，5分钟）</h3>
+    <div class="code-block">日期/章节：___
+3个要点：① ___ ② ___ ③ ___
+2个疑问：① ___ ② ___
+1个迁移：这个方法能用在我的工作/账号/财务哪里？___</div>
+
+    <h3>经济学专项迁移模板（本书特供，每章1次）</h3>
+    <div class="code-block">本章核心经济学概念：___
+我的生活/工作中对应的场景：___
+如果应用这个概念，我的决策会变成：___</div>
+
+    <h3>书评写作引导框架（月末用）</h3>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2;">
+        <li>一句话说清这本书解决什么问题</li>
+        <li>核心模型/框架是什么（画图或列表）</li>
+        <li>我不同意/存疑的点（刻意练观点输出）</li>
+        <li>落地清单：3条能立刻用在工作或账号上的动作</li>
+      </ol>
+    </div>
+
+    <h3>备选书单（下一本候选）</h3>
+    <table>
+      <tr><th>书名</th><th>对口板块</th><th>理由</th></tr>
+      <tr><td>《上瘾》尼尔·埃亚尔</td><td>板块1+4</td><td>用户行为分析，痛点挖掘</td></tr>
+      <tr><td>《运营之光》黄有璨</td><td>板块1</td><td>国内运营语境，体系化</td></tr>
+      <tr><td>《定位》特劳特</td><td>板块1+4</td><td>商业思维+账号定位双修</td></tr>
+      <tr><td>《疯传》乔纳·伯杰</td><td>板块4</td><td>爆款传播原理</td></tr>
+    </table>
+  </section>
+
+  <!-- ── 板块4：自媒体账号 ── -->
+  <section class="page" id="page-module4">
+    <h1>🎬 板块4 · 自有自媒体账号优化</h1>
+    <p class="subheading">账号：赵肉肉是个大富婆 · 平台：小红书 + 抖音 · 核心卡点：精准抓取用户需求困难</p>
+
+    <div class="callout callout-warn">
+      ⚠️ 停更中。本板块是当前优先级最高的板块之一——直接联动板块1所学，需要优先完成盘点回填。
+    </div>
+
+    <h2>账号现状盘点表（待回填，填好后我做定位诊断）</h2>
+    <table>
+      <tr><td style="font-weight:600; width:140px;">历史发布笔记数</td><td style="color:#d1d5db;">___ 条</td></tr>
+      <tr><td style="font-weight:600;">粉丝量</td><td style="color:#d1d5db;">小红书 ___ / 抖音 ___</td></tr>
+      <tr><td style="font-weight:600;">停更时长</td><td style="color:#d1d5db;">___ 个月</td></tr>
+      <tr><td style="font-weight:600;">数据最好的3条</td><td style="color:#d1d5db;">① ___ ② ___ ③ ___（标题+赞藏数）</td></tr>
+      <tr><td style="font-weight:600;">停更直接原因</td><td style="color:#d1d5db;">___</td></tr>
+      <tr><td style="font-weight:600;">账号初心/变现方向</td><td style="color:#d1d5db;">___</td></tr>
+    </table>
+
+    <h2>📦 方法论沉淀区（长期复用）</h2>
+
+    <h3>爆款拆解标准模板 V1（每周拆2条，沉淀于此）</h3>
+    <div class="code-block">【选题】切的是什么人群的什么需求
+【标题】钩子类型（数字/悬念/身份代入/痛点直击）
+【封面】信息层级、字体、色彩策略
+【开头3秒/前3行】留人钩子是什么
+【内容结构】总分总/清单体/故事体/对比体
+【情绪点】共鸣/焦虑/爽感/好奇 哪个在驱动
+【评论区挖矿】用户在追问什么（=下一个选题）
+【变现路径】这条内容如何服务于变现
+【可复用结论】一句话沉淀：___</div>
+
+    <h3>用户需求抓取三板斧（对口核心卡点）</h3>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
+        <li><strong>评论区挖矿</strong>：对标账号爆款笔记的评论区，统计高频追问</li>
+        <li><strong>搜索下拉词</strong>：小红书搜索框输行业词，下拉联想=真实搜索需求</li>
+        <li><strong>自我验证</strong>：用板块1「真实需求三问」过滤后再投入制作</li>
+      </ol>
+    </div>
+
+    <h2>重启方案（草案，盘点回填后细化）</h2>
+    <table>
+      <tr><th>步骤</th><th>内容</th></tr>
+      <tr><td>第1步</td><td>现状盘点 + 历史爆款归因（为什么那3条数据好）</td></tr>
+      <tr><td>第2步</td><td>定位校准（1句话人设公式：为谁+解决什么+凭什么是我）</td></tr>
+      <tr><td>第3步</td><td>建30条选题库（三板斧渠道采集）</td></tr>
+      <tr><td>第4步</td><td>小成本测试——每周更2-3条，跑4周看数据，用数据速读卡迭代</td></tr>
+    </table>
+  </section>
+
+  <!-- ── 板块5：财务规划 ── -->
+  <section class="page" id="page-module5">
+    <h1>💰 板块5 · 薪资规划 + 攒钱增收方案</h1>
+    <p class="subheading">核心框架：三账户体系 · 收入-储蓄=支出（先存后花）</p>
+
+    <h2>三账户体系</h2>
+    <table>
+      <tr><th>账户</th><th>用途</th><th>规则</th></tr>
+      <tr><td>💰 储蓄账户</td><td>强制储蓄，只进不出</td><td>工资到账先存后花，起步比例20%，逐步提至30%</td></tr>
+      <tr><td>🛒 日常开销账户</td><td>当月全部花销</td><td>预算制，花完不补</td></tr>
+      <tr><td>🚨 备用资金账户</td><td>应急（失业/医疗）</td><td>目标=3-6个月生活费，存满后不再追加</td></tr>
+    </table>
+
+    <blockquote>原则：收入 - 储蓄 = 支出（先存），而不是收入 - 支出 = 储蓄（剩多少存多少，大概率剩不下）。</blockquote>
+
+    <h2>财务盘点表（待回填）</h2>
+    <h3>收入</h3>
+    <table><tr><td style="font-weight:600; width:140px;">月税后工资</td><td style="color:#d1d5db;">___ 元</td></tr><tr><td style="font-weight:600;">其他收入</td><td style="color:#d1d5db;">___ 元</td></tr></table>
+
+    <h3>固定支出（每月必花）</h3>
+    <table><tr><td style="font-weight:600;">房租/房贷</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">通勤</td><td style="color:#d1d5db;">___</td></tr><tr><td style="font-weight:600;">话费网费</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">其他订阅</td><td style="color:#d1d5db;">___</td></tr></table>
+
+    <h3>弹性支出（可压缩）</h3>
+    <table><tr><td style="font-weight:600;">餐饮</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">购物</td><td style="color:#d1d5db;">___</td></tr><tr><td style="font-weight:600;">娱乐社交</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">其他</td><td style="color:#d1d5db;">___</td></tr></table>
+
+    <h3>现状</h3>
+    <table><tr><td style="font-weight:600;">现有存款</td><td style="color:#d1d5db;">___ 元</td><td style="font-weight:600;">负债</td><td style="color:#d1d5db;">___ 元</td></tr></table>
+
+    <h2>首月执行规则</h2>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
+        <li>记账30天——只记不省，先看清钱花在哪</li>
+        <li>工资日自动转账储蓄账户（先按20%起步）</li>
+        <li>弹性支出逐项标「必要/可砍」，次月砍掉占比最低价值的1-2项</li>
+      </ol>
+    </div>
+
+    <h2>副业增收储备方向（第2-3个月评估）</h2>
+    <table>
+      <tr><td>自有账号变现</td><td>联动板块4重启进度</td></tr>
+      <tr><td>接单：代运营/文案/剪辑</td><td>板块1第4周评估能力达标情况</td></tr>
+      <tr><td>投稿/知识产品</td><td>长期方向</td></tr>
+    </table>
+  </section>
+
+  <!-- ── 板块6：成长画像 ── -->
+  <section class="page" id="page-module6">
+    <h1>🧭 板块6 · 1～3年动态个人成长画像</h1>
+    <p class="subheading">V1.0 基线版 · 2026-07-27 · 随每次复盘更新，不固化</p>
+
+    <h2>现阶段能力快照</h2>
+    <table>
+      <tr><th>维度</th><th>评级</th><th>关键事实</th><th>90天目标</th></tr>
+      <tr><td>新媒体运营</td><td><span class="tag tag-yellow">🔶 学习中</span></td><td>短板：数据分析/痛点挖掘/商业思维</td><td>能独立完成数据复盘+拆解对标账号</td></tr>
+      <tr><td>健身体态</td><td><span class="tag tag-yellow">🔶 起步</span></td><td>160/51，目标薄肌；久坐腰酸、经期不规律</td><td>每周4练稳定执行，体态线条初步显现</td></tr>
+      <tr><td>阅读习惯</td><td><span class="tag tag-yellow">🔶 起步</span></td><td>目标每月1本</td><td>《18岁后，你必须懂点经济学》读完+输出1篇书评</td></tr>
+      <tr><td>账号运营</td><td><span class="tag tag-red">🔴 停滞</span></td><td>赵肉肉是个大富婆（小红书+抖音）停更</td><td>完成重启，恢复每周2-3更</td></tr>
+      <tr><td>财务管理</td><td><span class="tag tag-gray">⚪ 待建档</span></td><td>收支结构未知</td><td>三账户跑通，储蓄率≥20%</td></tr>
+    </table>
+
+    <h2>阶段性短板（当前优先级排序）</h2>
+    <div class="card">
+      <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
+        <li><strong>用户痛点挖掘</strong>（同时卡住板块1和板块4，最高优先）</li>
+        <li>数据分析能力（运营基本功）</li>
+        <li>执行力系统尚未验证（本周为验证期）</li>
+      </ol>
+    </div>
+
+    <h2>成长路径</h2>
+    <h3>1年目标（至2027年中）</h3>
+    <table>
+      <tr><td>新媒体运营</td><td>从执行层 → 能独立操盘账号全链路（选题-数据-变现）</td></tr>
+      <tr><td>自有账号</td><td>小红书/抖音跑出稳定变现模型（接广/带货/知识付费其一跑通）</td></tr>
+      <tr><td>身体</td><td>薄肌体态成型，经期规律化</td></tr>
+      <tr><td>财务</td><td>存款达标（待盘点后设定），副业月收入破4位数</td></tr>
+      <tr><td>阅读</td><td>12本书 + 12篇书评（沉淀个人知识库）</td></tr>
+    </table>
+
+    <h3>3年目标（至2029年）</h3>
+    <table>
+      <tr><td>职业</td><td>新媒体运营资深/管理岗，或自有IP成为主要收入之一</td></tr>
+      <tr><td>个人品牌</td><td>「赵肉肉是个大富婆」成为垂类有辨识度的账号</td></tr>
+      <tr><td>财务</td><td>储蓄+副业双引擎，攒钱目标达成（具体数额待板块5建档后写入）</td></tr>
+      <tr><td>能力复利</td><td>运营能力 × 内容能力 × 商业思维形成闭环</td></tr>
+    </table>
+
+    <h2>更新日志</h2>
+    <table>
+      <tr><th>日期</th><th>版本</th><th>变更</th></tr>
+      <tr><td>2026-07-27</td><td>V1.0 基线</td><td>基线建立。待回填数据后本周日复盘更新 V1.1。</td></tr>
+    </table>
+  </section>
+
+</main>
+
+<script>
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  const page = document.getElementById('page-' + name);
+  const nav = document.querySelector('[data-page="' + name + '"]');
+  if (page) page.classList.add('active');
+  if (nav) nav.classList.add('active');
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+</script>
+</body>
+</html>

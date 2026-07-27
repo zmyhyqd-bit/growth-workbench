@@ -1,0 +1,16 @@
+{
+  "name": "成长工作台",
+  "short_name": "成长工作台",
+  "description": "赵肉肉的一体化成长工作台 — 新媒体运营 · 健身管理 · 阅读计划 · 账号优化 · 财务规划 · 成长画像",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/apple-icon-180.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
