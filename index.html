@@ -636,7 +636,7 @@ blockquote {
   outline: 2px solid var(--accent);
 }
 
-/* ── 板块工具折叠（简化界面） ── */
+/* ── 道场工具折叠（简化界面） ── */
 details.tools {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -676,7 +676,7 @@ details.tools > summary .tools-hint {
 details.tools .tools-body { padding: 0 24px 20px; }
 details.tools .tools-body hr.divider { margin: 12px 0; }
 
-/* ── 运势：每日/每周切换 ── */
+/* ── 天运推演：每日/每周切换 ── */
 .fortune-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
 .fortune-tab {
   flex: 1;
@@ -712,6 +712,21 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   color: #9d174d;
   line-height: 1.7;
 }
+
+/* ── 导航：道场双行标签 + 境界 ── */
+.nav-txt { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.nav-name { font-size: 14px; }
+.nav-sub { font-size: 10px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.realm-badge {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent2);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
 </style>
 </head>
 <body>
@@ -720,9 +735,9 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 <aside class="sidebar">
   <div class="sidebar-header">
     <div>
-      <div class="logo">Growth Workbench</div>
-      <div class="title">一体化成长工作台</div>
-      <div class="subtitle">赵肉肉是个大富婆 · 专属</div>
+      <div class="logo">凡尘问道</div>
+      <div class="title">道途养成 · 工作台</div>
+      <div class="subtitle">求道者 赵肉肉 · 随身仙尊相伴</div>
     </div>
     <div class="header-btns">
       <button class="nav-collapse-btn" onclick="toggleSidebar()" title="收起/展开导航">‹</button>
@@ -732,7 +747,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
   <nav class="sidebar-nav" id="sidebarNav">
     <div class="nav-group" data-group="global">
-      <div class="nav-section" data-fixed>全局</div>
+      <div class="nav-section" data-fixed>修行中枢</div>
       <a class="nav-item active" data-page="today" onclick="switchPage('today')">
         <span class="icon">📋</span> 今日任务
         <span class="badge badge-green">1</span>
@@ -743,42 +758,50 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </div>
 
     <div class="nav-group" data-group="modules">
-      <div class="nav-section" data-fixed>六大板块</div>
+      <div class="nav-section" data-fixed>七大道场</div>
       <a class="nav-item" data-page="module1" onclick="switchPage('module1')">
-        <span class="icon">📊</span> 新媒体运营
+        <span class="icon">📊</span>
+        <span class="nav-txt"><span class="nav-name">术法参悟阁</span><span class="nav-sub">新媒体运营</span></span>
         <span class="badge badge-green">第1周</span>
       </a>
       <a class="nav-item" data-page="module2" onclick="switchPage('module2')">
-        <span class="icon">💪</span> 健身管理
+        <span class="icon">💪</span>
+        <span class="nav-txt"><span class="nav-name">肉身炼体堂</span><span class="nav-sub">减脂增肌健身</span></span>
         <span class="badge badge-green">第2周</span>
       </a>
       <a class="nav-item" data-page="module3" onclick="switchPage('module3')">
-        <span class="icon">📖</span> 阅读计划
+        <span class="icon">📖</span>
+        <span class="nav-txt"><span class="nav-name">藏经阁</span><span class="nav-sub">工作导向阅读</span></span>
         <span class="badge badge-blue">《经济学》</span>
       </a>
       <a class="nav-item" data-page="module4" onclick="switchPage('module4')">
-        <span class="icon">🎬</span> 自媒体账号
+        <span class="icon">🎬</span>
+        <span class="nav-txt"><span class="nav-name">本命法宝培育坛</span><span class="nav-sub">本命法宝培育坛（自媒体）</span></span>
         <span class="badge badge-yellow">停更中</span>
       </a>
       <a class="nav-item" data-page="module5" onclick="switchPage('module5')">
-        <span class="icon">💰</span> 财务规划
+        <span class="icon">💰</span>
+        <span class="nav-txt"><span class="nav-name">灵库聚财峰</span><span class="nav-sub">薪资规划攒钱</span></span>
         <span class="badge badge-yellow">待建档</span>
       </a>
       <a class="nav-item" data-page="module6" onclick="switchPage('module6')">
-        <span class="icon">🧭</span> 成长画像
+        <span class="icon">🧭</span>
+        <span class="nav-txt"><span class="nav-name">道途推演玄鉴</span><span class="nav-sub">动态成长画像</span></span>
         <span class="badge badge-blue">V1.0</span>
       </a>
       <a class="nav-item" data-page="module7" onclick="switchPage('module7')">
-        <span class="icon">🔮</span> 每日运势
+        <span class="icon">🔮</span>
+        <span class="nav-txt"><span class="nav-name">星象命数台</span><span class="nav-sub">八字+星座天运</span></span>
         <span class="badge badge-blue">乙木</span>
       </a>
     </div>
   </nav>
 
   <div class="sidebar-footer">
-    2026-07-27 初始化<br>
-    下次复盘：本周日
-    <div class="nav-edit-hint" id="navEditHint">拖动导航项调整顺序 · 自动保存</div>
+    道启之日：2026-07-27<br>
+    下次修为推演：本周日
+    <span class="realm-badge">修为境界 · 炼气期</span>
+    <div class="nav-edit-hint" id="navEditHint">拖动道场调整顺序 · 自动保存</div>
   </div>
 </aside>
 
@@ -789,10 +812,15 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
   <!-- ── 今日任务 ── -->
   <section class="page active" id="page-today">
-    <h1>📋 今日任务清单</h1>
-    <p class="subheading">2026年7月27日 · 周一 · 启动日 —— 以盘点建档为主，总耗时约2.5小时（含1小时训练）</p>
+    <h1>📋 今日修行课业</h1>
+    <p class="subheading">2026年7月27日 · 周一 · 道启之日 —— 以盘点建档为主，总耗时约2.5小时（含1小时炼体）</p>
 
-    <h2>板块1 · 新媒体运营</h2>
+    <div class="callout callout-info" style="margin-bottom:18px;">
+      🌅 <strong>晨钟初响 · 仙尊寄语</strong><br>
+      求道者赵肉肉，今日天地清朗，正宜开坛修行。下方课业已为你铺陈——勾去一项，便是一分进境。莫要贪多，落子生根方为上法。
+    </div>
+
+    <h2>术法参悟阁 · 新媒体运营</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -805,12 +833,12 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
         <div class="task-body">
           <div class="task-title">实操：在小红书找1篇千赞以上笔记，填「数据速读卡」</div>
-          <div class="task-meta">⏱ 15min · 📋 模板见板块1详情</div>
+          <div class="task-meta">⏱ 15min · 📋 模板见道场1详情</div>
         </div>
       </div>
     </div>
 
-    <h2>板块2 · 健身管理</h2>
+    <h2>肉身炼体堂 · 减脂增肌</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -835,7 +863,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       </div>
     </div>
 
-    <h2>板块3 · 阅读计划</h2>
+    <h2>藏经阁 · 工作导向阅读</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -846,7 +874,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       </div>
     </div>
 
-    <h2>板块4 · 自媒体账号</h2>
+    <h2>本命法宝培育坛 · 自媒体账号</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -857,7 +885,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       </div>
     </div>
 
-    <h2>板块5 · 财务规划</h2>
+    <h2>灵库聚财峰 · 薪资攒钱</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -868,14 +896,14 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       </div>
     </div>
 
-    <h2>板块6 · 成长画像</h2>
+    <h2>道途推演玄鉴 · 成长画像</h2>
     <div class="callout callout-info">
       今日无额外任务 —— 数据回收后自动更新至 V1.1
     </div>
 
     <hr class="divider">
 
-    <h2>今日身体提醒</h2>
+    <h2>炼体养心 · 今日提醒</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -892,18 +920,18 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </div>
 
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>📊 本周任务进度</h2>
     <div class="card">
       <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
       <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-      <p class="progress-note">勾选本板块任务自动统计</p>
+      <p class="progress-note">勾选本道场任务自动统计</p>
     </div>
 
     <h2>📝 编辑操作框</h2>
     <div class="card">
-      <textarea class="note-box" data-note-id="today" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+      <textarea class="note-box" data-note-id="today" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
     </div>
 </div>
 </details>
@@ -912,63 +940,63 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <!-- ── 控制台 ── -->
   <section class="page" id="page-console">
     <h1>⚙️ 控制台</h1>
-    <p class="subheading">全局系统设定 · 交互指令 · 跨板块联动 · 长期记忆存档</p>
+    <p class="subheading">全局系统设定 · 交互指令 · 跨道场联动 · 长期记忆存档</p>
 
-    <h2>核心强制规则（永久生效）</h2>
+    <h2>仙尊法旨 · 核心戒律（永久生效）</h2>
     <div class="card">
       <ol style="padding-left:18px; font-size:13px; line-height:2;">
-        <li><strong>长期记忆</strong>：全部设定、方法论、爆款拆解结论、账号信息、健身参数、财务方案沉淀于此，重复调用直接复用，禁止从零构建。</li>
-        <li><strong>轻量化任务</strong>：每日任务可落地、可完成，难度随执行情况与能力成长动态上调；杜绝过量任务与空洞理论。</li>
-        <li><strong>需求对齐入口</strong>：用户随时可提出目标变更/状态变化/新增诉求，收到后立即同步更新全部关联板块。</li>
-        <li><strong>周期机制</strong>：每周日小复盘，每月末全维度复盘，依据复盘结论迭代方案。</li>
-        <li><strong>输出规范</strong>：排版清晰分层，行动项前置，优先产出立刻能执行的动作。</li>
+        <li><strong>道藏记忆</strong>：全部设定、方法论、参悟同道传承之结论、账号信息、炼体参数、灵库方案皆沉淀于此，重复调用直接复用，禁止从零构建。</li>
+        <li><strong>轻装修行</strong>：当日修行课业可落地、可完成，难度随执行情况与境界精进动态上调；杜绝过量课业与空洞理论。</li>
+        <li><strong>同频法阵</strong>：求道者随时可提出目标变更 / 状态变化 / 新增诉求，收到后立即同步刷新全部关联道场。</li>
+        <li><strong>周天周期</strong>：每周日小修为推演，每月末全维度修为推演，依修为推演结论迭代功法。</li>
+        <li><strong>呈报规制</strong>：排版清晰分层，行动项前置，优先产出立刻能执行的招式。</li>
       </ol>
     </div>
 
-    <h2>交互指令表</h2>
+    <h2>仙尊法诀 · 交互指令表</h2>
     <table>
       <tr><th>指令</th><th>响应</th></tr>
-      <tr><td>【今日任务】</td><td>输出六大板块当日待办清单</td></tr>
-      <tr><td>【复盘】</td><td>生成周/月度全模块复盘文档</td></tr>
-      <tr><td>【调整需求】</td><td>开启需求对齐窗口，同步优化全部关联计划</td></tr>
-      <tr><td>【成长画像】</td><td>更新输出1-3年个人发展画像</td></tr>
-      <tr><td>点名某板块</td><td>仅深度输出该板块内容</td></tr>
+      <tr><td>【今日任务】</td><td>呈上七大道场当日修行课业清单</td></tr>
+      <tr><td>【复盘】</td><td>推演周 / 月度全道场修为纪要</td></tr>
+      <tr><td>【调整需求】</td><td>开启同频法阵，同步调优全部关联道场</td></tr>
+      <tr><td>【成长画像】</td><td>推演输出 1-3 年道途成长画像</td></tr>
+      <tr><td>点名某道场</td><td>单开此道场，深度参悟其内容</td></tr>
     </table>
 
-    <h2>六大板块状态总览</h2>
+    <h2>七大道场 · 修为总览</h2>
     <table>
-      <tr><th>#</th><th>板块</th><th>状态</th></tr>
-      <tr><td>1</td><td>新媒体运营能力提升</td><td><span class="tag tag-green">🟢 已启动 · 第1周</span></td></tr>
-      <tr><td>2</td><td>减脂增肌健身管理</td><td><span class="tag tag-green">🟢 已启动 · 适应期</span></td></tr>
-      <tr><td>3</td><td>工作导向阅读计划</td><td><span class="tag tag-blue">🟢 首月书目已定</span></td></tr>
-      <tr><td>4</td><td>自媒体账号优化</td><td><span class="tag tag-yellow">🟡 停更中 · 盘点重启</span></td></tr>
-      <tr><td>5</td><td>薪资规划 & 攒钱增收</td><td><span class="tag tag-yellow">🟡 待财务盘点回填</span></td></tr>
+      <tr><th>#</th><th>道场</th><th>状态</th></tr>
+      <tr><td>1</td><td>术法参悟阁（新媒体运营）</td><td><span class="tag tag-green">🟢 已启动 · 第1周</span></td></tr>
+      <tr><td>2</td><td>肉身炼体堂（健身管理）</td><td><span class="tag tag-green">🟢 已启动 · 适应期</span></td></tr>
+      <tr><td>3</td><td>藏经阁（阅读计划）</td><td><span class="tag tag-blue">🟢 首月书目已定</span></td></tr>
+      <tr><td>4</td><td>本命法宝培育坛（自媒体）</td><td><span class="tag tag-yellow">🟡 停更中 · 盘点重启</span></td></tr>
+      <tr><td>5</td><td>灵库聚财峰（财务规划）</td><td><span class="tag tag-yellow">🟡 待财务盘点回填</span></td></tr>
       <tr><td>6</td><td>1～3年动态成长画像</td><td><span class="tag tag-blue">🟢 V1.0 基线已建立</span></td></tr>
     </table>
 
-    <h2>待回填信息（阻塞项）</h2>
+    <h2>悬案未决 · 待补全信息（阻塞项）</h2>
     <div class="card">
-      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">财务：月收入、固定支出、弹性支出、现有存款 → 板块5</div></div></div>
-      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">账号：历史笔记数、数据最好的3条、粉丝量、停更时长 → 板块4</div></div></div>
-      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">体测：腰围、臀围、大腿围、晨起体重 → 板块2</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">财务：月收入、固定支出、弹性支出、现有存款 → 道场5</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">账号：历史笔记数、数据最好的3条、粉丝量、停更时长 → 道场4</div></div></div>
+      <div class="task-row"><div class="task-check" onclick="this.classList.toggle('done')"></div><div class="task-body"><div class="task-title">体测：腰围、臀围、大腿围、晨起体重 → 道场2</div></div></div>
     </div>
 
-    <h2>跨板块联动逻辑</h2>
+    <h2>跨道场联动玄机</h2>
     <div class="card">
       <ul style="padding-left:18px; font-size:13px; line-height:2;">
-        <li>板块1 所学方法 → 直接复用至板块4账号实操</li>
-        <li>板块3 书单优先服务板块1/4 的能力短板</li>
-        <li>板块2/5 的执行力数据 → 汇入板块6画像更新</li>
-        <li>每次复盘结论 → 同步刷新全部板块计划</li>
+        <li>道场1 所学方法 → 直接复用至道场4账号实操</li>
+        <li>道场3 书单优先服务道场1/4 的能力短板</li>
+        <li>道场2/5 的执行力数据 → 汇入道场6画像更新</li>
+        <li>每次修为推演结论 → 同步刷新全部道场计划</li>
       </ul>
     </div>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -976,20 +1004,20 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="console" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="console" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块1：新媒体运营 ── -->
+  <!-- ── 道场1：新媒体运营 ── -->
   <section class="page" id="page-module1">
-    <h1>📊 板块1 · 新媒体运营竞争力提升</h1>
+    <h1>📊 术法参悟阁 · 新媒体运营竞争力提升</h1>
     <p class="subheading">核心短板：数据分析 / 用户痛点挖掘 / 商业思维 · 第1周：数据指标筑基</p>
 
     <h2>4周循环学习路径</h2>
@@ -998,7 +1026,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       <tr><td>第1周（本周）</td><td>📊 数据指标筑基</td><td>掌握核心指标定义、健康基准、读数方法</td></tr>
       <tr><td>第2周</td><td>🔍 用户痛点挖掘</td><td>评论区 / 搜索下拉词 / 竞品账号三渠道挖需求</td></tr>
       <tr><td>第3周</td><td>💡 商业思维</td><td>拆解IP变现模型（广告/带货/知识付费/私域）</td></tr>
-      <tr><td>第4周</td><td>🧪 综合实操</td><td>用前三周方法完整拆解1个对标账号（联动板块4）</td></tr>
+      <tr><td>第4周</td><td>🧪 综合实操</td><td>用前三周方法完整拆解1个对标账号（联动道场4）</td></tr>
     </table>
 
     <h2>📦 方法论沉淀区（长期复用）</h2>
@@ -1033,11 +1061,11 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </div>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1045,20 +1073,20 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module1" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module1" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块2：健身管理 ── -->
+  <!-- ── 道场2：健身管理 ── -->
   <section class="page" id="page-module2">
-    <h1>💪 板块2 · 减脂增肌健身管理</h1>
+    <h1>💪 肉身炼体堂 · 减脂增肌健身管理</h1>
     <p class="subheading">女生 · 160cm/51kg（BMI 19.9）· 目标：薄肌体态 · 训练时段 19:30-20:30 · 训练起始 7/20</p>
 
     <div class="callout callout-warn">
@@ -1116,11 +1144,11 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </blockquote>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1128,27 +1156,27 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module2" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module2" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块3：阅读计划 ── -->
+  <!-- ── 道场3：阅读计划 ── -->
   <section class="page" id="page-module3">
-    <h1>📖 板块3 · 工作导向阅读计划</h1>
+    <h1>📖 藏经阁 · 工作导向阅读计划</h1>
     <p class="subheading">节奏：每月1本 · 选书方向：新媒体 / 商业 / 用户洞察 / 内容运营 / 经济学</p>
 
     <h2>📖 当前在读：《18岁后，你必须懂点经济学》</h2>
     <p style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">斯凯恩 · 立信会计出版社 · 2015年 · 10章+附录 · 经济学普及读物</p>
 
     <div class="callout callout-info">
-      推荐理由：无复杂公式，用生活案例讲经济学思维。与板块1/4/5深度联动——成本收益分析 → 内容投入决策；博弈论 → 用户行为分析；储蓄投资 → 板块5财务规划直接对接。
+      推荐理由：无复杂公式，用生活案例讲经济学思维。与道场1/4/5深度联动——成本收益分析 → 内容投入决策；博弈论 → 用户行为分析；稳固灵基投资 → 道场5财务规划直接对接。
     </div>
 
     <div class="callout callout-success" style="margin-top:8px;">
@@ -1195,19 +1223,19 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
     <h3>备选书单（下一本候选）</h3>
     <table>
-      <tr><th>书名</th><th>对口板块</th><th>理由</th></tr>
-      <tr><td>《上瘾》尼尔·埃亚尔</td><td>板块1+4</td><td>用户行为分析，痛点挖掘</td></tr>
-      <tr><td>《运营之光》黄有璨</td><td>板块1</td><td>国内运营语境，体系化</td></tr>
-      <tr><td>《定位》特劳特</td><td>板块1+4</td><td>商业思维+账号定位双修</td></tr>
-      <tr><td>《疯传》乔纳·伯杰</td><td>板块4</td><td>爆款传播原理</td></tr>
+      <tr><th>书名</th><th>对口道场</th><th>理由</th></tr>
+      <tr><td>《上瘾》尼尔·埃亚尔</td><td>道场1+4</td><td>用户行为分析，痛点挖掘</td></tr>
+      <tr><td>《运营之光》黄有璨</td><td>道场1</td><td>国内运营语境，体系化</td></tr>
+      <tr><td>《定位》特劳特</td><td>道场1+4</td><td>商业思维+账号定位双修</td></tr>
+      <tr><td>《疯传》乔纳·伯杰</td><td>道场4</td><td>爆款传播原理</td></tr>
     </table>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1215,24 +1243,24 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module3" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module3" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块4：自媒体账号 ── -->
+  <!-- ── 道场4：自媒体账号 ── -->
   <section class="page" id="page-module4">
-    <h1>🎬 板块4 · 自有自媒体账号优化</h1>
+    <h1>🎬 本命法宝培育坛 · 自有自媒体账号优化</h1>
     <p class="subheading">账号：赵肉肉是个大富婆 · 平台：小红书 + 抖音 · 核心卡点：精准抓取用户需求困难</p>
 
     <div class="callout callout-warn">
-      ⚠️ 停更中。本板块是当前优先级最高的板块之一——直接联动板块1所学，需要优先完成盘点回填。
+      ⚠️ 停更中。本道场是当前优先级最高的道场之一——直接联动道场1所学，需要优先完成盘点回填。
     </div>
 
     <h2>账号现状盘点表（待回填，填好后我做定位诊断）</h2>
@@ -1263,7 +1291,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
         <li><strong>评论区挖矿</strong>：对标账号爆款笔记的评论区，统计高频追问</li>
         <li><strong>搜索下拉词</strong>：小红书搜索框输行业词，下拉联想=真实搜索需求</li>
-        <li><strong>自我验证</strong>：用板块1「真实需求三问」过滤后再投入制作</li>
+        <li><strong>自我验证</strong>：用道场1「真实需求三问」过滤后再投入制作</li>
       </ol>
     </div>
 
@@ -1277,11 +1305,11 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </table>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1289,31 +1317,31 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module4" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module4" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块5：财务规划 ── -->
+  <!-- ── 道场5：财务规划 ── -->
   <section class="page" id="page-module5">
-    <h1>💰 板块5 · 薪资规划 + 攒钱增收方案</h1>
-    <p class="subheading">核心框架：三账户体系 · 收入-储蓄=支出（先存后花）</p>
+    <h1>💰 灵库聚财峰 · 薪资规划 + 攒钱增收方案</h1>
+    <p class="subheading">核心框架：三账户体系 · 收入-稳固灵基=支出（先存后花）</p>
 
     <h2>三账户体系</h2>
     <table>
       <tr><th>账户</th><th>用途</th><th>规则</th></tr>
-      <tr><td>💰 储蓄账户</td><td>强制储蓄，只进不出</td><td>工资到账先存后花，起步比例20%，逐步提至30%</td></tr>
+      <tr><td>💰 稳固灵基账户</td><td>强制稳固灵基，只进不出</td><td>工资到账先存后花，起步比例20%，逐步提至30%</td></tr>
       <tr><td>🛒 日常开销账户</td><td>当月全部花销</td><td>预算制，花完不补</td></tr>
       <tr><td>🚨 备用资金账户</td><td>应急（失业/医疗）</td><td>目标=3-6个月生活费，存满后不再追加</td></tr>
     </table>
 
-    <blockquote>原则：收入 - 储蓄 = 支出（先存），而不是收入 - 支出 = 储蓄（剩多少存多少，大概率剩不下）。</blockquote>
+    <blockquote>原则：收入 - 稳固灵基 = 支出（先存），而不是收入 - 支出 = 稳固灵基（剩多少存多少，大概率剩不下）。</blockquote>
 
     <h2>财务盘点表（待回填）</h2>
     <h3>收入</h3>
@@ -1332,24 +1360,24 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <div class="card">
       <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
         <li>记账30天——只记不省，先看清钱花在哪</li>
-        <li>工资日自动转账储蓄账户（先按20%起步）</li>
+        <li>工资日自动转账稳固灵基账户（先按20%起步）</li>
         <li>弹性支出逐项标「必要/可砍」，次月砍掉占比最低价值的1-2项</li>
       </ol>
     </div>
 
     <h2>副业增收储备方向（第2-3个月评估）</h2>
     <table>
-      <tr><td>自有账号变现</td><td>联动板块4重启进度</td></tr>
-      <tr><td>接单：代运营/文案/剪辑</td><td>板块1第4周评估能力达标情况</td></tr>
+      <tr><td>自有账号变现</td><td>联动道场4重启进度</td></tr>
+      <tr><td>接单：代运营/文案/剪辑</td><td>道场1第4周评估能力达标情况</td></tr>
       <tr><td>投稿/知识产品</td><td>长期方向</td></tr>
     </table>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1357,36 +1385,36 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module5" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module5" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块6：成长画像 ── -->
+  <!-- ── 道场6：成长画像 ── -->
   <section class="page" id="page-module6">
-    <h1>🧭 板块6 · 1～3年动态个人成长画像</h1>
-    <p class="subheading">V1.0 基线版 · 2026-07-27 · 随每次复盘更新，不固化</p>
+    <h1>🧭 道途推演玄鉴 · 1～3年动态个人成长画像</h1>
+    <p class="subheading">V1.0 基线版 · 2026-07-27 · 随每次修为推演更新，不固化</p>
 
     <h2>现阶段能力快照</h2>
     <table>
       <tr><th>维度</th><th>评级</th><th>关键事实</th><th>90天目标</th></tr>
-      <tr><td>新媒体运营</td><td><span class="tag tag-yellow">🔶 学习中</span></td><td>短板：数据分析/痛点挖掘/商业思维</td><td>能独立完成数据复盘+拆解对标账号</td></tr>
+      <tr><td>新媒体运营</td><td><span class="tag tag-yellow">🔶 学习中</span></td><td>短板：数据分析/痛点挖掘/商业思维</td><td>能独立完成数据修为推演+拆解对标账号</td></tr>
       <tr><td>健身体态</td><td><span class="tag tag-green">🟢 执行中</span></td><td>160/51，目标薄肌；训练起始7/20，第1周已完成</td><td>每周4练稳定执行，体态线条初步显现</td></tr>
       <tr><td>阅读习惯</td><td><span class="tag tag-yellow">🔶 起步</span></td><td>目标每月1本</td><td>《18岁后，你必须懂点经济学》读完+输出1篇书评</td></tr>
       <tr><td>账号运营</td><td><span class="tag tag-red">🔴 停滞</span></td><td>赵肉肉是个大富婆（小红书+抖音）停更</td><td>完成重启，恢复每周2-3更</td></tr>
-      <tr><td>财务管理</td><td><span class="tag tag-gray">⚪ 待建档</span></td><td>收支结构未知</td><td>三账户跑通，储蓄率≥20%</td></tr>
+      <tr><td>财务管理</td><td><span class="tag tag-gray">⚪ 待建档</span></td><td>收支结构未知</td><td>三账户跑通，稳固灵基率≥20%</td></tr>
     </table>
 
     <h2>阶段性短板（当前优先级排序）</h2>
     <div class="card">
       <ol style="padding-left:18px; font-size:13px; line-height:2.2;">
-        <li><strong>用户痛点挖掘</strong>（同时卡住板块1和板块4，最高优先）</li>
+        <li><strong>用户痛点挖掘</strong>（同时卡住道场1和道场4，最高优先）</li>
         <li>数据分析能力（运营基本功）</li>
         <li>执行力系统尚未验证（本周为验证期）</li>
       </ol>
@@ -1406,22 +1434,22 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <table>
       <tr><td>职业</td><td>新媒体运营资深/管理岗，或自有IP成为主要收入之一</td></tr>
       <tr><td>个人品牌</td><td>「赵肉肉是个大富婆」成为垂类有辨识度的账号</td></tr>
-      <tr><td>财务</td><td>储蓄+副业双引擎，攒钱目标达成（具体数额待板块5建档后写入）</td></tr>
+      <tr><td>财务</td><td>稳固灵基+副业双引擎，攒钱目标达成（具体数额待道场5建档后写入）</td></tr>
       <tr><td>能力复利</td><td>运营能力 × 内容能力 × 商业思维形成闭环</td></tr>
     </table>
 
     <h2>更新日志</h2>
     <table>
       <tr><th>日期</th><th>版本</th><th>变更</th></tr>
-      <tr><td>2026-07-27</td><td>V1.0 基线</td><td>基线建立。待回填数据后本周日复盘更新 V1.1。</td></tr>
+      <tr><td>2026-07-27</td><td>V1.0 基线</td><td>基线建立。待回填数据后本周日修为推演更新 V1.1。</td></tr>
     </table>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>🎯 本周目标</h2>
   <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本道场至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
   </div>
 
@@ -1429,20 +1457,20 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module6" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module6" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
 </section>
 
-  <!-- ── 板块7：每日运势 ── -->
+  <!-- ── 道场7：星象命数台 ── -->
   <section class="page" id="page-module7">
-    <h1>🔮 板块7 · 每日运势分析</h1>
+    <h1>🔮 星象命数台 · 八字+星座天运推演</h1>
     <p class="subheading">结合八字 + 星座 · 乙木女 · 双子座 · 自动按日期生成</p>
 
     <h2>我的命盘档案</h2>
@@ -1461,13 +1489,13 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <div class="card">
       <ul style="padding-left:18px; font-size:13px; line-height:2;">
         <li><strong>乙木日主</strong>：柔和、灵活、适应力强，如藤萝系甲——善借力成长。</li>
-        <li><strong>双子座</strong>：好奇心强、表达力好、善变，信息获取与输出快（对口板块1/4）。</li>
+        <li><strong>双子座</strong>：好奇心强、表达力好、善变，信息获取与输出快（对口道场1/4）。</li>
         <li><strong>五行喜忌</strong>：喜水（印）滋润、喜木（比劫）帮扶、喜火（食伤）泄秀、喜金（官杀）雕琢；火土过旺时需水木调和。</li>
-        <li><strong>官财格局</strong>：时柱庚金正官（事业/正缘），年干戊土正财——适合稳定积累型财务路线（呼应板块5）。</li>
+        <li><strong>官财格局</strong>：时柱庚金正官（事业/正缘），年干戊土正财——适合稳定积累型财务路线（呼应道场5）。</li>
       </ul>
     </div>
 
-    <h2>📅 运势 · 每日 / 每周注意事项</h2>
+    <h2>📅 星象命数台 · 每日 / 每周天运推演</h2>
     <div class="card">
       <div class="fortune-tabs">
         <button class="fortune-tab active" id="tabDay" onclick="setFortuneMode('day')">📆 每日注意事项</button>
@@ -1482,7 +1510,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <div class="card">
       <div class="task-row">
         <div class="task-check"></div>
-        <div class="task-body"><div class="task-title">记录今日运势关键词，晚间回看应验项</div></div>
+        <div class="task-body"><div class="task-title">记录今日天运关键词，晚间回看应验迹象</div></div>
       </div>
       <div class="task-row">
         <div class="task-check"></div>
@@ -1491,18 +1519,18 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </div>
   
 <details class="tools">
-<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
 <h2>📊 本周任务进度</h2>
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
-    <p class="progress-note">勾选本板块任务自动统计</p>
+    <p class="progress-note">勾选本道场任务自动统计</p>
   </div>
 
   <h2>📝 编辑操作框</h2>
   <div class="card">
-    <textarea class="note-box" data-note-id="module7" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    <textarea class="note-box" data-note-id="module7" placeholder="在此记录本道场的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
 </div>
 </details>
@@ -1742,7 +1770,7 @@ function initNotes() {
   });
 }
 
-/* ── 运势：按日期确定性生成（每日 + 每周注意事项） ── */
+/* ── 天运推演：按日期确定性生成（每日 + 每周注意事项） ── */
 let fortuneMode = 'day';
 
 function genDailyFortune() { return fortuneFromSeed(dateSeed(new Date()), 'day'); }
@@ -1765,21 +1793,21 @@ function fortuneFromSeed(seed, mode) {
   const dimScores = dims.map(() => Math.floor(52 + rnd() * 46));
   const colors = ['森绿', '湖蓝', '樱粉', '墨黑', '暖红', '米白', '鹅黄'];
   const dirs = ['东', '南', '西', '北', '东南', '西南', '东北', '西北'];
-  const yi = ['签约谈判', '学习新技能', '主动沟通', '整理财务', '运动出汗', '按计划执行', '输出内容', '向人请教', '做复盘总结', '早睡养神'];
+  const yi = ['签约谈判', '学习新技能', '主动沟通', '整理财务', '运动出汗', '按计划执行', '输出内容', '向人请教', '做修为推演总结', '早睡养神'];
   const ji = ['冲动消费', '熬夜透支', '口舌争执', '拖延要事', '过度承诺', '纠结内耗', '借钱与人', '空腹训练', '暴饮暴食', '跟风投资'];
   const tips = [
-    '乙木得水润，今日思路清晰，适合深度思考与内容创作（联动板块1/4）。',
+    '乙木得水润，今日思路清晰，适合深度思考与内容创作（联动道场1/4）。',
     '藤萝系甲，借力而行——团队协作或请教他人事半功倍。',
     '食伤泄秀日，表达欲强，适合输出观点、录视频、写笔记。',
     '正官临门，纪律感在线，推进拖延已久的任务最佳。',
     '木火通明，创意涌动，把灵感立刻记进编辑框别流失。'
   ];
   const weekTips = [
-    '乙木本周宜稳扎稳打：把板块1的数据方法真正用起来，别只收藏不练。',
+    '乙木本周宜稳扎稳打：把道场1的数据方法真正用起来，别只收藏不练。',
     '本周火土偏旺，注意情绪起伏——23点前睡、少内耗是护运关键。',
-    '财星有气，适合梳理板块5三账户，先存后花比盲目省钱更有效。',
+    '财星有气，适合梳理道场5三账户，先存后花比盲目省钱更有效。',
     '官印相生周，执行力在线——把健身4练和阅读计划排进日历固定时段。',
-    '本周宜借势：双子表达力强，可在板块4评论区挖需求、攒选题。'
+    '本周宜借势：双子表达力强，可在道场4评论区挖需求、攒选题。'
   ];
   const star = n => { const k = Math.max(0, Math.min(5, Math.round(n / 20))); return '★'.repeat(k) + '☆'.repeat(5 - k); };
   const pick = arr => arr[Math.floor(rnd() * arr.length)];
@@ -1805,6 +1833,15 @@ function fortuneFromSeed(seed, mode) {
     h += '<div class="fortune-ji"><b>⚠️ 本周忌</b>' + jiL.join('、') + '</div>';
     h += '<div class="fortune-tip">💡 本周提示：' + pick(weekTips) + '</div>';
   }
+  const remind = [
+    '今日宜「输出内容 / 主动沟通」——正宜去术法参悟阁练手、在本命法宝培育坛留痕；乙木食伤泄秀，发表即修行。',
+    '今日宜「整理财务 / 稳固灵基」——拨冗灵库聚财峰，先存后花，灵基稳则心不乱。',
+    '今日宜「运动出汗 / 按计划执行」——肉身炼体堂走起，力量为主、蛋白吃够，薄肌体态是炼出来的。',
+    '今日宜「学习新技能 / 向人请教」——藏经阁翻上几页，或向同道借力；藤萝系甲，善假于物方为上法。',
+    '今日宜「签约谈判 / 做修为推演总结」——趁正官临门，把拖延的课业收个尾，周天推演时自有底气。'
+  ];
+  h += '<div class="fortune-tip">🪷 <strong>修行提醒</strong>：' + remind[Math.floor(rnd() * remind.length)] +
+      '<br><span style="opacity:.85;">天运仅作参考，落地课业方为修行根本——莫被星盘牵着鼻子走，自己的道自己修～</span></div>';
   return h;
 }
 
