@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="成长工作台">
 <link rel="apple-touch-icon" href="/icons/apple-icon-180.png">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#1a1a2e">
+<meta name="theme-color" content="#fbcfe8">
 <title>一体化成长工作台 · 赵肉肉是个大富婆</title>
 <style>
 :root {
-  --bg: #f7f7f8;
-  --sidebar-bg: #1a1a2e;
-  --sidebar-hover: #252545;
-  --sidebar-active: #0f3460;
-  --accent: #e94560;
-  --accent2: #0f3460;
-  --text: #1a1a2e;
-  --text-secondary: #6b7280;
+  --bg: #fdf2f8;
+  --sidebar-bg: #fbcfe8;
+  --sidebar-hover: #f9a8d4;
+  --sidebar-active: #db2777;
+  --accent: #ec4899;
+  --accent2: #be185d;
+  --text: #831843;
+  --text-secondary: #9d6b86;
   --card-bg: #ffffff;
-  --border: #e5e7eb;
+  --border: #fbcfe8;
   --tag-green: #ecfdf5;
   --tag-green-text: #065f46;
   --tag-yellow: #fffbeb;
@@ -52,7 +52,7 @@ body {
   width: 240px;
   min-width: 240px;
   background: var(--sidebar-bg);
-  color: #cbd5e1;
+  color: #831843;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -65,28 +65,28 @@ body {
 
 .sidebar-header {
   padding: 24px 20px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(157,23,77,0.12);
 }
 
 .sidebar-header .logo {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: #94a3b8;
+  color: #be185d;
   text-transform: uppercase;
 }
 
 .sidebar-header .title {
   font-size: 17px;
   font-weight: 700;
-  color: #fff;
+  color: #831843;
   margin-top: 4px;
   line-height: 1.3;
 }
 
 .sidebar-header .subtitle {
   font-size: 12px;
-  color: #64748b;
+  color: #9d6b86;
   margin-top: 4px;
 }
 
@@ -101,7 +101,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #475569;
+  color: #be185d;
 }
 
 .nav-item {
@@ -111,7 +111,7 @@ body {
   padding: 10px 20px;
   cursor: pointer;
   font-size: 14px;
-  color: #94a3b8;
+  color: #9d174d;
   border-left: 3px solid transparent;
   transition: all 0.15s;
   text-decoration: none;
@@ -119,7 +119,7 @@ body {
 
 .nav-item:hover {
   background: var(--sidebar-hover);
-  color: #e2e8f0;
+  color: #831843;
 }
 
 .nav-item.active {
@@ -151,9 +151,9 @@ body {
 
 .sidebar-footer {
   padding: 16px 20px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(157,23,77,0.12);
   font-size: 11px;
-  color: #475569;
+  color: #9d6b86;
   line-height: 1.5;
 }
 
@@ -166,8 +166,8 @@ body {
 
 .nav-edit-btn {
   background: var(--sidebar-hover);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #cbd5e1;
+  border: 1px solid rgba(157,23,77,0.2);
+  color: #9d174d;
   width: 30px;
   height: 30px;
   border-radius: 8px;
@@ -315,8 +315,8 @@ body {
 
 .nav-collapse-btn {
   background: var(--sidebar-hover);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #cbd5e1;
+  border: 1px solid rgba(157,23,77,0.2);
+  color: #9d174d;
   width: 30px;
   height: 30px;
   border-radius: 8px;
@@ -355,18 +355,19 @@ body {
   height: 38px;
   border-radius: 10px;
   background: var(--sidebar-bg);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.15);
+  color: #831843;
+  border: 1px solid rgba(157,23,77,0.2);
   font-size: 18px;
   cursor: pointer;
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  box-shadow: 0 2px 8px rgba(157,23,77,0.2);
 }
 
 .nav-toggle:hover {
   background: var(--accent);
+  color: #fff;
 }
 
 .sidebar.collapsed ~ .nav-toggle {
@@ -471,7 +472,7 @@ table {
 th {
   text-align: left;
   padding: 8px 10px;
-  background: #f9fafb;
+  background: #fce7f3;
   font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
@@ -482,7 +483,7 @@ th {
 
 td {
   padding: 10px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
   line-height: 1.5;
 }
@@ -575,8 +576,8 @@ blockquote {
 }
 
 .code-block {
-  background: #1e1e2e;
-  color: #cdd6f4;
+  background: #fce7f3;
+  color: #831843;
   padding: 14px 18px;
   border-radius: 8px;
   font-family: "SF Mono", "Fira Code", monospace;
@@ -584,6 +585,7 @@ blockquote {
   line-height: 1.7;
   margin: 10px 0;
   white-space: pre-wrap;
+  border: 1px solid var(--border);
 }
 
 .footnote {
