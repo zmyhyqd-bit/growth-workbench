@@ -635,6 +635,83 @@ blockquote {
 .note-box:focus {
   outline: 2px solid var(--accent);
 }
+
+/* ── 板块工具折叠（简化界面） ── */
+details.tools {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+details.tools > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+details.tools > summary::-webkit-details-marker { display: none; }
+details.tools > summary::after {
+  content: "▸";
+  font-size: 12px;
+  transition: transform 0.2s;
+  color: var(--text-secondary);
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+details.tools[open] > summary::after { transform: rotate(90deg); }
+details.tools > summary .tools-hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: auto;
+  padding-right: 4px;
+}
+details.tools .tools-body { padding: 0 24px 20px; }
+details.tools .tools-body hr.divider { margin: 12px 0; }
+
+/* ── 运势：每日/每周切换 ── */
+.fortune-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.fortune-tab {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-secondary);
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.fortune-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.fortune-score { font-size: 13px; line-height: 2; }
+.fortune-yi, .fortune-ji { margin: 10px 0 2px; font-size: 13px; line-height: 1.9; }
+.fortune-yi b, .fortune-ji b {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.fortune-yi b { background: var(--tag-green); color: var(--tag-green-text); }
+.fortune-ji b { background: var(--tag-red); color: var(--tag-red-text); }
+.fortune-tip {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #fef2f2;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+  color: #9d174d;
+  line-height: 1.7;
+}
 </style>
 </head>
 <body>
@@ -814,9 +891,10 @@ blockquote {
       </div>
     </div>
 
-    <hr class="divider">
-
-    <h2>📊 本周任务进度</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>📊 本周任务进度</h2>
     <div class="card">
       <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
       <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
@@ -827,6 +905,8 @@ blockquote {
     <div class="card">
       <textarea class="note-box" data-note-id="today" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
     </div>
+</div>
+</details>
   </section>
 
   <!-- ── 控制台 ── -->
@@ -883,9 +963,10 @@ blockquote {
       </ul>
     </div>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -902,6 +983,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="console" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块1：新媒体运营 ── -->
@@ -949,9 +1032,10 @@ blockquote {
       </div>
     </div>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -968,6 +1052,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module1" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块2：健身管理 ── -->
@@ -1029,9 +1115,10 @@ blockquote {
       热量缺口>500kcal会直接干扰经期——不过度节食。
     </blockquote>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -1048,6 +1135,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module2" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块3：阅读计划 ── -->
@@ -1113,9 +1202,10 @@ blockquote {
       <tr><td>《疯传》乔纳·伯杰</td><td>板块4</td><td>爆款传播原理</td></tr>
     </table>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -1132,6 +1222,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module3" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块4：自媒体账号 ── -->
@@ -1184,9 +1276,10 @@ blockquote {
       <tr><td>第4步</td><td>小成本测试——每周更2-3条，跑4周看数据，用数据速读卡迭代</td></tr>
     </table>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -1203,6 +1296,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module4" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块5：财务规划 ── -->
@@ -1249,9 +1344,10 @@ blockquote {
       <tr><td>投稿/知识产品</td><td>长期方向</td></tr>
     </table>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -1268,6 +1364,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module5" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块6：成长画像 ── -->
@@ -1318,9 +1416,10 @@ blockquote {
       <tr><td>2026-07-27</td><td>V1.0 基线</td><td>基线建立。待回填数据后本周日复盘更新 V1.1。</td></tr>
     </table>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>🎯 本周目标</h2>
   <div class="card">
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
     <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
@@ -1337,6 +1436,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module6" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
   <!-- ── 板块7：每日运势 ── -->
@@ -1366,9 +1467,15 @@ blockquote {
       </ul>
     </div>
 
-    <h2>📅 今日运势（按日期自动生成）</h2>
-    <div class="card" id="fortuneCard">
-      <p style="font-size:13px; color:var(--text-secondary);">加载中…</p>
+    <h2>📅 运势 · 每日 / 每周注意事项</h2>
+    <div class="card">
+      <div class="fortune-tabs">
+        <button class="fortune-tab active" id="tabDay" onclick="setFortuneMode('day')">📆 每日注意事项</button>
+        <button class="fortune-tab" id="tabWeek" onclick="setFortuneMode('week')">🗓 本周注意事项</button>
+      </div>
+      <div id="fortuneCard">
+        <p style="font-size:13px; color:var(--text-secondary);">加载中…</p>
+      </div>
     </div>
 
     <h2>🎯 本周目标</h2>
@@ -1383,15 +1490,10 @@ blockquote {
       </div>
     </div>
   
-  <hr class="divider">
-  
-  <h2>🎯 本周目标</h2>
-  <div class="card">
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
-    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
-  </div>
-
-  <h2>📊 本周任务进度</h2>
+<details class="tools">
+<summary>🛠 板块工具 <span class="tools-hint">本周目标 · 进度 · 笔记（点开查看/编辑）</span></summary>
+<div class="tools-body">
+<h2>📊 本周任务进度</h2>
   <div class="card">
     <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
     <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
@@ -1402,6 +1504,8 @@ blockquote {
   <div class="card">
     <textarea class="note-box" data-note-id="module7" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
   </div>
+</div>
+</details>
 </section>
 
 </main>
@@ -1638,20 +1742,31 @@ function initNotes() {
   });
 }
 
-/* ── 每日运势：按日期确定性生成 ── */
-function genDailyFortune() {
-  const now = new Date();
-  const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+/* ── 运势：按日期确定性生成（每日 + 每周注意事项） ── */
+let fortuneMode = 'day';
+
+function genDailyFortune() { return fortuneFromSeed(dateSeed(new Date()), 'day'); }
+function genWeeklyFortune() { return fortuneFromSeed(weekSeed(new Date()), 'week'); }
+
+function dateSeed(d) { return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+function weekSeed(d) {
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const day = (x.getDay() + 6) % 7; // 周一=0
+  const monday = new Date(x); monday.setDate(x.getDate() - day);
+  const isoWeek = Math.floor((monday - new Date(monday.getFullYear(), 0, 1)) / 6048e5);
+  return monday.getFullYear() * 100 + isoWeek;
+}
+
+function fortuneFromSeed(seed, mode) {
   let s = seed;
   const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
   const overall = Math.floor(62 + rnd() * 33);
   const dims = ['事业', '财运', '感情', '健康'];
   const dimScores = dims.map(() => Math.floor(52 + rnd() * 46));
-  const colors = ['森绿', '湖蓝', '樱粉', '墨黑', '暖红', '米白'];
+  const colors = ['森绿', '湖蓝', '樱粉', '墨黑', '暖红', '米白', '鹅黄'];
   const dirs = ['东', '南', '西', '北', '东南', '西南', '东北', '西北'];
-  const yi = ['签约谈判', '学习新技能', '主动沟通', '整理财务', '运动出汗', '按计划执行', '输出内容'];
-  const ji = ['冲动消费', '熬夜透支', '口舌争执', '拖延要事', '过度承诺', '纠结内耗'];
-  const pick = arr => arr[Math.floor(rnd() * arr.length)];
+  const yi = ['签约谈判', '学习新技能', '主动沟通', '整理财务', '运动出汗', '按计划执行', '输出内容', '向人请教', '做复盘总结', '早睡养神'];
+  const ji = ['冲动消费', '熬夜透支', '口舌争执', '拖延要事', '过度承诺', '纠结内耗', '借钱与人', '空腹训练', '暴饮暴食', '跟风投资'];
   const tips = [
     '乙木得水润，今日思路清晰，适合深度思考与内容创作（联动板块1/4）。',
     '藤萝系甲，借力而行——团队协作或请教他人事半功倍。',
@@ -1659,21 +1774,55 @@ function genDailyFortune() {
     '正官临门，纪律感在线，推进拖延已久的任务最佳。',
     '木火通明，创意涌动，把灵感立刻记进编辑框别流失。'
   ];
-  const star = n => '★'.repeat(Math.round(n / 20)) + '☆'.repeat(5 - Math.round(n / 20));
-  let h = '<div style="font-size:13px;line-height:2;">';
-  h += '<div><strong>综合指数</strong>：' + overall + ' 分 ' + star(overall) + '</div>';
-  dims.forEach((dm, i) => { h += '<div><strong>' + dm + '</strong>：' + dimScores[i] + ' 分 ' + star(dimScores[i]) + '</div>'; });
-  h += '<div>🎨 幸运色：<strong>' + pick(colors) + '</strong>　🧭 幸运方位：<strong>' + pick(dirs) + '</strong></div>';
-  h += '<div>✅ 宜：' + pick(yi) + '</div><div>⚠️ 忌：' + pick(ji) + '</div>';
-  h += '<div style="margin-top:6px;color:#be185d;">💡 ' + pick(tips) + '</div>';
-  h += '</div>';
+  const weekTips = [
+    '乙木本周宜稳扎稳打：把板块1的数据方法真正用起来，别只收藏不练。',
+    '本周火土偏旺，注意情绪起伏——23点前睡、少内耗是护运关键。',
+    '财星有气，适合梳理板块5三账户，先存后花比盲目省钱更有效。',
+    '官印相生周，执行力在线——把健身4练和阅读计划排进日历固定时段。',
+    '本周宜借势：双子表达力强，可在板块4评论区挖需求、攒选题。'
+  ];
+  const star = n => { const k = Math.max(0, Math.min(5, Math.round(n / 20))); return '★'.repeat(k) + '☆'.repeat(5 - k); };
+  const pick = arr => arr[Math.floor(rnd() * arr.length)];
+  const pickN = (arr, n) => { const c = [...arr], out = []; while (out.length < n && c.length) out.push(c.splice(Math.floor(rnd() * c.length), 1)[0]); return out; };
+
+  let h = '<div class="fortune-score">';
+  if (mode === 'day') {
+    h += '<div style="margin-bottom:6px;"><strong>综合指数</strong>：' + overall + ' 分 ' + star(overall) + '</div>';
+    dims.forEach((dm, i) => { h += '<div>' + dm + '：' + dimScores[i] + ' 分 ' + star(dimScores[i]) + '</div>'; });
+    h += '<div style="margin-top:4px;">🎨 幸运色：<strong>' + pick(colors) + '</strong>　🧭 幸运方位：<strong>' + pick(dirs) + '</strong></div>';
+    h += '</div>';
+    const yiL = pickN(yi, 2), jiL = pickN(ji, 2);
+    h += '<div class="fortune-yi"><b>✅ 今日宜</b>' + yiL.join('、') + '</div>';
+    h += '<div class="fortune-ji"><b>⚠️ 今日忌</b>' + jiL.join('、') + '</div>';
+    h += '<div class="fortune-tip">💡 ' + pick(tips) + '</div>';
+  } else {
+    const wk = ['蓄力', '破局', '守成', '进取', '调和'][Math.floor(rnd() * 5)];
+    h += '<div style="margin-bottom:6px;"><strong>本周能量</strong>：' + wk + ' · 综合 ' + overall + ' 分 ' + star(overall) + '</div>';
+    dims.forEach((dm, i) => { h += '<div>' + dm + '：' + dimScores[i] + ' 分 ' + star(dimScores[i]) + '</div>'; });
+    h += '</div>';
+    const yiL = pickN(yi, 3), jiL = pickN(ji, 3);
+    h += '<div class="fortune-yi"><b>✅ 本周宜</b>' + yiL.join('、') + '</div>';
+    h += '<div class="fortune-ji"><b>⚠️ 本周忌</b>' + jiL.join('、') + '</div>';
+    h += '<div class="fortune-tip">💡 本周提示：' + pick(weekTips) + '</div>';
+  }
+  return h;
+}
+
+function renderFortune() {
   const card = document.getElementById('fortuneCard');
-  if (card) card.innerHTML = h;
+  if (!card) return;
+  card.innerHTML = fortuneMode === 'day' ? genDailyFortune() : genWeeklyFortune();
+}
+function setFortuneMode(mode) {
+  fortuneMode = mode;
+  document.getElementById('tabDay').classList.toggle('active', mode === 'day');
+  document.getElementById('tabWeek').classList.toggle('active', mode === 'week');
+  renderFortune();
 }
 
 updateAllProgress();
 initNotes();
-genDailyFortune();
+renderFortune();
 </script>
 
 <script>
