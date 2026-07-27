@@ -565,7 +565,7 @@ blockquote {
 .progress-bar {
   height: 6px;
   border-radius: 3px;
-  background: #e5e7eb;
+  background: var(--border);
   margin-top: 4px;
   overflow: hidden;
 }
@@ -573,6 +573,7 @@ blockquote {
   height: 100%;
   border-radius: 3px;
   background: var(--accent);
+  transition: width 0.3s ease;
 }
 
 .code-block {
@@ -599,6 +600,40 @@ blockquote {
 @media (max-width: 768px) {
   .sidebar { width: 200px; min-width: 200px; }
   .main { padding: calc(20px + env(safe-area-inset-top)) 20px 20px; }
+}
+
+/* ── 编辑操作框 + 进度条 ── */
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.progress-pct {
+  font-weight: 700;
+  color: var(--accent);
+}
+.progress-note {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+.note-box {
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  resize: vertical;
+  line-height: 1.6;
+}
+.note-box:focus {
+  outline: 2px solid var(--accent);
 }
 </style>
 </head>
@@ -655,6 +690,10 @@ blockquote {
       <a class="nav-item" data-page="module6" onclick="switchPage('module6')">
         <span class="icon">🧭</span> 成长画像
         <span class="badge badge-blue">V1.0</span>
+      </a>
+      <a class="nav-item" data-page="module7" onclick="switchPage('module7')">
+        <span class="icon">🔮</span> 每日运势
+        <span class="badge badge-blue">乙木</span>
       </a>
     </div>
   </nav>
@@ -774,6 +813,20 @@ blockquote {
         <div class="task-body"><div class="task-title">💪 力量训练为主，别做成纯有氧——你的体重不需要减</div></div>
       </div>
     </div>
+
+    <hr class="divider">
+
+    <h2>📊 本周任务进度</h2>
+    <div class="card">
+      <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+      <p class="progress-note">勾选本板块任务自动统计</p>
+    </div>
+
+    <h2>📝 编辑操作框</h2>
+    <div class="card">
+      <textarea class="note-box" data-note-id="today" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+    </div>
   </section>
 
   <!-- ── 控制台 ── -->
@@ -829,7 +882,27 @@ blockquote {
         <li>每次复盘结论 → 同步刷新全部板块计划</li>
       </ul>
     </div>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="console" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块1：新媒体运营 ── -->
   <section class="page" id="page-module1">
@@ -875,7 +948,27 @@ blockquote {
         三问全过 = 真实需求；只过1-2条 = 存疑，先小成本测试。
       </div>
     </div>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module1" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块2：健身管理 ── -->
   <section class="page" id="page-module2">
@@ -935,7 +1028,27 @@ blockquote {
       力量动作先学姿势再上量，腰部不适停止弯腰负重。<br>
       热量缺口>500kcal会直接干扰经期——不过度节食。
     </blockquote>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module2" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块3：阅读计划 ── -->
   <section class="page" id="page-module3">
@@ -999,7 +1112,27 @@ blockquote {
       <tr><td>《定位》特劳特</td><td>板块1+4</td><td>商业思维+账号定位双修</td></tr>
       <tr><td>《疯传》乔纳·伯杰</td><td>板块4</td><td>爆款传播原理</td></tr>
     </table>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module3" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块4：自媒体账号 ── -->
   <section class="page" id="page-module4">
@@ -1050,7 +1183,27 @@ blockquote {
       <tr><td>第3步</td><td>建30条选题库（三板斧渠道采集）</td></tr>
       <tr><td>第4步</td><td>小成本测试——每周更2-3条，跑4周看数据，用数据速读卡迭代</td></tr>
     </table>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module4" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块5：财务规划 ── -->
   <section class="page" id="page-module5">
@@ -1095,7 +1248,27 @@ blockquote {
       <tr><td>接单：代运营/文案/剪辑</td><td>板块1第4周评估能力达标情况</td></tr>
       <tr><td>投稿/知识产品</td><td>长期方向</td></tr>
     </table>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module5" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
   <!-- ── 板块6：成长画像 ── -->
   <section class="page" id="page-module6">
@@ -1144,7 +1317,92 @@ blockquote {
       <tr><th>日期</th><th>版本</th><th>变更</th></tr>
       <tr><td>2026-07-27</td><td>V1.0 基线</td><td>基线建立。待回填数据后本周日复盘更新 V1.1。</td></tr>
     </table>
-  </section>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module6" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
+
+  <!-- ── 板块7：每日运势 ── -->
+  <section class="page" id="page-module7">
+    <h1>🔮 板块7 · 每日运势分析</h1>
+    <p class="subheading">结合八字 + 星座 · 乙木女 · 双子座 · 自动按日期生成</p>
+
+    <h2>我的命盘档案</h2>
+    <div class="card">
+      <table>
+        <tr><td style="font-weight:600;width:120px;">公历生日</td><td>1998年5月28日 7:00（辰时）</td></tr>
+        <tr><td style="font-weight:600;">农历</td><td>戊寅年 五月初三</td></tr>
+        <tr><td style="font-weight:600;">八字</td><td><strong>戊寅 · 丁巳 · 乙亥 · 庚辰</strong></td></tr>
+        <tr><td style="font-weight:600;">日主</td><td>乙木（花草藤萝之木）</td></tr>
+        <tr><td style="font-weight:600;">星座</td><td>双子座（5/21-6/21）</td></tr>
+        <tr><td style="font-weight:600;">五行</td><td>木2 火2 水1 金1 土2（火偏旺，木有寅根+亥印，身不弱）</td></tr>
+      </table>
+    </div>
+
+    <h2>命格简析</h2>
+    <div class="card">
+      <ul style="padding-left:18px; font-size:13px; line-height:2;">
+        <li><strong>乙木日主</strong>：柔和、灵活、适应力强，如藤萝系甲——善借力成长。</li>
+        <li><strong>双子座</strong>：好奇心强、表达力好、善变，信息获取与输出快（对口板块1/4）。</li>
+        <li><strong>五行喜忌</strong>：喜水（印）滋润、喜木（比劫）帮扶、喜火（食伤）泄秀、喜金（官杀）雕琢；火土过旺时需水木调和。</li>
+        <li><strong>官财格局</strong>：时柱庚金正官（事业/正缘），年干戊土正财——适合稳定积累型财务路线（呼应板块5）。</li>
+      </ul>
+    </div>
+
+    <h2>📅 今日运势（按日期自动生成）</h2>
+    <div class="card" id="fortuneCard">
+      <p style="font-size:13px; color:var(--text-secondary);">加载中…</p>
+    </div>
+
+    <h2>🎯 本周目标</h2>
+    <div class="card">
+      <div class="task-row">
+        <div class="task-check"></div>
+        <div class="task-body"><div class="task-title">记录今日运势关键词，晚间回看应验项</div></div>
+      </div>
+      <div class="task-row">
+        <div class="task-check"></div>
+        <div class="task-body"><div class="task-title">执行当日「宜」项至少1件，避开「忌」项</div></div>
+      </div>
+    </div>
+  
+  <hr class="divider">
+  
+  <h2>🎯 本周目标</h2>
+  <div class="card">
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">本周推进本板块至少1项核心任务</div></div></div>
+    <div class="task-row"><div class="task-check"></div><div class="task-body"><div class="task-title">记录1条执行感悟或调整想法</div></div></div>
+  </div>
+
+  <h2>📊 本周任务进度</h2>
+  <div class="card">
+    <div class="progress-row"><span>完成率</span><span class="progress-pct" data-progress-pct>0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:0%"></div></div>
+    <p class="progress-note">勾选本板块任务自动统计</p>
+  </div>
+
+  <h2>📝 编辑操作框</h2>
+  <div class="card">
+    <textarea class="note-box" data-note-id="module7" placeholder="在此记录本板块的随笔、调整、灵感……内容自动保存在本机"></textarea>
+  </div>
+</section>
 
 </main>
 
@@ -1264,6 +1522,7 @@ function renderTaskList(list, tasks, cid) {
       store[cid][idx] = t;
       setTaskStore(store);
       check.classList.toggle('done');
+      updateAllProgress();
     };
 
     const body = document.createElement('div');
@@ -1350,6 +1609,71 @@ function initTasks() {
 }
 
 initTasks();
+
+/* ── 每周任务完成进度条 ── */
+function updateAllProgress() {
+  document.querySelectorAll('.page').forEach(sec => {
+    const fill = sec.querySelector('[data-progress-fill]');
+    const pct = sec.querySelector('[data-progress-pct]');
+    if (!fill || !pct) return;
+    const checks = sec.querySelectorAll('.task-check');
+    const total = checks.length;
+    if (total === 0) { fill.style.width = '0%'; pct.textContent = '暂无任务'; return; }
+    const done = sec.querySelectorAll('.task-check.done').length;
+    const rate = Math.round(done / total * 100);
+    fill.style.width = rate + '%';
+    pct.textContent = rate + '% （' + done + '/' + total + '）';
+  });
+}
+
+/* ── 编辑操作框：笔记持久化 ── */
+function initNotes() {
+  document.querySelectorAll('.note-box').forEach(ta => {
+    const id = ta.dataset.noteId;
+    const saved = localStorage.getItem('note-' + id);
+    if (saved !== null) ta.value = saved;
+    ta.addEventListener('input', () => {
+      localStorage.setItem('note-' + id, ta.value);
+    });
+  });
+}
+
+/* ── 每日运势：按日期确定性生成 ── */
+function genDailyFortune() {
+  const now = new Date();
+  const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+  let s = seed;
+  const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  const overall = Math.floor(62 + rnd() * 33);
+  const dims = ['事业', '财运', '感情', '健康'];
+  const dimScores = dims.map(() => Math.floor(52 + rnd() * 46));
+  const colors = ['森绿', '湖蓝', '樱粉', '墨黑', '暖红', '米白'];
+  const dirs = ['东', '南', '西', '北', '东南', '西南', '东北', '西北'];
+  const yi = ['签约谈判', '学习新技能', '主动沟通', '整理财务', '运动出汗', '按计划执行', '输出内容'];
+  const ji = ['冲动消费', '熬夜透支', '口舌争执', '拖延要事', '过度承诺', '纠结内耗'];
+  const pick = arr => arr[Math.floor(rnd() * arr.length)];
+  const tips = [
+    '乙木得水润，今日思路清晰，适合深度思考与内容创作（联动板块1/4）。',
+    '藤萝系甲，借力而行——团队协作或请教他人事半功倍。',
+    '食伤泄秀日，表达欲强，适合输出观点、录视频、写笔记。',
+    '正官临门，纪律感在线，推进拖延已久的任务最佳。',
+    '木火通明，创意涌动，把灵感立刻记进编辑框别流失。'
+  ];
+  const star = n => '★'.repeat(Math.round(n / 20)) + '☆'.repeat(5 - Math.round(n / 20));
+  let h = '<div style="font-size:13px;line-height:2;">';
+  h += '<div><strong>综合指数</strong>：' + overall + ' 分 ' + star(overall) + '</div>';
+  dims.forEach((dm, i) => { h += '<div><strong>' + dm + '</strong>：' + dimScores[i] + ' 分 ' + star(dimScores[i]) + '</div>'; });
+  h += '<div>🎨 幸运色：<strong>' + pick(colors) + '</strong>　🧭 幸运方位：<strong>' + pick(dirs) + '</strong></div>';
+  h += '<div>✅ 宜：' + pick(yi) + '</div><div>⚠️ 忌：' + pick(ji) + '</div>';
+  h += '<div style="margin-top:6px;color:#be185d;">💡 ' + pick(tips) + '</div>';
+  h += '</div>';
+  const card = document.getElementById('fortuneCard');
+  if (card) card.innerHTML = h;
+}
+
+updateAllProgress();
+initNotes();
+genDailyFortune();
 </script>
 
 <script>
