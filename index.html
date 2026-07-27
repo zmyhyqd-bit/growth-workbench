@@ -305,6 +305,78 @@ body {
   color: var(--accent);
 }
 
+/* ── 导航栏折叠（抽屉式） ── */
+.header-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.nav-collapse-btn {
+  background: var(--sidebar-hover);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #cbd5e1;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+
+.nav-collapse-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.sidebar {
+  transition: margin-left 0.25s ease;
+}
+
+.sidebar.collapsed {
+  margin-left: -240px;
+}
+
+@media (max-width: 768px) {
+  .sidebar.collapsed {
+    margin-left: -200px;
+  }
+}
+
+.nav-toggle {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 10px);
+  left: 10px;
+  z-index: 100;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--sidebar-bg);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.nav-toggle:hover {
+  background: var(--accent);
+}
+
+.sidebar.collapsed ~ .nav-toggle {
+  display: flex;
+}
+
+.sidebar.collapsed ~ .main {
+  padding-top: calc(56px + env(safe-area-inset-top)) !important;
+}
+
 /* ── 右侧主内容区 ── */
 .main {
   flex: 1;
@@ -538,7 +610,10 @@ blockquote {
       <div class="title">一体化成长工作台</div>
       <div class="subtitle">赵肉肉是个大富婆 · 专属</div>
     </div>
-    <button class="nav-edit-btn" id="navEditBtn" onclick="toggleNavEdit()" title="调整导航顺序">≡</button>
+    <div class="header-btns">
+      <button class="nav-collapse-btn" onclick="toggleSidebar()" title="收起/展开导航">‹</button>
+      <button class="nav-edit-btn" id="navEditBtn" onclick="toggleNavEdit()" title="调整导航顺序">≡</button>
+    </div>
   </div>
 
   <nav class="sidebar-nav" id="sidebarNav">
@@ -588,6 +663,8 @@ blockquote {
     <div class="nav-edit-hint" id="navEditHint">拖动导航项调整顺序 · 自动保存</div>
   </div>
 </aside>
+
+<button id="navToggle" class="nav-toggle" onclick="toggleSidebar()" title="展开导航">☰</button>
 
 <!-- ═══════════ 右侧主内容 ═══════════ -->
 <main class="main">
@@ -1078,6 +1155,24 @@ function switchPage(name) {
   const nav = document.querySelector('[data-page="' + name + '"]');
   if (page) page.classList.add('active');
   if (nav) nav.classList.add('active');
+
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    document.querySelector('.sidebar').classList.add('collapsed');
+    localStorage.setItem('nav-collapsed', '1');
+  }
+}
+
+/* ── 导航栏折叠 ── */
+function toggleSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const collapsed = sb.classList.toggle('collapsed');
+  localStorage.setItem('nav-collapsed', collapsed ? '1' : '0');
+}
+
+function loadSidebarState() {
+  if (localStorage.getItem('nav-collapsed') === '1') {
+    document.querySelector('.sidebar').classList.add('collapsed');
+  }
 }
 
 /* ── 导航顺序：加载 + 拖拽 + 持久化 ── */
@@ -1142,6 +1237,7 @@ function initNavDrag() {
 
 loadNavOrder();
 initNavDrag();
+loadSidebarState();
 
 /* ── 任务交互：勾选持久化 + 行内编辑 + 增删 ── */
 const TASKS_KEY = 'workbench-tasks-v1';
