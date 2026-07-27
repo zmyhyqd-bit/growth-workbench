@@ -758,6 +758,64 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   font-style: normal;
 }
 .fill[data-filled="1"] { border-style: solid; background: #fff; }
+
+/* ── 妖兽战局（心魔试炼）── */
+.rpg-panel {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 10px rgba(21,128,61,.08);
+}
+.rpg-head { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+.rpg-realm { display: flex; align-items: center; gap: 10px; }
+.rpg-realm > span { font-size: 30px; line-height: 1; }
+.rpg-realm-name { font-size: 17px; font-weight: 800; color: var(--text); }
+.rpg-level { font-size: 12px; color: var(--text-secondary); }
+.rpg-energy { flex: 1; min-width: 180px; max-width: 280px; }
+.rpg-bar-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 3px; display: flex; justify-content: space-between; }
+.rpg-bar { height: 12px; background: #bbf7d0; border-radius: 8px; overflow: hidden; }
+.rpg-bar-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #15803d); border-radius: 8px; transition: width .4s ease; }
+.rpg-bar-hp { background: #fecaca; height: 14px; }
+.rpg-hp { background: linear-gradient(90deg, #ef4444, #991b1b); transition: width .4s ease; }
+.rpg-monster { margin-top: 12px; }
+.rpg-monster-name { font-size: 14px; font-weight: 700; color: #7f1d1d; margin-bottom: 4px; }
+.rpg-monster-sub { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+.rpg-stats { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: var(--text-secondary); }
+.rpg-stats b { color: var(--text); font-size: 15px; }
+.rpg-actions { margin-top: 12px; }
+.rpg-btn {
+  background: linear-gradient(90deg, #15803d, #22c55e);
+  color: #fff; border: none; border-radius: 8px;
+  padding: 9px 16px; font-size: 14px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(21,128,61,.3); transition: transform .1s, box-shadow .1s;
+}
+.rpg-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(21,128,61,.35); }
+.rpg-btn:active { transform: translateY(0); }
+.rpg-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.rpg-skill {
+  font-size: 12px; padding: 4px 10px; border-radius: 14px;
+  background: #fff; border: 1px solid var(--accent); color: var(--accent2); font-weight: 600;
+}
+.rpg-skill.locked { background: #f1f5f9; border-color: #cbd5e1; color: #94a3b8; font-weight: 400; }
+.rpg-log { margin-top: 12px; font-size: 12px; }
+.rpg-log summary { cursor: pointer; color: var(--text-secondary); font-weight: 600; }
+.rpg-log-item { padding: 6px 0; border-bottom: 1px dashed #bbf7d0; color: var(--text-secondary); }
+.rpg-log-item:last-child { border-bottom: none; }
+.rpg-log-item b { color: var(--text); }
+.rpg-shake { animation: rpgShake .4s; }
+@keyframes rpgShake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+/* 结算浮层提示 */
+.rpg-toast {
+  position: fixed; left: 50%; top: 24px; transform: translateX(-50%);
+  background: #14532d; color: #fff; padding: 12px 22px; border-radius: 10px;
+  font-size: 14px; font-weight: 700; z-index: 9999; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  opacity: 0; transition: opacity .3s, top .3s; pointer-events: none; text-align: center;
+}
+.rpg-toast.show { opacity: 1; top: 36px; }
+.rpg-toast.win { background: #15803d; }
+.rpg-toast.lose { background: #991b1b; }
 </style>
 </head>
 <body>
@@ -849,6 +907,38 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <div class="callout callout-info" style="margin-bottom:18px;">
       🌅 <strong>晨钟初响 · 仙尊寄语</strong><br>
       求道者赵肉肉，今日天地清朗，正宜开坛修行。下方课业已为你铺陈——勾去一项，便是一分进境。莫要贪多，落子生根方为上法。
+    </div>
+
+    <!-- ════════ 妖兽战局 · 心魔试炼 ════════ -->
+    <div class="rpg-panel" id="rpgPanel">
+      <div class="rpg-head">
+        <div class="rpg-realm">
+          <span id="rpgRealmIcon">🌱</span>
+          <div>
+            <div class="rpg-realm-name" id="rpgRealm">炼气期</div>
+            <div class="rpg-level" id="rpgLevel">第 1 层</div>
+          </div>
+        </div>
+        <div class="rpg-energy">
+          <div class="rpg-bar-label">灵气 <span id="rpgEnergyTxt">100 / 100</span></div>
+          <div class="rpg-bar"><div class="rpg-bar-fill" id="rpgEnergyFill" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="rpg-monster">
+        <div class="rpg-monster-name">🐲 今日来犯：<span id="rpgMonsterName">无名小妖</span></div>
+        <div class="rpg-bar rpg-bar-hp"><div class="rpg-bar-fill rpg-hp" id="rpgHpFill" style="width:0%"></div></div>
+        <div class="rpg-monster-sub" id="rpgMonsterSub">血量 = 当日未完成任务数，勾完课业即可斩妖</div>
+      </div>
+      <div class="rpg-stats">
+        <div>修为 <b id="rpgGrowth">0</b></div>
+        <div>累计斩妖 <b id="rpgDefeated">0</b></div>
+        <div>今日战况 <b id="rpgToday">0 / 0</b></div>
+      </div>
+      <div class="rpg-actions">
+        <button id="btnSettle" class="rpg-btn">⚔️ 迎战结算（今日）</button>
+      </div>
+      <div class="rpg-skills" id="rpgSkills"></div>
+      <details class="rpg-log"><summary>📜 战历</summary><div id="rpgLog"></div></details>
     </div>
 
     <h2>术法参悟阁 · 新媒体运营</h2>
@@ -1680,12 +1770,15 @@ function renderTaskList(list, tasks, cid) {
 
     const check = document.createElement('div');
     check.className = 'task-check' + (t.done ? ' done' : '');
+    check.dataset.cid = cid;
+    check.dataset.idx = idx;
     check.onclick = () => {
       t.done = !t.done;
       store[cid][idx] = t;
       setTaskStore(store);
       check.classList.toggle('done');
       updateAllProgress();
+      if (typeof updateRPGMonster === 'function') updateRPGMonster();
     };
 
     const body = document.createElement('div');
@@ -1787,6 +1880,7 @@ function updateAllProgress() {
     fill.style.width = rate + '%';
     pct.textContent = rate + '% （' + done + '/' + total + '）';
   });
+  if (typeof updateRPGMonster === 'function') updateRPGMonster();
 }
 
 /* ── 编辑操作框：笔记持久化 ── */
@@ -1917,10 +2011,283 @@ function initFills() {
   });
 }
 
+/* ════════ 妖兽战局 · 心魔试炼 ════════ */
+const RPG_KEY = 'gw_rpg_v1';
+
+// 境界梯度：炼气 → 筑基 → 金丹 → 元婴
+function realmOf(level) {
+  if (level >= 10) return { name: '元婴期', icon: '👑' };
+  if (level >= 7)  return { name: '金丹期', icon: '💎' };
+  if (level >= 4)  return { name: '筑基期', icon: '🛡️' };
+  return { name: '炼气期', icon: '🌱' };
+}
+// 升级所需累计修为：从 L 升到 L+1 需 50 + L*10
+function levelFromGrowth(g) {
+  let level = 1, acc = 0;
+  while (true) {
+    const cost = 50 + level * 10;
+    if (g >= acc + cost) { acc += cost; level++; if (level >= 30) break; }
+    else break;
+  }
+  return level;
+}
+
+// 功法（按等级解锁）
+const SKILLS = [
+  { lv: 2,  id: 'chenzhong', name: '晨钟诀',   desc: '所有灵气收益 +20%' },
+  { lv: 3,  id: 'juling',    name: '聚灵阵',   desc: '全勤灵气奖励 +50%' },
+  { lv: 4,  id: 'huti',      name: '护体灵光', desc: '漏做惩罚减半' },
+  { lv: 5,  id: 'jifeng',    name: '疾风步',   desc: '灵气上限 +50' },
+  { lv: 7,  id: 'xinmo',     name: '心魔镜',   desc: '常显妖兽血量（已默认开启）' },
+  { lv: 10, id: 'duijie',    name: '渡劫飞升', desc: '元婴大成 · 终极道号' }
+];
+function hasSkill(id) { return (rpgState.skills || []).indexOf(id) >= 0; }
+function energyMax() { return hasSkill('jifeng') ? 150 : 100; }
+
+// 每日妖兽（按日期循环，保证当天固定）
+const MONSTERS = ['食惰饕餮', '懒怠心魔', '拖延小妖', '贪睡兽', '妄念魔', '懈怠鬼', '散漫精', '畏难煞'];
+function monsterOf(dateStr) {
+  let h = 0;
+  for (let i = 0; i < dateStr.length; i++) h = (h * 31 + dateStr.charCodeAt(i)) >>> 0;
+  return MONSTERS[h % MONSTERS.length];
+}
+
+let rpgState = null;
+function loadRPG() {
+  try { rpgState = JSON.parse(localStorage.getItem(RPG_KEY) || 'null'); } catch (e) { rpgState = null; }
+  if (!rpgState) {
+    rpgState = { energy: 100, growth: 0, level: 1, lastSettled: null, defeated: 0, skills: [], log: [] };
+  }
+  return rpgState;
+}
+function saveRPG() { try { localStorage.setItem(RPG_KEY, JSON.stringify(rpgState)); } catch (e) {} }
+
+function todayStr(d) {
+  d = d || new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function dateAdd(d, days) { const x = new Date(d); x.setDate(x.getDate() + days); return x; }
+
+function getTodayStats() {
+  const checks = document.querySelectorAll('#page-today .task-check');
+  const total = checks.length;
+  const done = document.querySelectorAll('#page-today .task-check.done').length;
+  return { total, done };
+}
+
+function updateRPGMonster() {
+  const el = document.getElementById('rpgHpFill');
+  if (!el) return;
+  const { total, done } = getTodayStats();
+  const missed = total - done;
+  const hpPct = total === 0 ? 0 : Math.round(missed / total * 100);
+  el.style.width = hpPct + '%';
+  const sub = document.getElementById('rpgMonsterSub');
+  if (sub) sub.textContent = total === 0
+    ? '今日暂无课业'
+    : '血量 = 未完成任务数（' + missed + '/' + total + '），勾完即斩妖';
+  const today = document.getElementById('rpgToday');
+  if (today) today.textContent = done + ' / ' + total;
+}
+
+function computeReward(rate, missed) {
+  let e = 0, g = 0, res = '';
+  if (rate >= 1)       { e = 15; g = 20; res = '妖兽溃败 · 全勤大胜'; }
+  else if (rate >= 0.6){ e = 5;  g = Math.round(12 * rate); res = '妖兽受创 · 小胜一场'; }
+  else {
+    let pen = missed * 8;
+    if (hasSkill('huti')) pen = Math.round(pen / 2);
+    e = -pen; g = Math.round(8 * rate);
+    res = '妖兽噬灵 · 灵气 -' + pen;
+  }
+  if (rate >= 1 && hasSkill('juling')) e = Math.round(e * 1.5);
+  if (e > 0 && hasSkill('chenzhong'))  e = Math.round(e * 1.2);
+  return { e, g, res };
+}
+
+function resetTodayChecks() {
+  document.querySelectorAll('#page-today .task-check').forEach(c => {
+    c.classList.remove('done');
+    const cid = c.dataset.cid, idx = +c.dataset.idx;
+    const store = getTaskStore();
+    if (store[cid] && store[cid][idx]) { store[cid][idx].done = false; setTaskStore(store); }
+  });
+  updateAllProgress();
+}
+
+function renderRPG(animate) {
+  const s = rpgState;
+  const realm = realmOf(s.level);
+  const emax = energyMax();
+  const $ = id => document.getElementById(id);
+  if ($('rpgRealmIcon')) $('rpgRealmIcon').textContent = realm.icon;
+  if ($('rpgRealm')) $('rpgRealm').textContent = realm.name;
+  if ($('rpgLevel')) $('rpgLevel').textContent = '第 ' + s.level + ' 层';
+  if ($('rpgEnergyTxt')) $('rpgEnergyTxt').textContent = s.energy + ' / ' + emax;
+  if ($('rpgEnergyFill')) $('rpgEnergyFill').style.width = Math.max(0, Math.min(100, s.energy / emax * 100)) + '%';
+  if ($('rpgGrowth')) $('rpgGrowth').textContent = s.growth;
+  if ($('rpgDefeated')) $('rpgDefeated').textContent = s.defeated;
+  if ($('rpgMonsterName')) $('rpgMonsterName').textContent = monsterOf(todayStr());
+
+  // 功法阁
+  const sk = $('rpgSkills');
+  if (sk) {
+    sk.innerHTML = '';
+    SKILLS.forEach(k => {
+      const unlocked = s.level >= k.lv;
+      const chip = document.createElement('span');
+      chip.className = 'rpg-skill' + (unlocked ? '' : ' locked');
+      chip.textContent = (unlocked ? '✅ ' : '🔒 ') + k.name + '（第' + k.lv + '层）';
+      chip.title = k.desc;
+      sk.appendChild(chip);
+    });
+  }
+  // 战历
+  const log = $('rpgLog');
+  if (log) {
+    log.innerHTML = '';
+    if (!s.log.length) {
+      log.innerHTML = '<div class="rpg-log-item">尚无战历，完成今日课业后点「⚔️ 迎战结算」开启你的道途。</div>';
+    } else {
+      s.log.forEach(it => {
+        const div = document.createElement('div');
+        div.className = 'rpg-log-item';
+        div.innerHTML = '<b>' + it.date + '</b> · ' + it.result +
+          ' · 完成 ' + it.done + '/' + it.total +
+          ' · 灵气' + (it.e >= 0 ? '+' : '') + it.e + ' / 修为+' + it.g +
+          (it.levelUp ? ' · <b>突破至' + it.levelName + '！</b>' : '');
+        log.appendChild(div);
+      });
+    }
+  }
+  refreshSettleBtn();
+}
+
+function refreshSettleBtn() {
+  const btn = document.getElementById('btnSettle');
+  if (!btn) return;
+  if (rpgState.lastSettled === todayStr()) {
+    btn.textContent = '✅ 今日战局已定';
+    btn.disabled = true;
+    btn.style.opacity = '.6';
+    btn.style.cursor = 'default';
+  } else {
+    btn.textContent = '⚔️ 迎战结算（今日）';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }
+}
+
+function showToast(msg, type) {
+  let t = document.querySelector('.rpg-toast');
+  if (!t) { t = document.createElement('div'); t.className = 'rpg-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.className = 'rpg-toast ' + (type || '');
+  requestAnimationFrame(() => t.classList.add('show'));
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function settleDay(opts) {
+  opts = opts || {};
+  const { total, done } = getTodayStats();
+  if (total === 0) { showToast('今日暂无课业，无需迎战', ''); return; }
+  const rate = done / total;
+  const missed = total - done;
+  const rw = computeReward(rate, missed);
+  const beforeLevel = rpgState.level;
+  const beforeRealm = realmOf(beforeLevel).name;
+
+  rpgState.energy = Math.max(0, Math.min(energyMax(), rpgState.energy + rw.e));
+  rpgState.growth += rw.g;
+  rpgState.level = levelFromGrowth(rpgState.growth);
+  if (rate >= 0.6) rpgState.defeated++;
+
+  const levelUp = rpgState.level > beforeLevel;
+  const afterRealm = realmOf(rpgState.level).name;
+  const levelName = afterRealm + ' · 第' + rpgState.level + '层';
+
+  // 解锁新功法
+  let newSkill = null;
+  SKILLS.forEach(k => {
+    if (rpgState.level >= k.lv && rpgState.skills.indexOf(k.id) < 0) {
+      rpgState.skills.push(k.id);
+      newSkill = k;
+    }
+  });
+
+  rpgState.log.unshift({
+    date: todayStr(), done, total, result: rw.res,
+    e: rw.e, g: rw.g, levelUp, levelName
+  });
+  rpgState.log = rpgState.log.slice(0, 30);
+
+  if (opts.reset !== false) resetTodayChecks();
+  saveRPG();
+  renderRPG();
+  if (typeof updateRPGMonster === 'function') updateRPGMonster();
+
+  // 反馈
+  let msg = rw.res + '｜灵气' + (rw.e >= 0 ? '+' : '') + rw.e + '，修为+' + rw.g;
+  let type = rw.e >= 0 ? 'win' : 'lose';
+  if (levelUp) { msg += ' ｜🌟 突破至' + levelName + '！'; }
+  if (newSkill) { msg += ' ｜🔓 解锁功法「' + newSkill.name + '」'; type = 'win'; }
+  showToast(msg, type);
+
+  if (rw.e < 0) {
+    const panel = document.getElementById('rpgPanel');
+    if (panel) { panel.classList.remove('rpg-shake'); void panel.offsetWidth; panel.classList.add('rpg-shake'); }
+  }
+}
+
+function checkDailySettlement() {
+  const today = todayStr();
+  if (rpgState.lastSettled == null) {
+    // 首次进入：初始化今日为已开启，不结算，留待今晚/明日
+    rpgState.lastSettled = today;
+    saveRPG();
+    return;
+  }
+  if (rpgState.lastSettled === today) return; // 今天已结算
+
+  const yesterday = todayStr(dateAdd(new Date(), -1));
+  if (rpgState.lastSettled === yesterday) {
+    // 昨天已正常收官，今天是新的一轮
+    rpgState.lastSettled = today;
+    saveRPG();
+    return;
+  }
+  // 跨天且非昨收官 → 结算上一日（用当前勾选状态），再刷新
+  settleDay({ reset: true });
+  rpgState.lastSettled = today;
+  saveRPG();
+}
+
+function initRPG() {
+  loadRPG();
+  renderRPG();
+  if (typeof updateRPGMonster === 'function') updateRPGMonster();
+  const btn = document.getElementById('btnSettle');
+  if (btn) btn.onclick = () => {
+    if (rpgState.lastSettled === todayStr()) {
+      showToast('今日战局已定，明日再战～', '');
+      return;
+    }
+    settleDay({ reset: true });
+    rpgState.lastSettled = todayStr();
+    saveRPG();
+    refreshSettleBtn();
+  };
+  checkDailySettlement();
+  renderRPG();
+}
+
 updateAllProgress();
 initNotes();
 renderFortune();
 initFills();
+initRPG();
 </script>
 
 <script>
