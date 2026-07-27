@@ -727,6 +727,37 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   padding: 2px 10px;
   border-radius: 12px;
 }
+
+/* ── 回填字段：App 内可直接编辑 ── */
+.fill {
+  display: inline-block;
+  min-width: 3.5em;
+  max-width: 100%;
+  padding: 1px 6px;
+  margin: 0 1px;
+  border: 1px dashed var(--accent);
+  border-radius: 5px;
+  background: #f0fdf4;
+  color: var(--text);
+  outline: none;
+  cursor: text;
+  white-space: pre-wrap;
+  word-break: break-word;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.fill:hover { background: #dcfce7; }
+.fill:focus {
+  border-style: solid;
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(34,197,94,.25);
+  background: #fff;
+}
+.fill:empty::before {
+  content: attr(data-ph);
+  color: #9ca3af;
+  font-style: normal;
+}
+.fill[data-filled="1"] { border-style: solid; background: #fff; }
 </style>
 </head>
 <body>
@@ -1042,11 +1073,11 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </table>
 
     <h3>数据速读卡（每日练习模板）</h3>
-    <div class="code-block">笔记/视频：___
-曝光→点击→互动→涨粉 四层漏斗数据：___
-异常层（最低的一环）：___
-我的归因假设：___
-验证方法（如果是我的内容，我会怎么改）：___</div>
+    <div class="code-block">笔记/视频：<span class="fill" contenteditable="true" data-fill-id="fill-27" data-ph="待填"></span>
+曝光→点击→互动→涨粉 四层漏斗数据：<span class="fill" contenteditable="true" data-fill-id="fill-28" data-ph="待填"></span>
+异常层（最低的一环）：<span class="fill" contenteditable="true" data-fill-id="fill-29" data-ph="待填"></span>
+我的归因假设：<span class="fill" contenteditable="true" data-fill-id="fill-30" data-ph="待填"></span>
+验证方法（如果是我的内容，我会怎么改）：<span class="fill" contenteditable="true" data-fill-id="fill-31" data-ph="待填"></span></div>
 
     <h3>真实需求 vs 伪需求 · 判断三问</h3>
     <div class="card">
@@ -1107,9 +1138,9 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <h2>体测基线（待回填）</h2>
     <table>
       <tr><th>项目</th><th>数据</th><th>项目</th><th>数据</th></tr>
-      <tr><td>晨起体重</td><td style="color:#d1d5db;">___ kg</td><td>腰围</td><td style="color:#d1d5db;">___ cm</td></tr>
-      <tr><td>臀围</td><td style="color:#d1d5db;">___ cm</td><td>大腿围</td><td style="color:#d1d5db;">___ cm</td></tr>
-      <tr><td>上臂围</td><td style="color:#d1d5db;">___ cm</td><td>下次复测</td><td>8月3日（第2周末）</td></tr>
+      <tr><td>晨起体重</td><td><span class="fill" contenteditable="true" data-fill-id="fill-1" data-ph="待填"></span> kg</td><td>腰围</td><td><span class="fill" contenteditable="true" data-fill-id="fill-2" data-ph="待填"></span> cm</td></tr>
+      <tr><td>臀围</td><td><span class="fill" contenteditable="true" data-fill-id="fill-3" data-ph="待填"></span> cm</td><td>大腿围</td><td><span class="fill" contenteditable="true" data-fill-id="fill-4" data-ph="待填"></span> cm</td></tr>
+      <tr><td>上臂围</td><td><span class="fill" contenteditable="true" data-fill-id="fill-5" data-ph="待填"></span> cm</td><td>下次复测</td><td>8月3日（第2周末）</td></tr>
     </table>
 
     <h2>当前阶段：适应期第2周（7/27-8/2）</h2>
@@ -1201,15 +1232,15 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <h2>📦 方法论沉淀区</h2>
 
     <h3>3-2-1 笔记模板（每日阅读后填，5分钟）</h3>
-    <div class="code-block">日期/章节：___
-3个要点：① ___ ② ___ ③ ___
-2个疑问：① ___ ② ___
-1个迁移：这个方法能用在我的工作/账号/财务哪里？___</div>
+    <div class="code-block">日期/章节：<span class="fill" contenteditable="true" data-fill-id="fill-32" data-ph="待填"></span>
+3个要点：① <span class="fill" contenteditable="true" data-fill-id="fill-33" data-ph="待填"></span> ② <span class="fill" contenteditable="true" data-fill-id="fill-34" data-ph="待填"></span> ③ <span class="fill" contenteditable="true" data-fill-id="fill-35" data-ph="待填"></span>
+2个疑问：① <span class="fill" contenteditable="true" data-fill-id="fill-36" data-ph="待填"></span> ② <span class="fill" contenteditable="true" data-fill-id="fill-37" data-ph="待填"></span>
+1个迁移：这个方法能用在我的工作/账号/财务哪里？<span class="fill" contenteditable="true" data-fill-id="fill-38" data-ph="待填"></span></div>
 
     <h3>经济学专项迁移模板（本书特供，每章1次）</h3>
-    <div class="code-block">本章核心经济学概念：___
-我的生活/工作中对应的场景：___
-如果应用这个概念，我的决策会变成：___</div>
+    <div class="code-block">本章核心经济学概念：<span class="fill" contenteditable="true" data-fill-id="fill-39" data-ph="待填"></span>
+我的生活/工作中对应的场景：<span class="fill" contenteditable="true" data-fill-id="fill-40" data-ph="待填"></span>
+如果应用这个概念，我的决策会变成：<span class="fill" contenteditable="true" data-fill-id="fill-41" data-ph="待填"></span></div>
 
     <h3>书评写作引导框架（月末用）</h3>
     <div class="card">
@@ -1265,12 +1296,12 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
     <h2>账号现状盘点表（待回填，填好后我做定位诊断）</h2>
     <table>
-      <tr><td style="font-weight:600; width:140px;">历史发布笔记数</td><td style="color:#d1d5db;">___ 条</td></tr>
-      <tr><td style="font-weight:600;">粉丝量</td><td style="color:#d1d5db;">小红书 ___ / 抖音 ___</td></tr>
-      <tr><td style="font-weight:600;">停更时长</td><td style="color:#d1d5db;">___ 个月</td></tr>
-      <tr><td style="font-weight:600;">数据最好的3条</td><td style="color:#d1d5db;">① ___ ② ___ ③ ___（标题+赞藏数）</td></tr>
-      <tr><td style="font-weight:600;">停更直接原因</td><td style="color:#d1d5db;">___</td></tr>
-      <tr><td style="font-weight:600;">账号初心/变现方向</td><td style="color:#d1d5db;">___</td></tr>
+      <tr><td style="font-weight:600; width:140px;">历史发布笔记数</td><td><span class="fill" contenteditable="true" data-fill-id="fill-6" data-ph="待填"></span> 条</td></tr>
+      <tr><td style="font-weight:600;">粉丝量</td><td>小红书 <span class="fill" contenteditable="true" data-fill-id="fill-7" data-ph="待填"></span> / 抖音 <span class="fill" contenteditable="true" data-fill-id="fill-8" data-ph="待填"></span></td></tr>
+      <tr><td style="font-weight:600;">停更时长</td><td><span class="fill" contenteditable="true" data-fill-id="fill-9" data-ph="待填"></span> 个月</td></tr>
+      <tr><td style="font-weight:600;">数据最好的3条</td><td>① <span class="fill" contenteditable="true" data-fill-id="fill-10" data-ph="待填"></span> ② <span class="fill" contenteditable="true" data-fill-id="fill-11" data-ph="待填"></span> ③ <span class="fill" contenteditable="true" data-fill-id="fill-12" data-ph="待填"></span>（标题+赞藏数）</td></tr>
+      <tr><td style="font-weight:600;">停更直接原因</td><td><span class="fill" contenteditable="true" data-fill-id="fill-13" data-ph="待填"></span></td></tr>
+      <tr><td style="font-weight:600;">账号初心/变现方向</td><td><span class="fill" contenteditable="true" data-fill-id="fill-14" data-ph="待填"></span></td></tr>
     </table>
 
     <h2>📦 方法论沉淀区（长期复用）</h2>
@@ -1284,7 +1315,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 【情绪点】共鸣/焦虑/爽感/好奇 哪个在驱动
 【评论区挖矿】用户在追问什么（=下一个选题）
 【变现路径】这条内容如何服务于变现
-【可复用结论】一句话沉淀：___</div>
+【可复用结论】一句话沉淀：<span class="fill" contenteditable="true" data-fill-id="fill-42" data-ph="待填"></span></div>
 
     <h3>用户需求抓取三板斧（对口核心卡点）</h3>
     <div class="card">
@@ -1345,16 +1376,16 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
     <h2>财务盘点表（待回填）</h2>
     <h3>收入</h3>
-    <table><tr><td style="font-weight:600; width:140px;">月税后工资</td><td style="color:#d1d5db;">___ 元</td></tr><tr><td style="font-weight:600;">其他收入</td><td style="color:#d1d5db;">___ 元</td></tr></table>
+    <table><tr><td style="font-weight:600; width:140px;">月税后工资</td><td><span class="fill" contenteditable="true" data-fill-id="fill-15" data-ph="待填"></span> 元</td></tr><tr><td style="font-weight:600;">其他收入</td><td><span class="fill" contenteditable="true" data-fill-id="fill-16" data-ph="待填"></span> 元</td></tr></table>
 
     <h3>固定支出（每月必花）</h3>
-    <table><tr><td style="font-weight:600;">房租/房贷</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">通勤</td><td style="color:#d1d5db;">___</td></tr><tr><td style="font-weight:600;">话费网费</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">其他订阅</td><td style="color:#d1d5db;">___</td></tr></table>
+    <table><tr><td style="font-weight:600;">房租/房贷</td><td><span class="fill" contenteditable="true" data-fill-id="fill-17" data-ph="待填"></span></td><td style="font-weight:600;">通勤</td><td><span class="fill" contenteditable="true" data-fill-id="fill-18" data-ph="待填"></span></td></tr><tr><td style="font-weight:600;">话费网费</td><td><span class="fill" contenteditable="true" data-fill-id="fill-19" data-ph="待填"></span></td><td style="font-weight:600;">其他订阅</td><td><span class="fill" contenteditable="true" data-fill-id="fill-20" data-ph="待填"></span></td></tr></table>
 
     <h3>弹性支出（可压缩）</h3>
-    <table><tr><td style="font-weight:600;">餐饮</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">购物</td><td style="color:#d1d5db;">___</td></tr><tr><td style="font-weight:600;">娱乐社交</td><td style="color:#d1d5db;">___</td><td style="font-weight:600;">其他</td><td style="color:#d1d5db;">___</td></tr></table>
+    <table><tr><td style="font-weight:600;">餐饮</td><td><span class="fill" contenteditable="true" data-fill-id="fill-21" data-ph="待填"></span></td><td style="font-weight:600;">购物</td><td><span class="fill" contenteditable="true" data-fill-id="fill-22" data-ph="待填"></span></td></tr><tr><td style="font-weight:600;">娱乐社交</td><td><span class="fill" contenteditable="true" data-fill-id="fill-23" data-ph="待填"></span></td><td style="font-weight:600;">其他</td><td><span class="fill" contenteditable="true" data-fill-id="fill-24" data-ph="待填"></span></td></tr></table>
 
     <h3>现状</h3>
-    <table><tr><td style="font-weight:600;">现有存款</td><td style="color:#d1d5db;">___ 元</td><td style="font-weight:600;">负债</td><td style="color:#d1d5db;">___ 元</td></tr></table>
+    <table><tr><td style="font-weight:600;">现有存款</td><td><span class="fill" contenteditable="true" data-fill-id="fill-25" data-ph="待填"></span> 元</td><td style="font-weight:600;">负债</td><td><span class="fill" contenteditable="true" data-fill-id="fill-26" data-ph="待填"></span> 元</td></tr></table>
 
     <h2>首月执行规则</h2>
     <div class="card">
@@ -1857,9 +1888,39 @@ function setFortuneMode(mode) {
   renderFortune();
 }
 
+/* ── 回填字段：读取/保存 localStorage ── */
+function initFills() {
+  const KEY = 'gw_fills_v1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+  const spans = document.querySelectorAll('.fill');
+  spans.forEach(sp => {
+    const id = sp.getAttribute('data-fill-id');
+    if (saved[id] != null && saved[id] !== '') {
+      sp.textContent = saved[id];
+      sp.setAttribute('data-filled', '1');
+    }
+  });
+  spans.forEach(sp => {
+    sp.addEventListener('input', () => {
+      const id = sp.getAttribute('data-fill-id');
+      let val = sp.textContent.trim();
+      if (val === '___') { sp.textContent = ''; val = ''; }
+      if (val === '') { delete saved[id]; sp.removeAttribute('data-filled'); }
+      else { saved[id] = val; sp.setAttribute('data-filled', '1'); }
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+    // 失焦时清空零宽字符，避免粘贴带来的隐藏字符
+    sp.addEventListener('blur', () => {
+      if (sp.textContent.trim() === '') { sp.textContent = ''; }
+    });
+  });
+}
+
 updateAllProgress();
 initNotes();
 renderFortune();
+initFills();
 </script>
 
 <script>
