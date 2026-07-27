@@ -2292,6 +2292,13 @@ initRPG();
 
 <script>
 if ('serviceWorker' in navigator) {
+  // 新 Service Worker 一接管就自动刷新，避免卡在旧缓存页（根治"网页丢失/不同步"）
+  let _reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (_reloading) return;
+    _reloading = true;
+    location.reload();
+  });
   navigator.serviceWorker.register('/sw.js');
 }
 </script>
