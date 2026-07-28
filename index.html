@@ -8,33 +8,37 @@
 <meta name="apple-mobile-web-app-title" content="成长工作台">
 <link rel="apple-touch-icon" href="/icons/apple-icon-180.png">
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#bbf7d0">
+<meta name="theme-color" content="#d4a574">
 <title>一体化成长工作台 · 赵肉肉是个大富婆</title>
 <style>
 :root {
-  --bg: #f0fdf4;
-  --sidebar-bg: #bbf7d0;
-  --sidebar-hover: #86efac;
-  --sidebar-active: #16a34a;
-  --accent: #22c55e;
-  --accent2: #15803d;
-  --text: #14532d;
-  --text-secondary: #4d7c5f;
+  --bg: #fdf8f3;
+  --sidebar-bg: #fff5eb;
+  --sidebar-hover: #ffe8d6;
+  --sidebar-active: #d4a574;
+  --accent: #d4a574;
+  --accent2: #b08d55;
+  --text: #5d4037;
+  --text-secondary: #8d6e63;
   --card-bg: #ffffff;
-  --border: #bbf7d0;
-  --tag-green: #ecfdf5;
-  --tag-green-text: #065f46;
-  --tag-yellow: #fffbeb;
-  --tag-yellow-text: #92400e;
-  --tag-red: #fef2f2;
-  --tag-red-text: #991b1b;
+  --border: #e6d5c3;
+  --tag-green: #f4f9f4;
+  --tag-green-text: #4a7c59;
+  --tag-yellow: #fff8e7;
+  --tag-yellow-text: #a16207;
+  --tag-red: #fff2f2;
+  --tag-red-text: #b91c1c;
   --tag-blue: #eff6ff;
   --tag-blue-text: #1e40af;
-  --tag-gray: #f3f4f6;
-  --tag-gray-text: #6b7280;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --tag-gray: #f8f5f2;
+  --tag-gray-text: #7d6a5d;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --gold: #d4a574;
+  --gold-dark: #b08d55;
+  --pearl: #fffbf7;
+  --pearl-shadow: rgba(180, 140, 100, 0.18);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,6 +49,8 @@ body {
   color: var(--text);
   display: flex;
   min-height: 100vh;
+  background-image: radial-gradient(circle at 20% 10%, rgba(212,165,116,0.08) 0%, transparent 25%),
+                    radial-gradient(circle at 90% 80%, rgba(212,165,116,0.06) 0%, transparent 30%);
 }
 
 /* ── 左侧导航栏 ── */
@@ -65,28 +71,28 @@ body {
 
 .sidebar-header {
   padding: 24px 20px 16px;
-  border-bottom: 1px solid rgba(21,128,61,0.12);
+  border-bottom: 1px solid var(--border);
 }
 
 .sidebar-header .logo {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: #15803d;
+  color: var(--accent2);
   text-transform: uppercase;
 }
 
 .sidebar-header .title {
   font-size: 17px;
   font-weight: 700;
-  color: #14532d;
+  color: var(--text);
   margin-top: 4px;
   line-height: 1.3;
 }
 
 .sidebar-header .subtitle {
   font-size: 12px;
-  color: #4d7c5f;
+  color: var(--text-secondary);
   margin-top: 4px;
 }
 
@@ -382,7 +388,7 @@ body {
 .main {
   flex: 1;
   overflow-y: auto;
-  padding: calc(32px + env(safe-area-inset-top)) 36px 32px;
+  padding: calc(32px + env(safe-area-inset-top)) 36px calc(32px + 64px + env(safe-area-inset-bottom));
   max-width: 960px;
 }
 
@@ -761,12 +767,12 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
 /* ── 妖兽战局（心魔试炼）── */
 .rpg-panel {
-  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-  border: 1px solid var(--accent);
-  border-radius: 12px;
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border: 1px solid var(--border);
+  border-radius: 14px;
   padding: 16px 18px;
   margin-bottom: 18px;
-  box-shadow: 0 2px 10px rgba(21,128,61,.08);
+  box-shadow: 0 4px 14px var(--pearl-shadow);
 }
 .rpg-head { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
 .rpg-realm { display: flex; align-items: center; gap: 10px; }
@@ -821,9 +827,9 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 .sync-fab {
   position: fixed; right: 18px; bottom: 18px; z-index: 9998;
   width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer;
-  background: linear-gradient(135deg, #15803d, #22c55e); color: #fff;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #fff;
   font-size: 22px; line-height: 50px; text-align: center;
-  box-shadow: 0 4px 14px rgba(21,128,61,.4); transition: transform .12s;
+  box-shadow: 0 4px 14px rgba(176, 141, 85, .4); transition: transform .12s;
 }
 .sync-fab:hover { transform: scale(1.06); }
 .sync-panel {
@@ -888,6 +894,190 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 .dec-saved { margin-top: 6px; }
 .dec-saved-item { font-size: 12.5px; color: var(--text-secondary); padding: 7px 0; border-bottom: 1px dashed var(--accent); line-height: 1.5; }
 .dec-saved-item a { color: var(--accent2); word-break: break-all; font-size: 11.5px; }
+
+/* ── 修行手账首页组件 ── */
+.handbook-header {
+  text-align: center;
+  padding: 8px 0 18px;
+  position: relative;
+}
+.handbook-header::before,
+.handbook-header::after {
+  content: "☁";
+  position: absolute;
+  top: 4px;
+  font-size: 18px;
+  color: var(--gold);
+  opacity: .5;
+}
+.handbook-header::before { left: 8%; }
+.handbook-header::after { right: 8%; }
+.handbook-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: .08em;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.handbook-subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  letter-spacing: .12em;
+}
+.rabbit-deco {
+  position: absolute;
+  right: 4%;
+  top: -4px;
+  font-size: 24px;
+  opacity: .75;
+}
+
+.dashboard-card {
+  background: linear-gradient(145deg, #fffbf7, #fff3e6);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 20px var(--pearl-shadow), inset 0 1px 0 rgba(255,255,255,.8);
+  position: relative;
+  overflow: hidden;
+}
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, rgba(212,165,116,.16) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.dashboard-card .fortune-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.info-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.info-pill {
+  flex: 1;
+  min-width: 120px;
+  background: rgba(255,255,255,.7);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.info-pill .label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+.info-pill .value {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent2);
+}
+
+.pearl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 18px 0 24px;
+}
+.pearl-btn {
+  aspect-ratio: 1 / 1;
+  min-height: 92px;
+  background: linear-gradient(145deg, #fffbf7, #f7efe6);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 4px 12px var(--pearl-shadow), inset 0 1px 0 rgba(255,255,255,.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+  position: relative;
+}
+.pearl-btn:active { transform: scale(.96); }
+.pearl-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px var(--pearl-shadow), inset 0 1px 0 rgba(255,255,255,.9); }
+.pearl-btn .icon {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.05));
+}
+.pearl-btn .label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(56px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(255,251,247,.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  display: none;
+  z-index: 1000;
+}
+.bottom-nav.show {
+  display: flex;
+}
+.bottom-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-tab .icon { font-size: 20px; line-height: 1; }
+.bottom-tab.active { color: var(--accent2); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main {
+    max-width: 100%;
+    padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + 56px + env(safe-area-inset-bottom));
+  }
+  .nav-toggle { display: none !important; }
+  .bottom-nav.show { display: flex; }
+  .handbook-title { font-size: 20px; }
+  .pearl-btn { min-height: 84px; border-radius: 18px; }
+  .pearl-btn .icon { font-size: 24px; }
+  .pearl-btn .label { font-size: 11px; }
+  .sync-fab { right: 14px; bottom: calc(14px + 56px + env(safe-area-inset-bottom)); width: 44px; height: 44px; font-size: 18px; line-height: 44px; }
+  .sync-panel { right: 14px; bottom: calc(72px + 56px + env(safe-area-inset-bottom)); width: calc(100vw - 28px); max-width: 320px; }
+}
+
+@media (min-width: 769px) {
+  .bottom-nav { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -973,8 +1163,41 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 
   <!-- ── 今日任务 ── -->
   <section class="page active" id="page-today">
-    <h1>📋 今日修行课业</h1>
-    <p class="subheading">2026年7月27日 · 周一 · 道启之日 —— 以盘点建档为主，总耗时约2.5小时（含1小时炼体）</p>
+    <div class="handbook-header">
+      <div class="handbook-title">赵肉肉的修行手账</div>
+      <div class="handbook-subtitle">今日任务 · 气运 · 成长记录</div>
+      <div class="rabbit-deco">🐰</div>
+    </div>
+
+    <div class="dashboard-card">
+      <div class="fortune-title">✨ 今日气运：<span id="todayFortuneWord">稳步修行</span></div>
+      <div class="info-row">
+        <div class="info-pill">
+          <div class="label">今日课业</div>
+          <div class="value" id="todayTaskCount">7 项</div>
+        </div>
+        <div class="info-pill">
+          <div class="label">当前境界</div>
+          <div class="value" id="todayRealm">炼气期</div>
+        </div>
+        <div class="info-pill">
+          <div class="label">今日日期</div>
+          <div class="value" id="todayDateShort" style="font-size:13px;">07/28</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pearl-grid">
+      <div class="pearl-btn" onclick="switchPage('module1')"><span class="icon">🐰</span><span class="label">术法参悟阁</span></div>
+      <div class="pearl-btn" onclick="switchPage('module2')"><span class="icon">🪷</span><span class="label">肉身炼体堂</span></div>
+      <div class="pearl-btn" onclick="switchPage('module3')"><span class="icon">🖊️</span><span class="label">藏经阁</span></div>
+      <div class="pearl-btn" onclick="scrollToTasks()"><span class="icon">📜</span><span class="label">今日课业</span></div>
+      <div class="pearl-btn" onclick="switchPage('module4')"><span class="icon">🌙</span><span class="label">本命法宝坛</span></div>
+      <div class="pearl-btn" onclick="switchPage('module5')"><span class="icon">🏮</span><span class="label">灵库聚财峰</span></div>
+      <div class="pearl-btn" onclick="switchPage('module6')"><span class="icon">🧧</span><span class="label">道途玄鉴</span></div>
+      <div class="pearl-btn" onclick="switchPage('console')"><span class="icon">📚</span><span class="label">控制台</span></div>
+      <div class="pearl-btn" onclick="switchPage('module7')"><span class="icon">☁️</span><span class="label">星象命数台</span></div>
+    </div>
 
     <div class="callout callout-info" style="margin-bottom:18px;">
       🌅 <strong>晨钟初响 · 仙尊寄语</strong><br>
@@ -1013,7 +1236,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       <details class="rpg-log"><summary>📜 战历</summary><div id="rpgLog"></div></details>
     </div>
 
-    <h2>术法参悟阁 · 新媒体运营</h2>
+    <h2 id="todayTasksStart">术法参悟阁 · 新媒体运营</h2>
     <div class="card">
       <div class="task-row">
         <div class="task-check" onclick="this.classList.toggle('done')"></div>
@@ -1785,16 +2008,36 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 function switchPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.bottom-tab').forEach(t => t.classList.remove('active'));
 
   const page = document.getElementById('page-' + name);
   const nav = document.querySelector('[data-page="' + name + '"]');
   if (page) page.classList.add('active');
   if (nav) nav.classList.add('active');
 
+  // 底部 Tab 高亮映射
+  const tabMap = { today: 'today', module7: 'fortune', console: 'me' };
+  const tabName = tabMap[name] || '';
+  if (tabName) {
+    const tab = document.querySelector('.bottom-tab[data-tab="' + tabName + '"]');
+    if (tab) tab.classList.add('active');
+  }
+
   if (window.matchMedia('(max-width: 768px)').matches) {
-    document.querySelector('.sidebar').classList.add('collapsed');
+    const sb = document.querySelector('.sidebar');
+    if (sb) sb.classList.add('collapsed');
     localStorage.setItem('nav-collapsed', '1');
   }
+  const main = document.querySelector('.main');
+  if (main) main.scrollTop = 0;
+}
+
+function scrollToTasks() {
+  switchPage('today');
+  setTimeout(function () {
+    const el = document.getElementById('todayTasksStart');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 30);
 }
 
 /* ── 导航栏折叠 ── */
@@ -2003,6 +2246,7 @@ function updateAllProgress() {
     pct.textContent = rate + '% （' + done + '/' + total + '）';
   });
   if (typeof updateRPGMonster === 'function') updateRPGMonster();
+  if (typeof updateDashboardInfo === 'function') updateDashboardInfo();
 }
 
 /* ── 编辑操作框：笔记持久化 ── */
@@ -2025,6 +2269,28 @@ function genDailyFortune() { return fortuneFromSeed(dateSeed(new Date()), 'day')
 function genWeeklyFortune() { return fortuneFromSeed(weekSeed(new Date()), 'week'); }
 
 function dateSeed(d) { return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+
+const FORTUNE_WORDS = ['稳步修行','厚积薄发','乘风破浪','静水流深','知行合一','破茧成蝶','顺势而为','明心见性','日日精进','守正出奇','云开月明','脚踏实地'];
+function todayFortuneWord() {
+  const seed = dateSeed(new Date());
+  let s = seed;
+  const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  return FORTUNE_WORDS[Math.floor(rnd() * FORTUNE_WORDS.length)];
+}
+function updateDashboardInfo() {
+  const dateEl = document.getElementById('todayDateShort');
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' });
+  const countEl = document.getElementById('todayTaskCount');
+  if (countEl) countEl.textContent = document.querySelectorAll('#page-today .task-check').length + ' 项';
+  const realmEl = document.getElementById('todayRealm');
+  if (realmEl) {
+    let realm = '炼气期';
+    try { const rpg = JSON.parse(localStorage.getItem('gw_rpg_v1') || '{}'); if (rpg.realm) realm = rpg.realm; } catch (e) {}
+    realmEl.textContent = realm;
+  }
+  const fortuneEl = document.getElementById('todayFortuneWord');
+  if (fortuneEl) fortuneEl.textContent = todayFortuneWord();
+}
 function weekSeed(d) {
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const day = (x.getDay() + 6) % 7; // 周一=0
@@ -2560,6 +2826,7 @@ function initDecompose() {
 
 initHotReferences();
 initDecompose();
+updateDashboardInfo();
 initRPG();
 </script>
 
@@ -2575,6 +2842,22 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 </script>
+
+<!-- ════════ 底部 Tab 导航（移动端主导航）════════ -->
+<nav class="bottom-nav show" id="bottomNav">
+  <div class="bottom-tab active" data-tab="today" onclick="switchPage('today')">
+    <span class="icon">🏠</span>首页
+  </div>
+  <div class="bottom-tab" data-tab="tasks" onclick="scrollToTasks()">
+    <span class="icon">📋</span>任务
+  </div>
+  <div class="bottom-tab" data-tab="fortune" onclick="switchPage('module7')">
+    <span class="icon">🔮</span>推演
+  </div>
+  <div class="bottom-tab" data-tab="me" onclick="switchPage('console')">
+    <span class="icon">👤</span>我的
+  </div>
+</nav>
 
 <!-- ════════ 数据同步 FAB ════════ -->
 <button class="sync-fab" id="syncFab" title="数据同步">☁</button>
