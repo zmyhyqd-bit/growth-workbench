@@ -841,6 +841,53 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 }
 .sync-btn.alt { background: #64748b; }
 .sync-hint { margin-top: 8px; font-size: 10px; color: #94a3b8; line-height: 1.4; }
+
+/* ── 每日爆款视频参考 ── */
+.hot-wrap { margin: 14px 0; }
+.hot-card {
+  background: linear-gradient(135deg, #fff7ed, #fff1f2);
+  border: 1px solid #fdba74; border-radius: 14px; padding: 16px 18px;
+  box-shadow: 0 4px 16px rgba(249,115,22,.12);
+}
+.hot-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.hot-fire { font-size: 20px; }
+.hot-date { font-size: 12px; color: #9a3412; font-weight: 700; }
+.hot-tag { font-size: 11px; padding: 2px 9px; border-radius: 10px; background: #fb923c; color: #fff; font-weight: 700; }
+.hot-tag.xhs { background: #ff2e4d; }
+.hot-tag.dy { background: #111827; }
+.hot-title { font-size: 16px; font-weight: 800; color: #7c2d12; margin: 6px 0 10px; line-height: 1.45; }
+.hot-row { font-size: 13px; color: #431407; line-height: 1.7; margin: 4px 0; }
+.hot-row b { color: #c2410c; }
+.hot-fit { margin-top: 10px; font-size: 12.5px; color: #7c2d12; background: #ffedd5; border-left: 3px solid #fb923c; padding: 8px 10px; border-radius: 6px; line-height: 1.6; }
+.hot-fit b { color: #9a3412; }
+.hot-nav { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+.hot-btn { border: 1px solid #fb923c; background: #fff; color: #c2410c; border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .12s; }
+.hot-btn:hover { background: #fff7ed; }
+.hot-counter { margin-left: auto; font-size: 12px; color: #9a3412; font-weight: 600; }
+.hot-list { margin-top: 6px; }
+.hot-list-item { font-size: 12.5px; color: #431407; padding: 6px 4px; border-bottom: 1px dashed #fed7aa; cursor: pointer; }
+.hot-list-item:hover { color: #c2410c; }
+.hot-list-item b { color: #9a3412; margin-right: 4px; }
+
+/* ── 爆款视频拆解结构 ── */
+.dec-wrap { margin: 14px 0; }
+.dec-field { margin: 8px 0; }
+.dec-field label { display: block; font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.dec-input, .dec-area, .dec-select {
+  width: 100%; box-sizing: border-box; border: 1px solid var(--accent); border-radius: 8px;
+  padding: 8px 10px; font-size: 13px; font-family: inherit; color: var(--text); background: #fff;
+}
+.dec-area { min-height: 64px; resize: vertical; }
+.dec-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
+.dec-btn { border: none; border-radius: 8px; padding: 9px 14px; font-size: 13px; font-weight: 700; cursor: pointer; color: #fff; transition: transform .1s; }
+.dec-btn:active { transform: translateY(1px); }
+.dec-btn.primary { background: var(--accent2); }
+.dec-btn.warm { background: #ea580c; }
+.dec-btn.ghost { background: #64748b; }
+.dec-result { margin-top: 10px; }
+.dec-saved { margin-top: 6px; }
+.dec-saved-item { font-size: 12.5px; color: var(--text-secondary); padding: 7px 0; border-bottom: 1px dashed var(--accent); line-height: 1.5; }
+.dec-saved-item a { color: var(--accent2); word-break: break-all; font-size: 11.5px; }
 </style>
 </head>
 <body>
@@ -1449,7 +1496,57 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       <tr><td>第3步</td><td>建30条选题库（三板斧渠道采集）</td></tr>
       <tr><td>第4步</td><td>小成本测试——每周更2-3条，跑4周看数据，用数据速读卡迭代</td></tr>
     </table>
-  
+
+    <h2>🔥 每日爆款视频参考 <span style="font-size:12px;color:var(--text-secondary);font-weight:400;">（贴合你的账号定位 · 每天自动轮换）</span></h2>
+    <div class="callout callout-warn" style="margin:8px 0 12px;">
+      账号定位：<b>赵肉肉是个大富婆</b> · 内容方向：新媒体运营面试 / 求职 / vlog · 受众：18-28 岁想转行运营、对工作迷茫、为生活焦虑的年轻女性。下方参考按日期每日轮换，可直接抄角度、抄结构。
+    </div>
+    <div class="hot-wrap">
+      <div class="hot-card" id="hotCard"></div>
+      <div class="hot-nav">
+        <button class="hot-btn" id="hotPrev">← 上一条</button>
+        <button class="hot-btn" id="hotNext">下一条 →</button>
+        <span class="hot-counter" id="hotCounter"></span>
+      </div>
+      <details style="margin-top:12px;">
+        <summary style="cursor:pointer;font-size:13px;color:var(--accent2);font-weight:700;">📚 查看全部参考库（24 条 · 点任意一条可展开）</summary>
+        <div class="hot-list" id="hotList"></div>
+      </details>
+    </div>
+
+    <h2>🧩 爆款视频拆解结构 <span style="font-size:12px;color:var(--text-secondary);font-weight:400;">（贴链接 → 本地生成拆解框架 / 发我深度拆解）</span></h2>
+    <div class="dec-wrap card">
+      <div class="dec-field">
+        <label>视频链接（小红书 / 抖音 / 视频号 / B站 等）</label>
+        <input class="dec-input" id="decLink" placeholder="粘贴爆款视频链接，例如 https://www.xiaohongshu.com/..." />
+      </div>
+      <div class="dec-field" style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:120px;">
+          <label>平台</label>
+          <select class="dec-select" id="decPlatform">
+            <option>小红书</option><option>抖音</option><option>视频号</option><option>B站</option><option>其他</option>
+          </select>
+        </div>
+        <div style="flex:2;min-width:200px;">
+          <label>标题（可选，填下你观察到的）</label>
+          <input class="dec-input" id="decTitle" placeholder="视频标题 / 主题" />
+        </div>
+      </div>
+      <div class="dec-field">
+        <label>你观察到的要点（可选：钩子 / 结构 / 爆点 / 评论区）</label>
+        <textarea class="dec-area" id="decNotes" placeholder="例如：开头用『我面试被问懵了』留人；评论区都在问怎么写简历…"></textarea>
+      </div>
+      <div class="dec-actions">
+        <button class="dec-btn primary" id="decGen">📐 本地生成拆解框架</button>
+        <button class="dec-btn warm" id="decCopy">📋 复制发给肉肉助手做深度拆解</button>
+        <button class="dec-btn ghost" id="decReset">清空</button>
+      </div>
+      <div class="dec-result" id="decResult"></div>
+    </div>
+
+    <h3>已保存的拆解（本机保存 · 自动云端同步）</h3>
+    <div class="dec-saved" id="decSaved"></div>
+
 <details class="tools">
 <summary>🛠 修行锦囊 <span class="tools-hint">本周目标 · 进度 · 手札（点开修行）</span></summary>
 <div class="tools-body">
@@ -2313,6 +2410,156 @@ updateAllProgress();
 initNotes();
 renderFortune();
 initFills();
+
+/* ── 每日爆款视频参考（贴合账号定位的参考库）── */
+const HOT_REFERENCES = [
+  { title:"面试新媒体运营，被问『你怎么证明你能干』我这样答翻盘", platform:"小红书", type:"面试", hook:"身份代入+真实场景，『被问懵→翻盘』的悬念", structure:"故事体：面试翻车瞬间→我的回答拆解→为什么有效→可复用话术", emotion:"爽感+干货获得感", fit:"面试是你账号三大核心内容之一，直接命中『想转行运营』人群的最高频场景", action:"整理『新媒体运营 10 大高频面试题+标准答法』做成系列" },
+  { title:"0基础转行运营第1天，我做了这3件小事", platform:"小红书", type:"转行", hook:"数字清单+『0基础』降低门槛", structure:"清单体：3件事逐条+每件的收益", emotion:"陪伴感/希望感（『我也能开始』）", fit:"精准对应『想转行运营、迷茫』人群，给可执行的第一步", action:"拍自己的『转行运营日记』连续 vlog，固定栏目" },
+  { title:"hr看了想打人的5份运营简历，第3个我真绷不住", platform:"抖音", type:"简历", hook:"悬念+数字+情绪词『绷不住』", structure:"清单体：5份逐一吐槽→点出共性错误", emotion:"吐槽爽感+防坑", fit:"简历是转行第一关，『简历避坑』是长青爆款方向", action:"做『运营简历避坑合集』图文/短视频" },
+  { title:"月薪5k到运营主管，我靠的不是努力是这4个认知", platform:"小红书", type:"认知", hook:"反差（努力≠升职）+数字", structure:"清单体：4个认知差→每个配一个反例", emotion:"野心+『原来如此』的顿悟", fit:"『对工作迷茫』人群需要认知升级类内容建立信任", action:"沉淀『职场认知差』系列，做人设记忆点" },
+  { title:"找工作焦虑到失眠的姐妹，来看我这周怎么熬过来的", platform:"小红书", type:"vlog", hook:"痛点直击『焦虑失眠』", structure:"vlog故事体：状态→做了什么→好转", emotion:"治愈/共鸣", fit:"你是『为生活焦虑的年轻女性』的嘴替，情绪价值即流量", action:"固定『焦虑治愈 vlog』栏目，建情感连接" },
+  { title:"新媒体运营每天到底在干嘛？真实打工vlog大公开", platform:"抖音", type:"vlog", hook:"好奇/窥探欲『真实打工』", structure:"vlog：一天时间线+旁白吐槽", emotion:"窥探+轻松", fit:"职业揭秘满足『想入行但不懂』人群的好奇", action:"做『运营一天』系列，覆盖不同细分岗位" },
+  { title:"面试官说『你没经验』，我一句话把局面扳回来", platform:"小红书", type:"面试", hook:"悬念『一句话翻盘』", structure:"故事体：被怼瞬间→那句话→原理", emotion:"爽感+可复制", fit:"没经验是转行人群最大心结，给解法即爆", action:"提炼『无经验面试话术模板』置顶" },
+  { title:"25岁还在迷茫正常吗？一个过来人的大实话", platform:"小红书", type:"认知", hook:"身份代入『25岁迷茫』", structure:"观点体：正常→为什么→3个不必慌的理由", emotion:"共鸣+安抚", fit:"年龄焦虑是核心受众的情绪刚需", action:"做『年龄/职业焦虑』观点系列" },
+  { title:"转行运营前必看的3个残酷真相（没人会告诉你）", platform:"抖音", type:"转行", hook:"数字+反直觉『残酷真相』", structure:"清单体：3真相→每个配代价", emotion:"警醒+实用", fit:"『想转行』人群既渴望又怕踩坑，避坑即收藏", action:"把『残酷真相』做成系列钩子" },
+  { title:"我用1条笔记拿到面试机会，标题就靠这3招", platform:"小红书", type:"简历", hook:"结果导向『1条笔记→面试』", structure:"方法体：3招+案例对照", emotion:"实用+『我也要试』", fit:"标题能力是你账号的硬干货，可反复复用", action:"做『爆款标题公式』专题" },
+  { title:"打工人下班后的3小时，我用来偷偷转行", platform:"抖音", type:"vlog", hook:"时间具象『下班后3小时』", structure:"vlog：时间块分配+真实记录", emotion:"励志+陪伴", fit:"『迷茫但想改变』人群的作息参考", action:"拍『副业/转行时间管理』vlog" },
+  { title:"新媒体运营面试必问的10个问题（附答案模板）", platform:"小红书", type:"面试", hook:"数字+资源感『附答案』", structure:"清单体：10问逐条+答法", emotion:"收藏欲", fit:"资料型长尾内容，持续带来搜索流量", action:"做成可收藏的『面试题库』合集" },
+  { title:"被拒8次到第9次上岸，我只改了简历这1处", platform:"小红书", type:"简历", hook:"故事『被拒8次』+数字", structure:"故事体：低谷→改的1处→结果", emotion:"逆袭爽感", fit:"简历优化是转行刚需，真实案例最有说服力", action:"记录自己的简历迭代故事" },
+  { title:"老板不会告诉你的运营涨薪逻辑", platform:"抖音", type:"认知", hook:"信息差『老板不会说』", structure:"观点体：涨薪3逻辑→行动", emotion:"野心+信息差", fit:"『对工作迷茫』人群渴望职场上升路径", action:"做『职场上升』认知系列" },
+  { title:"焦虑不是你的错，是这3个系统出了问题", platform:"小红书", type:"认知", hook:"重新定义『焦虑不是错』", structure:"观点体：3系统→每个给解法", emotion:"治愈+被理解", fit:"你是焦虑人群嘴替，心理向内容强黏性", action:"做『焦虑拆解』心理向栏目" },
+  { title:"0经验怎么写运营简历？照抄这个模板", platform:"小红书", type:"简历", hook:"直接给『照抄模板』", structure:"模板体：结构+填空示例", emotion:"实用+省心", fit:"模板型内容收藏率高，引流利器", action:"提供简历模板资料包（引流私域/变现）" },
+  { title:"我辞掉稳定工作转行运营，现在后悔吗", platform:"抖音", type:"转行", hook:"争议话题『辞稳定工作』", structure:"故事体：决定→过程→现在答案", emotion:"好奇+代入", fit:"选择类内容引发讨论，评论区即选题矿", action:"用自己真实选择做故事线" },
+  { title:"面试被问薪资期望，这样答不吃亏", platform:"小红书", type:"谈薪", hook:"实用『不吃亏』", structure:"话术体：3种答法+适用场景", emotion:"防坑+实用", fit:"谈薪是求职末端高痛点", action:"做『谈薪话术』专题" },
+  { title:"每天活在焦虑里，直到我做了这1个改变", platform:"抖音", type:"vlog", hook:"悬念『1个改变』", structure:"vlog故事体：前→改变→后", emotion:"治愈+希望", fit:"焦虑人群需要『微小改变』的正向示范", action:"拍『微小习惯改变』vlog" },
+  { title:"运营小白第1周，主管让我做的5件小事", platform:"小红书", type:"转行", hook:"数字+身份『小白第1周』", structure:"清单体：5件事→每件价值", emotion:"代入+安心", fit:"新人视角降低恐惧，陪伴成长", action:"做『新人运营指南』系列" },
+  { title:"为什么你投运营简历石沉大海？这4个坑90%人踩", platform:"抖音", type:"简历", hook:"痛点『石沉大海』+数字", structure:"清单体：4坑→避法", emotion:"警醒+实用", fit:"简历投递是转行第一痛", action:"简历诊断栏目" },
+  { title:"一个人住的第N天，治愈我的不是钱是…", platform:"小红书", type:"vlog", hook:"反差『不是钱是…』", structure:"vlog：独居日常+情绪落点", emotion:"治愈+共鸣", fit:"独居年轻女性是你的核心受众，生活方式共鸣强", action:"做『独居生活』vlog固定栏目" },
+  { title:"新媒体运营 vs 传统文职，我选了后者后悔了", platform:"抖音", type:"认知", hook:"对比+争议『后悔了』", structure:"对比体：两边利弊→我的结论", emotion:"讨论+好奇", fit:"对比体易引发评论，挖需求", action:"做『岗位对比』系列引发讨论" },
+  { title:"给23岁想转行运营的你，9句话", platform:"小红书", type:"认知", hook:"数字+对话感『给23岁的你』", structure:"金句体：9句话逐条", emotion:"共情+收藏", fit:"金句合集易被转发，建立人设温度", action:"做『给XX岁的你』系列" }
+];
+function dayOfYear(d) { const start = new Date(d.getFullYear(), 0, 0); return Math.floor((d - start) / 86400000); }
+function renderHotCard(i) {
+  const n = HOT_REFERENCES.length;
+  i = ((i % n) + n) % n;
+  const r = HOT_REFERENCES[i];
+  const tagCls = r.platform.indexOf('小红书') >= 0 ? 'xhs' : (r.platform.indexOf('抖音') >= 0 ? 'dy' : '');
+  const card = document.getElementById('hotCard');
+  if (!card) return;
+  card.innerHTML =
+    '<div class="hot-head">' +
+      '<span class="hot-fire">🔥</span>' +
+      '<span class="hot-date">' + new Date().toLocaleDateString('zh-CN') + ' · 今日参考 #' + (i + 1) + '</span>' +
+      '<span class="hot-tag ' + tagCls + '">' + r.platform + '</span>' +
+      '<span class="hot-tag">' + (r.type || '爆款方向') + '</span>' +
+    '</div>' +
+    '<div class="hot-title">' + r.title + '</div>' +
+    '<div class="hot-row"><b>钩子：</b>' + r.hook + '</div>' +
+    '<div class="hot-row"><b>内容结构：</b>' + r.structure + '</div>' +
+    '<div class="hot-row"><b>情绪驱动：</b>' + r.emotion + '</div>' +
+    '<div class="hot-fit"><b>为什么符合你的定位：</b>' + r.fit + '<br><b>可复用动作：</b>' + r.action + '</div>';
+  const c = document.getElementById('hotCounter');
+  if (c) c.textContent = (i + 1) + ' / ' + n;
+  window.__hotIdx = i;
+}
+function renderHotList() {
+  const el = document.getElementById('hotList');
+  if (!el) return;
+  el.innerHTML = HOT_REFERENCES.map(function (r, idx) {
+    return '<div class="hot-list-item" data-i="' + idx + '"><b>#' + (idx + 1) + '</b>〔' + r.platform + '〕' + r.title + '</div>';
+  }).join('');
+  el.querySelectorAll('.hot-list-item').forEach(function (it) {
+    it.onclick = function () { renderHotCard(parseInt(it.getAttribute('data-i'), 10)); };
+  });
+}
+function initHotReferences() {
+  renderHotCard(dayOfYear(new Date()));
+  renderHotList();
+  const p = document.getElementById('hotPrev'), nx = document.getElementById('hotNext');
+  if (p) p.onclick = function () { renderHotCard((window.__hotIdx || 0) - 1); };
+  if (nx) nx.onclick = function () { renderHotCard((window.__hotIdx || 0) + 1); };
+}
+
+/* ── 爆款视频拆解结构 ── */
+const DEC_KEY = 'gw_decompose_v1';
+function loadDecompose() { try { return JSON.parse(localStorage.getItem(DEC_KEY)) || []; } catch (e) { return []; } }
+function saveDecompose(arr) {
+  localStorage.setItem(DEC_KEY, JSON.stringify(arr));
+  if (typeof scheduleCloudSync === 'function') scheduleCloudSync();
+}
+function genDecomposeSkeleton() {
+  const link = (document.getElementById('decLink').value || '').trim();
+  const platform = document.getElementById('decPlatform').value;
+  const title = (document.getElementById('decTitle').value || '').trim();
+  const notes = (document.getElementById('decNotes').value || '').trim();
+  if (!link && !title) { alert('先粘贴视频链接或标题再生成框架'); return; }
+  const sk = [
+    '【选题】切的是什么人群的什么需求：',
+    '【标题】钩子类型（数字/悬念/身份代入/痛点直击）：',
+    '【封面】信息层级、字体、色彩策略：',
+    '【开头3秒/前3行】留人钩子是什么：',
+    '【内容结构】总分总/清单体/故事体/对比体：',
+    '【情绪点】共鸣/焦虑/爽感/好奇 哪个在驱动：',
+    '【评论区挖矿】用户在追问什么（=下一个选题）：',
+    '【变现路径】这条内容如何服务于变现：',
+    '【可复用结论】一句话沉淀：'
+  ].join('\n');
+  const res = document.getElementById('decResult');
+  res.innerHTML = '<div class="code-block">🔗 链接：' + (link || '（未填）') +
+    '\n📱 平台：' + platform +
+    '\n🏷 标题：' + (title || '（未填）') +
+    '\n👀 你的观察：' + (notes || '（未填）') +
+    '\n\n———— 拆解框架（照此填空）————\n' + sk + '</div>';
+  const arr = loadDecompose();
+  arr.unshift({ link: link, platform: platform, title: title, notes: notes, createdAt: new Date().toISOString() });
+  saveDecompose(arr);
+  renderDecomposeSaved();
+  if (typeof setSyncStatus === 'function') setSyncStatus('拆解已保存并同步云端 ✓');
+}
+function copyDecomposePrompt() {
+  const link = (document.getElementById('decLink').value || '').trim();
+  const platform = document.getElementById('decPlatform').value;
+  const title = (document.getElementById('decTitle').value || '').trim();
+  const notes = (document.getElementById('decNotes').value || '').trim();
+  if (!link) { alert('先粘贴视频链接再复制指令'); return; }
+  const prompt = '请帮我拆解这条爆款视频的结构：\n链接：' + link +
+    '\n平台：' + platform +
+    '\n标题：' + (title || '（未知）') +
+    '\n我观察到的要点：' + (notes || '（无）') +
+    '\n\n请按以下模板输出：选题 / 标题钩子 / 封面 / 开头3秒 / 内容结构 / 情绪点 / 评论区挖矿 / 变现路径 / 可复用结论，并给出我能直接借鉴的 2-3 个动作。';
+  function done() { alert('已复制拆解指令，去聊天框粘贴发给我，我立刻按模板帮你深度拆解'); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(prompt).then(done, function () { fallbackCopy(prompt); done(); });
+  } else { fallbackCopy(prompt); done(); }
+}
+function fallbackCopy(t) {
+  const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch (e) {} ta.remove();
+}
+function renderDecomposeSaved() {
+  const arr = loadDecompose();
+  const el = document.getElementById('decSaved');
+  if (!el) return;
+  if (!arr.length) { el.innerHTML = '<div class="dec-saved-item">暂无保存的拆解，粘贴链接点「生成框架」即可记录</div>'; return; }
+  el.innerHTML = arr.slice(0, 12).map(function (d) {
+    return '<div class="dec-saved-item">' + (d.createdAt || '').slice(0, 10) + ' · ' + (d.platform || '') +
+      ' · ' + (d.title ? ('《' + d.title + '》') : '(无标题)') +
+      '<br><a href="' + (d.link || '') + '" target="_blank" rel="noopener">' + (d.link || '无链接') + '</a></div>';
+  }).join('');
+}
+function initDecompose() {
+  const g = document.getElementById('decGen'), c = document.getElementById('decCopy'), r = document.getElementById('decReset');
+  if (g) g.onclick = genDecomposeSkeleton;
+  if (c) c.onclick = copyDecomposePrompt;
+  if (r) r.onclick = function () {
+    ['decLink', 'decTitle', 'decNotes'].forEach(function (id) { document.getElementById(id).value = ''; });
+    document.getElementById('decResult').innerHTML = '';
+  };
+  renderDecomposeSaved();
+}
+
+initHotReferences();
+initDecompose();
 initRPG();
 </script>
 
