@@ -816,6 +816,31 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 .rpg-toast.show { opacity: 1; top: 36px; }
 .rpg-toast.win { background: #15803d; }
 .rpg-toast.lose { background: #991b1b; }
+
+/* ── 数据同步 FAB ── */
+.sync-fab {
+  position: fixed; right: 18px; bottom: 18px; z-index: 9998;
+  width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer;
+  background: linear-gradient(135deg, #15803d, #22c55e); color: #fff;
+  font-size: 22px; line-height: 50px; text-align: center;
+  box-shadow: 0 4px 14px rgba(21,128,61,.4); transition: transform .12s;
+}
+.sync-fab:hover { transform: scale(1.06); }
+.sync-panel {
+  position: fixed; right: 18px; bottom: 80px; z-index: 9998;
+  width: 272px; background: #fff; border: 1px solid var(--accent);
+  border-radius: 12px; padding: 14px; box-shadow: 0 8px 26px rgba(0,0,0,.18); display: none;
+}
+.sync-panel.show { display: block; }
+.sync-panel h3 { margin: 0 0 4px; font-size: 14px; color: var(--text); }
+.sync-panel p { margin: 0 0 10px; font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+.sync-row { display: flex; gap: 8px; }
+.sync-btn {
+  flex: 1; border: none; border-radius: 8px; padding: 8px 6px; cursor: pointer;
+  font-size: 13px; font-weight: 700; color: #fff; background: var(--accent2);
+}
+.sync-btn.alt { background: #64748b; }
+.sync-hint { margin-top: 8px; font-size: 10px; color: #94a3b8; line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -2301,6 +2326,73 @@ if ('serviceWorker' in navigator) {
   });
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
+</script>
+
+<!-- ════════ 数据同步 FAB ════════ -->
+<button class="sync-fab" id="syncFab" title="数据同步">☁</button>
+<div class="sync-panel" id="syncPanel">
+  <h3>☁ 数据同步</h3>
+  <p>点「导出」下载数据文件，发到对话里我（仙尊）就能收到你的回填；换设备时点「导入」恢复。</p>
+  <div class="sync-row">
+    <button class="sync-btn" id="btnExport">📤 导出</button>
+    <button class="sync-btn alt" id="btnImport">📥 导入</button>
+  </div>
+  <input type="file" id="syncFile" accept="application/json" style="display:none;">
+  <div class="sync-hint">导出的 .json 发到对话里，我这边总工作台即可同步收到 ✦</div>
+</div>
+
+<script>
+function exportData() {
+  const keep = ['workbench-tasks-v1', 'gw_fills_v1', 'gw_rpg_v1'];
+  const data = { _v: 1, _ts: new Date().toISOString(), store: {} };
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k) continue;
+    if (keep.indexOf(k) >= 0 || k.indexOf('note-') === 0 ||
+        k.indexOf('nav-') === 0 || k.indexOf('gw_') === 0) {
+      try { data.store[k] = JSON.parse(localStorage.getItem(k)); }
+      catch (e) { data.store[k] = localStorage.getItem(k); }
+    }
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'growth-workbench-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  if (typeof showToast === 'function') showToast('已导出数据文件，发给我即可同步 ✓', 'win');
+}
+function importData(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      const store = (parsed && parsed.store) ? parsed.store : parsed;
+      Object.keys(store).forEach(k => {
+        const v = store[k];
+        localStorage.setItem(k, (typeof v === 'string') ? v : JSON.stringify(v));
+      });
+      if (typeof showToast === 'function') showToast('导入成功，正在恢复…', 'win');
+      setTimeout(() => location.reload(), 600);
+    } catch (e) {
+      if (typeof showToast === 'function') showToast('文件解析失败，请确认是导出的 .json', 'lose');
+    }
+  };
+  reader.readAsText(file);
+}
+function initSync() {
+  const fab = document.getElementById('syncFab');
+  const panel = document.getElementById('syncPanel');
+  if (fab) fab.onclick = () => panel.classList.toggle('show');
+  const ex = document.getElementById('btnExport');
+  if (ex) ex.onclick = exportData;
+  const imp = document.getElementById('btnImport');
+  const file = document.getElementById('syncFile');
+  if (imp) imp.onclick = () => file && file.click();
+  if (file) file.onchange = () => { if (file.files[0]) importData(file.files[0]); file.value = ''; };
+}
+initSync();
 </script>
 </body>
 </html>
