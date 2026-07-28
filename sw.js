@@ -1,5 +1,5 @@
 // 成长工作台 · Service Worker
-const CACHE = "growth-workbench-v8";
+const CACHE = "growth-workbench-v9";
 const ASSETS = [
   "/",
   "/index.html",

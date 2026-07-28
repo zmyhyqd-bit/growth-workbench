@@ -1784,7 +1784,7 @@ function getTaskStore() {
   try { return JSON.parse(localStorage.getItem(TASKS_KEY) || '{}'); }
   catch (e) { return {}; }
 }
-function setTaskStore(s) { localStorage.setItem(TASKS_KEY, JSON.stringify(s)); }
+function setTaskStore(s) { localStorage.setItem(TASKS_KEY, JSON.stringify(s)); if (typeof scheduleCloudSync === "function") scheduleCloudSync(); }
 
 function renderTaskList(list, tasks, cid) {
   const store = getTaskStore();
@@ -1916,6 +1916,7 @@ function initNotes() {
     if (saved !== null) ta.value = saved;
     ta.addEventListener('input', () => {
       localStorage.setItem('note-' + id, ta.value);
+      if (typeof scheduleCloudSync === 'function') scheduleCloudSync();
     });
   });
 }
@@ -2027,7 +2028,7 @@ function initFills() {
       if (val === '___') { sp.textContent = ''; val = ''; }
       if (val === '') { delete saved[id]; sp.removeAttribute('data-filled'); }
       else { saved[id] = val; sp.setAttribute('data-filled', '1'); }
-      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} if (typeof scheduleCloudSync === "function") scheduleCloudSync();
     });
     // 失焦时清空零宽字符，避免粘贴带来的隐藏字符
     sp.addEventListener('blur', () => {
@@ -2085,7 +2086,7 @@ function loadRPG() {
   }
   return rpgState;
 }
-function saveRPG() { try { localStorage.setItem(RPG_KEY, JSON.stringify(rpgState)); } catch (e) {} }
+function saveRPG() { try { localStorage.setItem(RPG_KEY, JSON.stringify(rpgState)); } catch (e) {} if (typeof scheduleCloudSync === "function") scheduleCloudSync(); }
 
 function todayStr(d) {
   d = d || new Date();
@@ -2338,7 +2339,15 @@ if ('serviceWorker' in navigator) {
     <button class="sync-btn alt" id="btnImport">📥 导入</button>
   </div>
   <input type="file" id="syncFile" accept="application/json" style="display:none;">
-  <div class="sync-hint">导出的 .json 发到对话里，我这边总工作台即可同步收到 ✦</div>
+  <hr style="border:none;border-top:1px dashed #bbf7d0;margin:10px 0;">
+  <p style="margin:0 0 6px;font-size:11px;color:var(--text-secondary);">自动云端同步（Gitee·多设备+仙尊实时可见）：</p>
+  <input id="syncOwner" placeholder="Gitee 用户名" style="width:100%;box-sizing:border-box;margin-bottom:6px;padding:6px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;">
+  <input id="syncToken" type="password" placeholder="Gitee 私人令牌" style="width:100%;box-sizing:border-box;margin-bottom:6px;padding:6px;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;">
+  <div class="sync-row">
+    <button class="sync-btn" id="btnSaveCloud">💾 保存云端</button>
+    <button class="sync-btn alt" id="btnCloudSync">☁ 立即同步</button>
+  </div>
+  <div class="sync-hint" id="syncStatus">未配置云端</div>
 </div>
 
 <script>
@@ -2391,6 +2400,115 @@ function initSync() {
   const file = document.getElementById('syncFile');
   if (imp) imp.onclick = () => file && file.click();
   if (file) file.onchange = () => { if (file.files[0]) importData(file.files[0]); file.value = ''; };
+
+  const ownerI = document.getElementById('syncOwner');
+  const tokenI = document.getElementById('syncToken');
+  if (ownerI) ownerI.value = localStorage.getItem('gw_gitee_owner') || '';
+  if (tokenI) tokenI.value = localStorage.getItem('gw_gitee_token') || '';
+  const saveC = document.getElementById('btnSaveCloud');
+  if (saveC) saveC.onclick = () => {
+    localStorage.setItem('gw_gitee_owner', (ownerI.value || '').trim());
+    localStorage.setItem('gw_gitee_token', (tokenI.value || '').trim());
+    localStorage.setItem('gw_gitee_repo', localStorage.getItem('gw_gitee_repo') || 'growth-workbench');
+    setSyncStatus('云端配置已保存');
+    sessionStorage.removeItem('gw_cloud_loaded');
+    cloudPull();
+  };
+  const csync = document.getElementById('btnCloudSync');
+  if (csync) csync.onclick = () => { cloudPull(); setTimeout(cloudPush, 600); };
+
+  // 已配置则启动时自动从云端拉取
+  if (giteeCfg().owner && giteeCfg().token) cloudPull();
+}
+
+/* ── 自动云端同步（Gitee 后端）── */
+const GITEE_API = 'https://gitee.com/api/v5';
+function giteeCfg() {
+  return {
+    owner: localStorage.getItem('gw_gitee_owner') || '',
+    token: localStorage.getItem('gw_gitee_token') || '',
+    repo: localStorage.getItem('gw_gitee_repo') || 'growth-workbench',
+    path: 'data/growth-workbench-data.json'
+  };
+}
+function b64Utf8(s) { return btoa(unescape(encodeURIComponent(s))); }
+function utf8DecodeB64(s) { return decodeURIComponent(escape(atob(s.replace(/\s/g, '')))); }
+function buildSnapshot() {
+  const keep = ['workbench-tasks-v1', 'gw_fills_v1', 'gw_rpg_v1'];
+  const store = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k) continue;
+    if (keep.indexOf(k) >= 0 || k.indexOf('note-') === 0 ||
+        k.indexOf('nav-') === 0 || k.indexOf('gw_') === 0) {
+      try { store[k] = JSON.parse(localStorage.getItem(k)); }
+      catch (e) { store[k] = localStorage.getItem(k); }
+    }
+  }
+  return { _v: 2, _ts: new Date().toISOString(), store: store };
+}
+function giteeGet() {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return Promise.reject('未配置');
+  return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path + '?access_token=' + encodeURIComponent(c.token))
+    .then(r => r.json())
+    .then(j => {
+      if (j && j.content) return { obj: utf8DecodeB64(j.content), sha: j.sha };
+      throw new Error(j && j.message ? j.message : '无云端文件');
+    });
+}
+function giteePut(snapshot) {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return Promise.reject('未配置');
+  const body = { access_token: c.token, content: b64Utf8(JSON.stringify(snapshot, null, 2)), message: 'sync ' + new Date().toISOString(), branch: 'main' };
+  return giteeGet().then(ex => {
+    body.sha = ex.sha;
+    return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  }).catch(() => {
+    return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  });
+}
+function importSnapshot(snap) {
+  const store = (snap && snap.store) ? snap.store : snap;
+  if (!store) return false;
+  let changed = false;
+  Object.keys(store).forEach(k => {
+    const v = store[k];
+    const nv = (typeof v === 'string') ? v : JSON.stringify(v);
+    if (localStorage.getItem(k) !== nv) { localStorage.setItem(k, nv); changed = true; }
+  });
+  return changed;
+}
+function setSyncStatus(t) { const el = document.getElementById('syncStatus'); if (el) el.textContent = t; }
+function cloudPull() {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) { setSyncStatus('未配置云端'); return; }
+  setSyncStatus('从云端拉取…');
+  giteeGet().then(res => {
+    const changed = importSnapshot(res.obj);
+    setSyncStatus('云端已同步 ✓');
+    if (typeof showToast === 'function') showToast('已从云端恢复', 'win');
+    if (changed && !sessionStorage.getItem('gw_cloud_loaded')) {
+      sessionStorage.setItem('gw_cloud_loaded', '1');
+      setTimeout(() => location.reload(), 400);
+    }
+  }).catch(() => setSyncStatus('云端暂无数据，填写后将自动建'));
+}
+function cloudPush() {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return;
+  setSyncStatus('同步到云端…');
+  giteePut(buildSnapshot()).then(r => {
+    if (r && (r.ok || r.status === 200 || r.status === 201)) setSyncStatus('云端已同步 ✓');
+    else setSyncStatus('同步失败，点『立即同步』重试');
+  }).catch(() => setSyncStatus('同步失败，检查令牌'));
+}
+let _cloudTimer = null;
+function scheduleCloudSync() {
+  if (_cloudTimer) clearTimeout(_cloudTimer);
+  _cloudTimer = setTimeout(cloudPush, 2000);
 }
 initSync();
 </script>
