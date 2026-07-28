@@ -1078,6 +1078,89 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 @media (min-width: 769px) {
   .bottom-nav { display: none !important; }
 }
+
+/* ── 今日数据填报 ── */
+.checkin-card {
+  background: linear-gradient(145deg, #fffbf7, #f7efe6);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px var(--pearl-shadow);
+}
+.checkin-banner {
+  font-size: 13px; font-weight: 700; color: var(--accent2);
+  background: #fff3e0; border: 1px dashed var(--gold); border-radius: 10px;
+  padding: 8px 12px; margin-bottom: 12px;
+}
+.checkin-banner.done { color: #4a7c59; background: #f4f9f4; border-color: #cfe8d4; }
+.checkin-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 12px; margin-bottom: 12px;
+}
+.checkin-field { display: flex; flex-direction: column; gap: 3px; }
+.checkin-field label { font-size: 11.5px; color: var(--text-secondary); font-weight: 600; }
+.checkin-input {
+  width: 100%; box-sizing: border-box; border: 1px solid var(--accent); border-radius: 8px;
+  padding: 7px 9px; font-size: 13px; font-family: inherit; color: var(--text); background: #fff;
+}
+.checkin-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.checkin-btn {
+  border: none; border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 700;
+  cursor: pointer; color: #fff; background: var(--accent2);
+  box-shadow: 0 2px 6px rgba(176,141,85,.3); transition: transform .1s;
+}
+.checkin-btn:active { transform: translateY(1px); }
+.checkin-hint { font-size: 11px; color: var(--text-secondary); }
+@media (max-width: 768px) {
+  .checkin-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── 成长报告 ── */
+.report-tabs { display: flex; gap: 8px; margin: 10px 0 14px; flex-wrap: wrap; align-items: center; }
+.report-tab {
+  border: 1px solid var(--border); background: var(--pearl); color: var(--text-secondary);
+  border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all .12s;
+}
+.report-tab.active { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+.report-nav { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+.report-nav button {
+  border: 1px solid var(--border); background: var(--pearl); color: var(--text);
+  border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer;
+}
+.report-nav .period-label { font-size: 12px; color: var(--text-secondary); min-width: 96px; text-align: center; font-weight: 700; }
+.report-section-title { font-size: 14px; font-weight: 800; color: var(--text); margin: 18px 0 8px; }
+.report-kpis { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.report-kpi {
+  flex: 1; min-width: 96px; background: var(--pearl); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 12px; text-align: center;
+}
+.report-kpi .v { font-size: 19px; font-weight: 800; color: var(--accent2); }
+.report-kpi .v.up { color: #4a7c59; }
+.report-kpi .v.down { color: #c0392b; }
+.report-kpi .l { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding: 8px 4px 0; overflow-x: auto; }
+.bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; min-width: 22px; flex: 1; }
+.bar {
+  width: 100%; max-width: 26px; border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+  transition: height .3s; min-height: 2px;
+}
+.bar.alt { background: linear-gradient(180deg, #8ec5a0, #4a7c59); }
+.bar-label { font-size: 10px; color: var(--text-secondary); margin-top: 4px; white-space: nowrap; }
+.bar-val { font-size: 9px; color: var(--text-secondary); margin-bottom: 2px; }
+.habit-row { display: flex; align-items: center; gap: 10px; margin: 7px 0; font-size: 13px; }
+.habit-row .name { width: 64px; color: var(--text); font-weight: 600; }
+.habit-track { flex: 1; height: 12px; background: #f0e6db; border-radius: 8px; overflow: hidden; }
+.habit-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 8px; }
+.habit-pct { width: 46px; text-align: right; color: var(--text-secondary); font-weight: 700; font-size: 12px; }
+.suggestion {
+  border-radius: 12px; padding: 12px 14px; margin: 10px 0; font-size: 13px; line-height: 1.7;
+}
+.suggestion.supervise { background: #fdecea; border-left: 3px solid #e74c3c; color: #7b241c; }
+.suggestion.optimize { background: #eafaf1; border-left: 3px solid #27ae60; color: #14532d; }
+.suggestion b { font-weight: 800; }
+.report-empty { font-size: 13px; color: var(--text-secondary); line-height: 1.8; background: var(--pearl); border: 1px dashed var(--border); border-radius: 12px; padding: 16px; }
 </style>
 </head>
 <body>
@@ -1202,6 +1285,28 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <div class="callout callout-info" style="margin-bottom:18px;">
       🌅 <strong>晨钟初响 · 仙尊寄语</strong><br>
       求道者赵肉肉，今日天地清朗，正宜开坛修行。下方课业已为你铺陈——勾去一项，便是一分进境。莫要贪多，落子生根方为上法。
+    </div>
+
+    <!-- ── 今日数据填报 ── -->
+    <div class="checkin-card">
+      <div class="checkin-banner" id="checkinBanner">📌 今日数据尚未填报，填完点「提交今日填报」</div>
+      <div class="checkin-grid">
+        <div class="checkin-field"><label>体重 (kg)</label><input class="checkin-input" id="ckWeight" type="number" step="0.1" placeholder="51.6"></div>
+        <div class="checkin-field"><label>睡眠 (h)</label><input class="checkin-input" id="ckSleep" type="number" step="0.1" placeholder="7.5"></div>
+        <div class="checkin-field"><label>运动 (min)</label><input class="checkin-input" id="ckExercise" type="number" placeholder="60"></div>
+        <div class="checkin-field"><label>学习 (min)</label><input class="checkin-input" id="ckStudy" type="number" placeholder="20"></div>
+        <div class="checkin-field"><label>心情 (1-5)</label><input class="checkin-input" id="ckMood" type="number" min="1" max="5" placeholder="4"></div>
+        <div class="checkin-field"><label>账号更新</label>
+          <select class="checkin-input" id="ckAccount"><option value="0">否</option><option value="1">是</option></select>
+        </div>
+        <div class="checkin-field"><label>饮食打卡</label>
+          <select class="checkin-input" id="ckDiet"><option value="0">否</option><option value="1">是</option></select>
+        </div>
+      </div>
+      <div class="checkin-actions">
+        <button class="checkin-btn" id="btnCheckin">📥 提交今日填报</button>
+        <span class="checkin-hint" id="checkinHint">数据自动存入本机并同步云端</span>
+      </div>
     </div>
 
     <!-- ════════ 妖兽战局 · 心魔试炼 ════════ -->
@@ -1932,6 +2037,25 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
   </div>
 </div>
 </details>
+
+  <!-- ── 成长报告：周/月/季/年 ── -->
+  <h2>📊 成长报告 · 周 / 月 / 季 / 年</h2>
+  <div class="callout callout-info" style="margin-bottom:14px;">
+    📈 报告自动基于「今日填报」与每日结算沉淀的时间序列生成。每填一天，数据就多一笔；周期报告与监督/优化建议随之更新。
+  </div>
+  <div class="report-tabs">
+    <span class="report-tab active" data-gran="week" onclick="selectReportGran('week')">周</span>
+    <span class="report-tab" data-gran="month" onclick="selectReportGran('month')">月</span>
+    <span class="report-tab" data-gran="quarter" onclick="selectReportGran('quarter')">季</span>
+    <span class="report-tab" data-gran="year" onclick="selectReportGran('year')">年</span>
+    <span class="report-nav">
+      <button onclick="shiftReport(-1)">‹ 上一期</button>
+      <span class="period-label" id="reportPeriodLabel">本周</span>
+      <button onclick="shiftReport(1)">下一期 ›</button>
+    </span>
+  </div>
+  <div id="reportBody"></div>
+
 </section>
 
   <!-- ── 道场7：星象命数台 ── -->
@@ -2614,6 +2738,7 @@ function settleDay(opts) {
 
   if (opts.reset !== false) resetTodayChecks();
   saveRPG();
+  if (typeof captureDaily === 'function') captureDaily({ fromSettle: true, silent: true });
   renderRPG();
   if (typeof updateRPGMonster === 'function') updateRPGMonster();
 
@@ -2824,10 +2949,251 @@ function initDecompose() {
   renderDecomposeSaved();
 }
 
+/* ── 每日数据填报 + 周月季年报告 ── */
+const DAILY_KEY = 'gw_daily_log_v1';
+let reportGran = 'week';
+let reportOffset = 0;
+
+function loadDailyLog() { try { return JSON.parse(localStorage.getItem(DAILY_KEY) || '[]'); } catch (e) { return []; } }
+function saveDailyLog(a) { localStorage.setItem(DAILY_KEY, JSON.stringify(a)); if (typeof scheduleCloudSync === 'function') scheduleCloudSync(); }
+function getFillsObj() { try { return JSON.parse(localStorage.getItem('gw_fills_v1') || '{}'); } catch (e) { return {}; } }
+function setFillsObj(o) { localStorage.setItem('gw_fills_v1', JSON.stringify(o)); if (typeof scheduleCloudSync === 'function') scheduleCloudSync(); }
+function fnum(id) { const el = document.getElementById(id); if (!el) return NaN; const v = parseFloat(el.value); return isNaN(v) ? NaN : v; }
+function fsel(id) { const el = document.getElementById(id); if (!el) return null; const v = parseInt(el.value, 10); return isNaN(v) ? null : v; }
+function fset(id, v) { const el = document.getElementById(id); if (el && v != null && v !== '') el.value = v; }
+function fsetSel(id, v) { const el = document.getElementById(id); if (el && v != null) el.value = String(v); }
+
+function captureDaily(opts) {
+  opts = opts || {};
+  const today = todayStr();
+  const log = loadDailyLog();
+  let rec = log.find(r => r.date === today) || {};
+  const st = getTodayStats();
+  const w = fnum('ckWeight'), sleep = fnum('ckSleep'), ex = fnum('ckExercise'), study = fnum('ckStudy'), mood = fnum('ckMood');
+  const acc = fsel('ckAccount'), diet = fsel('ckDiet');
+
+  rec.date = today;
+  if (st.total) { rec.done = st.done; rec.total = st.total; rec.rate = Math.round(st.done / st.total * 100); }
+  else if (rec.rate == null) { rec.done = 0; rec.total = 0; rec.rate = 0; }
+
+  const wv = isNaN(w) ? null : w;
+  if (wv != null) rec.weight = wv;
+  else if (rec.weight == null) { const f = getFillsObj(); if (f['fill-1']) rec.weight = parseFloat(f['fill-1']); }
+  if (!isNaN(sleep)) rec.sleep = sleep;
+  if (!isNaN(ex)) rec.exercise = ex;
+  if (!isNaN(study)) rec.study = study;
+  if (!isNaN(mood)) rec.mood = mood;
+  if (acc != null) rec.account = acc;
+  if (diet != null) rec.diet = diet;
+  if (typeof rpgState !== 'undefined' && rpgState) { rec.energy = rpgState.energy; rec.growth = rpgState.growth; rec.level = rpgState.level; }
+
+  const idx = log.findIndex(r => r.date === today);
+  if (idx >= 0) log[idx] = rec; else log.push(rec);
+  log.sort((a, b) => a.date < b.date ? -1 : 1);
+  saveDailyLog(log);
+
+  if (wv != null) { const f = getFillsObj(); f['fill-1'] = String(wv); setFillsObj(f); }
+  renderCheckin();
+  if (typeof showToast === 'function' && !opts.silent) showToast('今日数据已记录 ✓', 'win');
+}
+
+function renderCheckin() {
+  const today = todayStr();
+  const log = loadDailyLog();
+  const rec = log.find(r => r.date === today);
+  if (rec) {
+    fset('ckWeight', rec.weight != null ? rec.weight : '');
+    fset('ckSleep', rec.sleep != null ? rec.sleep : '');
+    fset('ckExercise', rec.exercise != null ? rec.exercise : '');
+    fset('ckStudy', rec.study != null ? rec.study : '');
+    fset('ckMood', rec.mood != null ? rec.mood : '');
+    fsetSel('ckAccount', rec.account);
+    fsetSel('ckDiet', rec.diet);
+  } else {
+    const f = getFillsObj();
+    if (f['fill-1']) fset('ckWeight', f['fill-1']);
+  }
+  const banner = document.getElementById('checkinBanner');
+  const hint = document.getElementById('checkinHint');
+  if (rec) {
+    if (banner) { banner.className = 'checkin-banner done'; banner.textContent = '✅ 今日已填报（' + today + '），可修改后再次提交'; }
+    if (hint) hint.textContent = '数据已同步云端，仙尊可实时收到';
+  } else {
+    if (banner) { banner.className = 'checkin-banner'; banner.textContent = '📌 今日数据尚未填报，填完点「提交今日填报」'; }
+    if (hint) hint.textContent = '数据自动存入本机并同步云端';
+  }
+}
+
+/* ── 报告周期计算 ── */
+function startOfDay(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function isoMonday(d) { const x = startOfDay(d); const day = (x.getDay() + 6) % 7; x.setDate(x.getDate() - day); return x; }
+function periodBounds(gran, offset) {
+  const now = new Date();
+  let start, end, label;
+  if (gran === 'week') {
+    start = addDays(isoMonday(now), offset * 7); end = addDays(start, 6);
+    const wk = Math.ceil((start - new Date(start.getFullYear(), 0, 1)) / 604800000);
+    label = '第' + wk + '周';
+  } else if (gran === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth() + offset, 1);
+    end = new Date(now.getFullYear(), now.getMonth() + offset + 1, 0);
+    label = (start.getMonth() + 1) + '月';
+  } else if (gran === 'quarter') {
+    const q = Math.floor(now.getMonth() / 3); const m0 = q * 3;
+    start = new Date(now.getFullYear(), m0 + offset * 3, 1);
+    end = new Date(now.getFullYear(), m0 + offset * 3 + 3, 0);
+    label = (Math.floor(start.getMonth() / 3) + 1) + '季度';
+  } else {
+    start = new Date(now.getFullYear() + offset, 0, 1);
+    end = new Date(now.getFullYear() + offset, 11, 31);
+    label = start.getFullYear() + '年';
+  }
+  return { start: start, end: end, label: label };
+}
+
+function genSuggestions(a) {
+  const sup = [], opt = [];
+  if (a.shouldDays > 0 && a.absent > a.shouldDays * 0.3)
+    sup.push('本期有 <b>' + a.absent + ' 天</b>未填报（应填 ' + a.shouldDays + ' 天）。连续性是成长的基本盘，建议设每日固定填报提醒（如睡前 5 分钟）。');
+  if (a.compRate < 60)
+    sup.push('任务完成率仅 <b>' + a.compRate + '%</b>，低于 60% 警戒线——心魔正在吞噬你的灵气。优先把「今日课业」勾完再睡。');
+  if (a.wDelta != null && a.wDelta > 0.4)
+    sup.push('体重较期初上升 <b>' + a.wDelta + 'kg</b>，注意热量缺口与训练强度是否失衡。');
+  a.habits.forEach(h => { if (h.pct < 50) sup.push('「' + h.name + '」达标率仅 <b>' + h.pct + '%</b>，是本期最薄弱的一环。'); });
+
+  const hp = n => (a.habits.find(h => h.name === n) || {}).pct;
+  if (hp('运动') < 60) opt.push('运动：把训练排进日历固定时段（如 19:30-20:30），力量为主、蛋白吃够 80g/天，比偶尔暴练更有效。');
+  if (hp('学习') < 60) opt.push('学习：通勤 / 碎片时间听书或看行业笔记，每天 15min 起步，重在连续。');
+  if (hp('睡眠') < 60) opt.push('睡眠：23 点前放下手机，固定作息比补觉更能稳住状态。');
+  if (hp('饮食') < 60) opt.push('饮食：先做到「不跳过正餐」，再逐步记录三餐与热量。');
+  if (hp('账号') < 60) opt.push('账号：每周固定 2-3 更，用「评论区挖矿 + 搜索下拉词」攒选题，停更最伤权重。');
+  if (a.compRate < 80) opt.push('完成率：用「妖兽战局」每日结算，未完成即扣灵气，把勾选变成本能。');
+  if (a.wDelta != null && a.wDelta > 0.3) opt.push('体重：增加力量训练比例，保证蛋白质，减少精制碳水与宵夜。');
+  if (!opt.length) opt.push('本期各项指标稳健，保持节奏即可；可尝试小幅加码（如运动时长 +10min）突破平台。');
+  return { supervise: sup, optimize: opt };
+}
+
+function barCol(value, label, valText, alt) {
+  const v = Math.max(2, Math.min(100, value));
+  return '<div class="bar-col"><div class="bar-val">' + (valText || '') + '</div>' +
+    '<div class="bar ' + (alt ? 'alt' : '') + '" style="height:' + v + '%"></div>' +
+    '<div class="bar-label">' + label + '</div></div>';
+}
+
+function renderReport() {
+  const b = periodBounds(reportGran, reportOffset);
+  const s = todayStr(b.start), e = todayStr(b.end);
+  const lbl = document.getElementById('reportPeriodLabel');
+  if (lbl) lbl.textContent = (reportOffset === 0 ? '本' : '') + b.label;
+  const body = document.getElementById('reportBody');
+  if (!body) return;
+
+  const log = loadDailyLog();
+  const recs = log.filter(r => r.date >= s && r.date <= e).sort((a, c) => a.date < c.date ? -1 : 1);
+  if (!recs.length) {
+    body.innerHTML = '<div class="report-empty">📭 本期（' + b.label + '）还没有数据。<br>从今天起在首页填「今日填报」并每日结算，数据会一笔笔沉淀到这里，周期报告与监督 / 优化建议将自动生成。<br><br>📌 追踪字段：体重 / 睡眠 / 运动 / 学习 / 心情 / 账号更新 / 饮食 + 任务完成率。</div>';
+    return;
+  }
+
+  const totalDays = recs.length;
+  const sumDone = recs.reduce((a, r) => a + (r.done || 0), 0);
+  const sumTotal = recs.reduce((a, r) => a + (r.total || 0), 0);
+  const compRate = sumTotal ? Math.round(sumDone / sumTotal * 100) : Math.round(recs.reduce((a, r) => a + (r.rate || 0), 0) / totalDays);
+
+  const todayD = todayStr();
+  const endCount = e > todayD ? todayD : e;
+  const shouldDays = Math.max(0, Math.round((new Date(endCount) - new Date(s)) / 86400000) + 1);
+  const absent = Math.max(0, shouldDays - totalDays);
+
+  const wRecs = recs.filter(r => r.weight > 0);
+  const wFirst = wRecs.length ? wRecs[0].weight : null;
+  const wLast = wRecs.length ? wRecs[wRecs.length - 1].weight : null;
+  const wDelta = (wFirst != null && wLast != null) ? +((wLast - wFirst).toFixed(1)) : null;
+
+  const habits = [
+    { name: '运动', pct: Math.round(recs.filter(r => (r.exercise || 0) >= 30).length / totalDays * 100) },
+    { name: '学习', pct: Math.round(recs.filter(r => (r.study || 0) >= 15).length / totalDays * 100) },
+    { name: '睡眠', pct: Math.round(recs.filter(r => (r.sleep || 0) >= 7).length / totalDays * 100) },
+    { name: '饮食', pct: Math.round(recs.filter(r => r.diet === 1).length / totalDays * 100) },
+    { name: '账号', pct: Math.round(recs.filter(r => r.account === 1).length / totalDays * 100) }
+  ];
+
+  const gFirst = recs[0].growth || 0, gLast = recs[recs.length - 1].growth || 0;
+  const growthDelta = gLast - gFirst;
+  const lvlFirst = recs[0].level || 1, lvlLast = recs[recs.length - 1].level || 1;
+
+  const agg = { shouldDays: shouldDays, absent: absent, compRate: compRate, wDelta: wDelta, habits: habits };
+  const sg = genSuggestions(agg);
+
+  // 任务完成率每日柱
+  let compBars = '';
+  recs.forEach(r => {
+    const rate = r.total ? Math.round(r.done / r.total * 100) : (r.rate || 0);
+    compBars += barCol(rate, r.date.slice(5), rate + '%', false);
+  });
+  // 体重柱
+  let weightBars = '', wNote = '';
+  if (wRecs.length >= 2) {
+    const ws = wRecs.map(r => r.weight);
+    const wmin = Math.min.apply(null, ws), wmax = Math.max.apply(null, ws);
+    const wr = (wmax - wmin) || 1;
+    wRecs.forEach(r => {
+      const h = 30 + (r.weight - wmin) / wr * 70;
+      weightBars += barCol(h, r.date.slice(5), r.weight, false);
+    });
+  } else if (wRecs.length === 1) {
+    wNote = '<p class="checkin-hint">体重仅 1 条记录，需≥2 条才能看趋势，继续每天填报即可。</p>';
+  }
+
+  let habitRows = '';
+  habits.forEach(h => {
+    habitRows += '<div class="habit-row"><span class="name">' + h.name + '</span>' +
+      '<span class="habit-track"><span class="habit-fill" style="width:' + h.pct + '%"></span></span>' +
+      '<span class="habit-pct">' + h.pct + '%</span></div>';
+  });
+
+  let supHTML = '', optHTML = '';
+  if (sg.supervise.length) supHTML = '<div class="suggestion supervise"><b>🔍 监督建议</b><br>' + sg.supervise.map(x => '· ' + x).join('<br>') + '</div>';
+  if (sg.optimize.length) optHTML = '<div class="suggestion optimize"><b>💡 优化建议</b><br>' + sg.optimize.map(x => '· ' + x).join('<br>') + '</div>';
+
+  body.innerHTML =
+    '<div class="report-kpis">' +
+      '<div class="report-kpi"><div class="v">' + compRate + '%</div><div class="l">任务完成率</div></div>' +
+      '<div class="report-kpi"><div class="v">' + totalDays + '</div><div class="l">填报天数</div></div>' +
+      '<div class="report-kpi"><div class="v ' + (wDelta != null && wDelta > 0 ? 'down' : 'up') + '">' + (wDelta != null ? (wDelta > 0 ? '+' : '') + wDelta : '—') + '</div><div class="l">体重变化(kg)</div></div>' +
+      '<div class="report-kpi"><div class="v">+' + growthDelta + '</div><div class="l">修为增量</div></div>' +
+    '</div>' +
+    '<div class="report-section-title">📋 任务完成率（每日）</div><div class="bar-chart">' + compBars + '</div>' +
+    (wRecs.length >= 2 ? '<div class="report-section-title">⚖️ 体重趋势（kg）</div><div class="bar-chart">' + weightBars + '</div>' + wNote : '<div class="report-section-title">⚖️ 体重趋势</div>' + wNote) +
+    '<div class="report-section-title">✅ 习惯打卡率</div>' + habitRows +
+    '<div class="report-section-title">🗓 打卡纪律</div><div class="checkin-hint">应填 ' + shouldDays + ' 天 · 实填 <b>' + totalDays + '</b> 天 · 缺席 <b style="color:#c0392b">' + absent + '</b> 天 · 境界 ' + lvlFirst + '→' + lvlLast + ' 层</div>' +
+    supHTML + optHTML;
+}
+
+function selectReportGran(gran) {
+  reportGran = gran; reportOffset = 0;
+  document.querySelectorAll('.report-tab').forEach(t => t.classList.toggle('active', t.dataset.gran === gran));
+  renderReport();
+}
+function shiftReport(dir) {
+  reportOffset += dir;
+  if (reportOffset > 0) reportOffset = 0;
+  renderReport();
+}
+
+function initCheckin() {
+  const btn = document.getElementById('btnCheckin');
+  if (btn) btn.onclick = () => captureDaily();
+  renderCheckin();
+  if (typeof renderReport === 'function') renderReport();
+}
+
 initHotReferences();
 initDecompose();
 updateDashboardInfo();
 initRPG();
+initCheckin();
 </script>
 
 <script>
