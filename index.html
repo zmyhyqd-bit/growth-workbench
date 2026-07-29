@@ -1111,6 +1111,17 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 }
 .checkin-btn:active { transform: translateY(1px); }
 .checkin-hint { font-size: 11px; color: var(--text-secondary); }
+/* 同步状态徽标 */
+.checkin-sync { display: inline-block; margin: 0 0 8px; padding: 3px 11px; border-radius: 999px; font-size: 11px; font-weight: 700; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+.checkin-sync.syncing { background: #fff7ed; color: #c2691d; border-color: #fed7aa; }
+.checkin-sync.done { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+.checkin-sync.fail { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+/* 宽字段 + 行内输入对 */
+.checkin-field-wide { grid-column: 1 / -1; }
+.inline-pair { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.inline-pair .checkin-input { width: 66px; }
+.inline-pair select.checkin-input { width: auto; flex: 1; min-width: 84px; }
+.sep { font-size: 11px; color: var(--text-secondary); }
 @media (max-width: 768px) {
   .checkin-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -1290,18 +1301,16 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     <!-- ── 今日数据填报 ── -->
     <div class="checkin-card">
       <div class="checkin-banner" id="checkinBanner">📌 今日数据尚未填报，填完点「提交今日填报」</div>
+      <div class="checkin-sync" id="checkinSync">☁ 未同步</div>
       <div class="checkin-grid">
         <div class="checkin-field"><label>体重 (kg)</label><input class="checkin-input" id="ckWeight" type="number" step="0.1" placeholder="51.6"></div>
         <div class="checkin-field"><label>睡眠 (h)</label><input class="checkin-input" id="ckSleep" type="number" step="0.1" placeholder="7.5"></div>
         <div class="checkin-field"><label>运动 (min)</label><input class="checkin-input" id="ckExercise" type="number" placeholder="60"></div>
-        <div class="checkin-field"><label>学习 (min)</label><input class="checkin-input" id="ckStudy" type="number" placeholder="20"></div>
+        <div class="checkin-field"><label>饮食打卡</label><select class="checkin-input" id="ckDiet"><option value="0">否</option><option value="1">是</option></select></div>
+        <div class="checkin-field checkin-field-wide"><label>📖 读书：看到第几章</label><div class="inline-pair"><input class="checkin-input" id="ckReadCh" type="number" placeholder="4"><span class="sep">/ 共</span><input class="checkin-input" id="ckReadTotal" type="number" placeholder="12"><span class="sep">章</span></div></div>
+        <div class="checkin-field checkin-field-wide"><label>📊 新媒体运营：今日投入</label><div class="inline-pair"><input class="checkin-input" id="ckMediaMin" type="number" placeholder="60"><span class="sep">min ·</span><select class="checkin-input" id="ckMediaType"><option value="学习">学习</option><option value="投递">投递</option><option value="更新">更新内容</option><option value="拆解">拆解对标</option></select></div></div>
+        <div class="checkin-field"><label>📚 学习 (min)</label><input class="checkin-input" id="ckStudy" type="number" placeholder="20"></div>
         <div class="checkin-field"><label>心情 (1-5)</label><input class="checkin-input" id="ckMood" type="number" min="1" max="5" placeholder="4"></div>
-        <div class="checkin-field"><label>账号更新</label>
-          <select class="checkin-input" id="ckAccount"><option value="0">否</option><option value="1">是</option></select>
-        </div>
-        <div class="checkin-field"><label>饮食打卡</label>
-          <select class="checkin-input" id="ckDiet"><option value="0">否</option><option value="1">是</option></select>
-        </div>
       </div>
       <div class="checkin-actions">
         <button class="checkin-btn" id="btnCheckin">📥 提交今日填报</button>
@@ -2970,7 +2979,10 @@ function captureDaily(opts) {
   let rec = log.find(r => r.date === today) || {};
   const st = getTodayStats();
   const w = fnum('ckWeight'), sleep = fnum('ckSleep'), ex = fnum('ckExercise'), study = fnum('ckStudy'), mood = fnum('ckMood');
-  const acc = fsel('ckAccount'), diet = fsel('ckDiet');
+  const diet = fsel('ckDiet');
+  const readCh = fnum('ckReadCh'), readTotal = fnum('ckReadTotal');
+  const mediaMin = fnum('ckMediaMin');
+  const mediaType = (document.getElementById('ckMediaType') || {}).value || '';
 
   rec.date = today;
   if (st.total) { rec.done = st.done; rec.total = st.total; rec.rate = Math.round(st.done / st.total * 100); }
@@ -2983,8 +2995,12 @@ function captureDaily(opts) {
   if (!isNaN(ex)) rec.exercise = ex;
   if (!isNaN(study)) rec.study = study;
   if (!isNaN(mood)) rec.mood = mood;
-  if (acc != null) rec.account = acc;
   if (diet != null) rec.diet = diet;
+  if (!isNaN(readCh)) rec.reading_ch = readCh;
+  if (!isNaN(readTotal)) rec.reading_total = readTotal;
+  if (!isNaN(readCh) && !isNaN(readTotal) && readTotal > 0) rec.reading_pct = Math.round(readCh / readTotal * 100);
+  if (!isNaN(mediaMin)) rec.media_min = mediaMin;
+  if (mediaType) rec.media_type = mediaType;
   if (typeof rpgState !== 'undefined' && rpgState) { rec.energy = rpgState.energy; rec.growth = rpgState.growth; rec.level = rpgState.level; }
 
   const idx = log.findIndex(r => r.date === today);
@@ -2997,6 +3013,17 @@ function captureDaily(opts) {
   if (typeof showToast === 'function' && !opts.silent) showToast('今日数据已记录 ✓', 'win');
 }
 
+function setCheckinSync(state) {
+  const el = document.getElementById('checkinSync');
+  if (!el) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0'), mm = String(now.getMinutes()).padStart(2, '0');
+  if (state === 'syncing') { el.className = 'checkin-sync syncing'; el.textContent = '☁ 同步中…'; }
+  else if (state === 'done') { localStorage.setItem('gw_last_sync', now.toISOString()); el.className = 'checkin-sync done'; el.textContent = '✅ 已同步 ' + hh + ':' + mm; }
+  else if (state === 'fail') { el.className = 'checkin-sync fail'; el.textContent = '⚠️ 同步失败'; }
+  else { el.className = 'checkin-sync'; el.textContent = '☁ 未同步'; }
+}
+
 function renderCheckin() {
   const today = todayStr();
   const log = loadDailyLog();
@@ -3007,8 +3034,11 @@ function renderCheckin() {
     fset('ckExercise', rec.exercise != null ? rec.exercise : '');
     fset('ckStudy', rec.study != null ? rec.study : '');
     fset('ckMood', rec.mood != null ? rec.mood : '');
-    fsetSel('ckAccount', rec.account);
     fsetSel('ckDiet', rec.diet);
+    fset('ckReadCh', rec.reading_ch != null ? rec.reading_ch : '');
+    fset('ckReadTotal', rec.reading_total != null ? rec.reading_total : '');
+    fset('ckMediaMin', rec.media_min != null ? rec.media_min : '');
+    fsetSel('ckMediaType', rec.media_type);
   } else {
     const f = getFillsObj();
     if (f['fill-1']) fset('ckWeight', f['fill-1']);
@@ -3021,6 +3051,16 @@ function renderCheckin() {
   } else {
     if (banner) { banner.className = 'checkin-banner'; banner.textContent = '📌 今日数据尚未填报，填完点「提交今日填报」'; }
     if (hint) hint.textContent = '数据自动存入本机并同步云端';
+  }
+  // 同步徽标：显示最近一次成功同步时间
+  const ls = localStorage.getItem('gw_last_sync');
+  const badge = document.getElementById('checkinSync');
+  if (badge) {
+    if (ls) {
+      const d = new Date(ls);
+      const hh = String(d.getHours()).padStart(2, '0'), mm = String(d.getMinutes()).padStart(2, '0');
+      badge.className = 'checkin-sync done'; badge.textContent = '✅ 已同步 ' + hh + ':' + mm;
+    } else { badge.className = 'checkin-sync'; badge.textContent = '☁ 未同步'; }
   }
 }
 
@@ -3067,7 +3107,7 @@ function genSuggestions(a) {
   if (hp('学习') < 60) opt.push('学习：通勤 / 碎片时间听书或看行业笔记，每天 15min 起步，重在连续。');
   if (hp('睡眠') < 60) opt.push('睡眠：23 点前放下手机，固定作息比补觉更能稳住状态。');
   if (hp('饮食') < 60) opt.push('饮食：先做到「不跳过正餐」，再逐步记录三餐与热量。');
-  if (hp('账号') < 60) opt.push('账号：每周固定 2-3 更，用「评论区挖矿 + 搜索下拉词」攒选题，停更最伤权重。');
+  if (hp('新媒体') < 60) opt.push('新媒体运营：每周固定 2-3 更，用「评论区挖矿 + 搜索下拉词」攒选题，停更最伤权重；本期投入不足，先从每天 30min 学习对标账号起步。');
   if (a.compRate < 80) opt.push('完成率：用「妖兽战局」每日结算，未完成即扣灵气，把勾选变成本能。');
   if (a.wDelta != null && a.wDelta > 0.3) opt.push('体重：增加力量训练比例，保证蛋白质，减少精制碳水与宵夜。');
   if (!opt.length) opt.push('本期各项指标稳健，保持节奏即可；可尝试小幅加码（如运动时长 +10min）突破平台。');
@@ -3092,7 +3132,7 @@ function renderReport() {
   const log = loadDailyLog();
   const recs = log.filter(r => r.date >= s && r.date <= e).sort((a, c) => a.date < c.date ? -1 : 1);
   if (!recs.length) {
-    body.innerHTML = '<div class="report-empty">📭 本期（' + b.label + '）还没有数据。<br>从今天起在首页填「今日填报」并每日结算，数据会一笔笔沉淀到这里，周期报告与监督 / 优化建议将自动生成。<br><br>📌 追踪字段：体重 / 睡眠 / 运动 / 学习 / 心情 / 账号更新 / 饮食 + 任务完成率。</div>';
+    body.innerHTML = '<div class="report-empty">📭 本期（' + b.label + '）还没有数据。<br>从今天起在首页填「今日填报」并每日结算，数据会一笔笔沉淀到这里，周期报告与监督 / 优化建议将自动生成。<br><br>📌 追踪字段：体重 / 睡眠 / 运动 / 饮食 / 读书(章节) / 新媒体运营(投入) / 学习 / 心情 + 任务完成率。</div>';
     return;
   }
 
@@ -3116,7 +3156,7 @@ function renderReport() {
     { name: '学习', pct: Math.round(recs.filter(r => (r.study || 0) >= 15).length / totalDays * 100) },
     { name: '睡眠', pct: Math.round(recs.filter(r => (r.sleep || 0) >= 7).length / totalDays * 100) },
     { name: '饮食', pct: Math.round(recs.filter(r => r.diet === 1).length / totalDays * 100) },
-    { name: '账号', pct: Math.round(recs.filter(r => r.account === 1).length / totalDays * 100) }
+    { name: '新媒体', pct: Math.round(recs.filter(r => (r.media_min || 0) > 0).length / totalDays * 100) }
   ];
 
   const gFirst = recs[0].growth || 0, gLast = recs[recs.length - 1].growth || 0;
@@ -3153,6 +3193,21 @@ function renderReport() {
       '<span class="habit-pct">' + h.pct + '%</span></div>';
   });
 
+  // 读书 & 新媒体运营 目标进度
+  const readRecs = recs.filter(r => (r.reading_ch || 0) > 0);
+  const lastRead = readRecs.length ? readRecs[readRecs.length - 1] : null;
+  const mediaRecs = recs.filter(r => (r.media_min || 0) > 0);
+  const mediaSum = mediaRecs.reduce((a, r) => a + (r.media_min || 0), 0);
+  const mediaTypes = {};
+  mediaRecs.forEach(r => { if (r.media_type) mediaTypes[r.media_type] = (mediaTypes[r.media_type] || 0) + 1; });
+  let goalHTML = '';
+  if (lastRead) {
+    goalHTML += '<div class="report-section-title">📖 读书进度</div><div class="checkin-hint">最新：第 <b>' + lastRead.reading_ch + '</b> / 共 ' + (lastRead.reading_total || '?') + ' 章' + (lastRead.reading_pct != null ? '（<b>' + lastRead.reading_pct + '%</b>）' : '') + (readRecs.length > 1 ? ' · 本期打卡 ' + readRecs.length + ' 天' : '') + '</div>';
+  }
+  if (mediaRecs.length) {
+    goalHTML += '<div class="report-section-title">📊 新媒体运营</div><div class="checkin-hint">本期投入 <b>' + mediaSum + '</b> min · 打卡 <b>' + mediaRecs.length + '</b> 天' + (Object.keys(mediaTypes).length ? ' · 类型：' + Object.keys(mediaTypes).map(t => t + '×' + mediaTypes[t]).join(' / ') : '') + '</div>';
+  }
+
   let supHTML = '', optHTML = '';
   if (sg.supervise.length) supHTML = '<div class="suggestion supervise"><b>🔍 监督建议</b><br>' + sg.supervise.map(x => '· ' + x).join('<br>') + '</div>';
   if (sg.optimize.length) optHTML = '<div class="suggestion optimize"><b>💡 优化建议</b><br>' + sg.optimize.map(x => '· ' + x).join('<br>') + '</div>';
@@ -3166,7 +3221,7 @@ function renderReport() {
     '</div>' +
     '<div class="report-section-title">📋 任务完成率（每日）</div><div class="bar-chart">' + compBars + '</div>' +
     (wRecs.length >= 2 ? '<div class="report-section-title">⚖️ 体重趋势（kg）</div><div class="bar-chart">' + weightBars + '</div>' + wNote : '<div class="report-section-title">⚖️ 体重趋势</div>' + wNote) +
-    '<div class="report-section-title">✅ 习惯打卡率</div>' + habitRows +
+    '<div class="report-section-title">✅ 习惯打卡率</div>' + habitRows + goalHTML +
     '<div class="report-section-title">🗓 打卡纪律</div><div class="checkin-hint">应填 ' + shouldDays + ' 天 · 实填 <b>' + totalDays + '</b> 天 · 缺席 <b style="color:#c0392b">' + absent + '</b> 天 · 境界 ' + lvlFirst + '→' + lvlLast + ' 层</div>' +
     supHTML + optHTML;
 }
@@ -3184,7 +3239,7 @@ function shiftReport(dir) {
 
 function initCheckin() {
   const btn = document.getElementById('btnCheckin');
-  if (btn) btn.onclick = () => captureDaily();
+  if (btn) btn.onclick = () => { captureDaily(); setCheckinSync('syncing'); };
   renderCheckin();
   if (typeof renderReport === 'function') renderReport();
 }
@@ -3389,6 +3444,7 @@ function cloudPull() {
   giteeGet().then(res => {
     const changed = importSnapshot(res.obj);
     setSyncStatus('云端已同步 ✓');
+    setCheckinSync('done');
     if (typeof showToast === 'function') showToast('已从云端恢复', 'win');
     if (changed && !sessionStorage.getItem('gw_cloud_loaded')) {
       sessionStorage.setItem('gw_cloud_loaded', '1');
@@ -3398,12 +3454,13 @@ function cloudPull() {
 }
 function cloudPush() {
   const c = giteeCfg();
-  if (!c.owner || !c.token) return;
+  if (!c.owner || !c.token) { setCheckinSync('idle'); return; }
+  setCheckinSync('syncing');
   setSyncStatus('同步到云端…');
   giteePut(buildSnapshot()).then(r => {
-    if (r && (r.ok || r.status === 200 || r.status === 201)) setSyncStatus('云端已同步 ✓');
-    else setSyncStatus('同步失败，点『立即同步』重试');
-  }).catch(() => setSyncStatus('同步失败，检查令牌'));
+    if (r && (r.ok || r.status === 200 || r.status === 201)) { setSyncStatus('云端已同步 ✓'); setCheckinSync('done'); }
+    else { setSyncStatus('同步失败，点『立即同步』重试'); setCheckinSync('fail'); }
+  }).catch(() => { setSyncStatus('同步失败，检查令牌'); setCheckinSync('fail'); });
 }
 let _cloudTimer = null;
 function scheduleCloudSync() {
