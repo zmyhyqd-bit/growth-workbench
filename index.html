@@ -3329,12 +3329,15 @@ function giteeCfg() {
 }
 function b64Utf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function utf8DecodeB64(s) { return decodeURIComponent(escape(atob(s.replace(/\s/g, '')))); }
+// 绝不写入云端的敏感键（令牌只存本地，避免泄露到公开仓库）
+const CLOUD_EXCLUDE = ['gw_gitee_token'];
 function buildSnapshot() {
   const keep = ['workbench-tasks-v1', 'gw_fills_v1', 'gw_rpg_v1'];
   const store = {};
   for (let i = 0; i < localStorage.length; i++) {
     const k = localStorage.key(i);
     if (!k) continue;
+    if (CLOUD_EXCLUDE.indexOf(k) >= 0) continue; // 跳过令牌
     if (keep.indexOf(k) >= 0 || k.indexOf('note-') === 0 ||
         k.indexOf('nav-') === 0 || k.indexOf('gw_') === 0) {
       try { store[k] = JSON.parse(localStorage.getItem(k)); }
@@ -3371,6 +3374,7 @@ function importSnapshot(snap) {
   if (!store) return false;
   let changed = false;
   Object.keys(store).forEach(k => {
+    if (k === 'gw_gitee_token') return; // 令牌不从云端恢复，避免覆盖本地配置
     const v = store[k];
     const nv = (typeof v === 'string') ? v : JSON.stringify(v);
     if (localStorage.getItem(k) !== nv) { localStorage.setItem(k, nv); changed = true; }
