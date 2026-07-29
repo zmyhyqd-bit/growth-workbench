@@ -3426,13 +3426,14 @@ function giteePut(snapshot) {
   if (!c.owner || !c.token) return Promise.reject(new Error('未配置云端'));
   const mk = (sha) => ({ access_token: c.token, content: b64Utf8(JSON.stringify(snapshot, null, 2)), message: 'sync ' + new Date().toISOString(), branch: 'main', ...(sha ? { sha: sha } : {}) });
   const url = GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path;
-  const doPost = (sha) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mk(sha)) })
+  // Gitee 规则：文件不存在用 POST 新建；文件已存在必须用 PUT 更新（带 sha），否则报「文件名已存在」
+  const doReq = (method, sha) => fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mk(sha)) })
     .then(r => r.text().then(t => {
       let j = null; try { j = JSON.parse(t); } catch (e) {}
       if (r.ok || r.status === 200 || r.status === 201) return r;
       throw new Error((j && j.message) || ('HTTP ' + r.status + ' ' + t.slice(0, 80)));
     }));
-  return giteeGet().then(ex => doPost(ex.sha)).catch(() => doPost());
+  return giteeGet().then(ex => doReq('PUT', ex.sha)).catch(() => doReq('POST'));
 }
 function importSnapshot(snap) {
   const store = (snap && snap.store) ? snap.store : snap;
