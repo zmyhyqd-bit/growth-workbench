@@ -3358,7 +3358,9 @@ function initSync() {
   if (tokenI) tokenI.value = localStorage.getItem('gw_gitee_token') || '';
   const saveC = document.getElementById('btnSaveCloud');
   if (saveC) saveC.onclick = () => {
-    localStorage.setItem('gw_gitee_owner', (ownerI.value || '').trim());
+    const ownerVal = (ownerI.value || '').trim().replace(/^@/, '');
+    ownerI.value = ownerVal;
+    localStorage.setItem('gw_gitee_owner', ownerVal);
     localStorage.setItem('gw_gitee_token', (tokenI.value || '').trim());
     localStorage.setItem('gw_gitee_repo', localStorage.getItem('gw_gitee_repo') || 'growth-workbench');
     setSyncStatus('云端配置已保存');
