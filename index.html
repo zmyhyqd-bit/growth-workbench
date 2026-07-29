@@ -3401,28 +3401,36 @@ function buildSnapshot() {
   }
   return { _v: 2, _ts: new Date().toISOString(), store: store };
 }
+function giteeFriendlyErr(e) {
+  const msg = (e && e.message) ? e.message : String(e || '未知错误');
+  if (/401/.test(msg)) return '令牌无效或已过期 → 请到 Gitee 撤销并重新生成令牌';
+  if (/403/.test(msg)) return '令牌权限不足 → 生成时需勾选 projects（仓库读写）权限';
+  if (/404/.test(msg)) return '找不到仓库/文件 → 检查 owner 用户名与仓库名 growth-workbench 是否一致';
+  if (/network|failed to fetch|cors/i.test(msg)) return '网络/CORS 错误 → 检查网络或稍后重试';
+  return '同步失败：' + msg;
+}
 function giteeGet() {
   const c = giteeCfg();
-  if (!c.owner || !c.token) return Promise.reject('未配置');
-  return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path + '?access_token=' + encodeURIComponent(c.token))
-    .then(r => r.json())
-    .then(j => {
-      if (j && j.content) return { obj: utf8DecodeB64(j.content), sha: j.sha };
-      throw new Error(j && j.message ? j.message : '无云端文件');
-    });
+  if (!c.owner || !c.token) return Promise.reject(new Error('未配置云端'));
+  const url = GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path + '?access_token=' + encodeURIComponent(c.token);
+  return fetch(url).then(r => r.text().then(t => {
+    let j = null; try { j = JSON.parse(t); } catch (e) {}
+    if (r.ok && j && j.content) return { obj: utf8DecodeB64(j.content), sha: j.sha };
+    throw new Error((j && j.message) || ('HTTP ' + r.status));
+  }));
 }
 function giteePut(snapshot) {
   const c = giteeCfg();
-  if (!c.owner || !c.token) return Promise.reject('未配置');
-  const body = { access_token: c.token, content: b64Utf8(JSON.stringify(snapshot, null, 2)), message: 'sync ' + new Date().toISOString(), branch: 'main' };
-  return giteeGet().then(ex => {
-    body.sha = ex.sha;
-    return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  }).catch(() => {
-    return fetch(GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path,
-      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  });
+  if (!c.owner || !c.token) return Promise.reject(new Error('未配置云端'));
+  const mk = (sha) => ({ access_token: c.token, content: b64Utf8(JSON.stringify(snapshot, null, 2)), message: 'sync ' + new Date().toISOString(), branch: 'main', ...(sha ? { sha: sha } : {}) });
+  const url = GITEE_API + '/repos/' + c.owner + '/' + c.repo + '/contents/' + c.path;
+  const doPost = (sha) => fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(mk(sha)) })
+    .then(r => r.text().then(t => {
+      let j = null; try { j = JSON.parse(t); } catch (e) {}
+      if (r.ok || r.status === 200 || r.status === 201) return r;
+      throw new Error((j && j.message) || ('HTTP ' + r.status + ' ' + t.slice(0, 80)));
+    }));
+  return giteeGet().then(ex => doPost(ex.sha)).catch(() => doPost());
 }
 function importSnapshot(snap) {
   const store = (snap && snap.store) ? snap.store : snap;
@@ -3450,17 +3458,20 @@ function cloudPull() {
       sessionStorage.setItem('gw_cloud_loaded', '1');
       setTimeout(() => location.reload(), 400);
     }
-  }).catch(() => setSyncStatus('云端暂无数据，填写后将自动建'));
+  }).catch(e => {
+    const m = (e && e.message) || '';
+    if (/404/.test(m)) setSyncStatus('云端暂无数据，填写后将自动建');
+    else setSyncStatus(giteeFriendlyErr(e));
+  });
 }
 function cloudPush() {
   const c = giteeCfg();
-  if (!c.owner || !c.token) { setCheckinSync('idle'); return; }
+  if (!c.owner || !c.token) { setCheckinSync('idle'); setSyncStatus('未配置云端'); return; }
   setCheckinSync('syncing');
   setSyncStatus('同步到云端…');
-  giteePut(buildSnapshot()).then(r => {
-    if (r && (r.ok || r.status === 200 || r.status === 201)) { setSyncStatus('云端已同步 ✓'); setCheckinSync('done'); }
-    else { setSyncStatus('同步失败，点『立即同步』重试'); setCheckinSync('fail'); }
-  }).catch(() => { setSyncStatus('同步失败，检查令牌'); setCheckinSync('fail'); });
+  giteePut(buildSnapshot())
+    .then(() => { setSyncStatus('云端已同步 ✓'); setCheckinSync('done'); })
+    .catch(e => { setSyncStatus(giteeFriendlyErr(e)); setCheckinSync('fail'); });
 }
 let _cloudTimer = null;
 function scheduleCloudSync() {
