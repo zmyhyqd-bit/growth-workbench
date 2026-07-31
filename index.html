@@ -1172,6 +1172,63 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 .suggestion.optimize { background: #eafaf1; border-left: 3px solid #27ae60; color: #14532d; }
 .suggestion b { font-weight: 800; }
 .report-empty { font-size: 13px; color: var(--text-secondary); line-height: 1.8; background: var(--pearl); border: 1px dashed var(--border); border-radius: 12px; padding: 16px; }
+
+/* ── 灵机日历 ── */
+.cal-card, .cal-day-card { margin-bottom: 16px; }
+.cal-toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+.cal-title { flex: 1; text-align: center; font-size: 17px; font-weight: 700; color: var(--text); }
+.cal-nav-btn, .cal-today-btn {
+  border: 1px solid var(--border); background: var(--pearl); color: var(--accent2);
+  border-radius: 10px; cursor: pointer; font-weight: 700; transition: all .15s;
+}
+.cal-nav-btn { width: 34px; height: 34px; font-size: 18px; line-height: 1; }
+.cal-today-btn { height: 34px; padding: 0 14px; font-size: 13px; }
+.cal-nav-btn:hover, .cal-today-btn:hover { background: #fff3e0; border-color: var(--accent); }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 12px; color: var(--text-secondary); padding-bottom: 6px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.cal-cell {
+  aspect-ratio: 1 / 1; min-height: 46px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 5px 4px; font-size: 12px; color: var(--text); cursor: pointer; position: relative;
+  display: flex; flex-direction: column; background: var(--pearl); transition: all .15s; overflow: hidden;
+}
+.cal-cell:hover { border-color: var(--accent); }
+.cal-cell.other { color: #c9b8a8; background: #faf6f0; }
+.cal-cell.today { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(176,141,85,.22); }
+.cal-cell.selected { background: linear-gradient(145deg, #fff3e0, #f6e7d3); border-color: var(--gold-dark); }
+.cal-cell .dnum { font-weight: 600; line-height: 1.1; }
+.cal-cell .dlist { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+.cal-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.cal-cell .dcount { position: absolute; right: 4px; top: 4px; font-size: 10px; background: var(--accent2); color: #fff; border-radius: 8px; padding: 0 5px; min-width: 15px; text-align: center; line-height: 15px; }
+.cal-day-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 6px; }
+.cal-day-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.cal-day-stat { font-size: 12px; color: var(--text-secondary); }
+.cal-add-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.cal-cat, .cal-time, .cal-text { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; background: #fff; color: var(--text); }
+.cal-cat { max-width: 110px; }
+.cal-time { max-width: 120px; }
+.cal-text { flex: 1; min-width: 150px; }
+.cal-add-btn { padding: 9px 16px; background: var(--accent2); color: #fff; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
+.cal-add-btn:hover { background: var(--gold-dark); }
+.cal-todo-list { display: flex; flex-direction: column; gap: 8px; }
+.cal-todo { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border: 1px solid var(--border); border-radius: 11px; background: var(--pearl); }
+.cal-todo.done { opacity: .55; }
+.cal-todo.done .cal-todo-text { text-decoration: line-through; }
+.cal-check { width: 21px; height: 21px; flex: none; border-radius: 50%; border: 2px solid var(--accent2); background: #fff; cursor: pointer; color: #fff; font-size: 13px; line-height: 17px; display: flex; align-items: center; justify-content: center; padding: 0; }
+.cal-check.on { background: var(--accent2); }
+.cal-chip { font-size: 11px; padding: 2px 8px; border-radius: 8px; color: #fff; flex: none; }
+.cat-biz { background: #3b82f6; } .cat-shoot { background: #a855f7; } .cat-edit { background: #ec4899; } .cat-post { background: #22c55e; } .cat-other { background: #d4a574; }
+.cal-time-mini { font-size: 11px; color: var(--text-secondary); flex: none; }
+.cal-todo-text { font-size: 13px; color: var(--text); word-break: break-all; }
+.cal-del { margin-left: auto; flex: none; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 15px; padding: 2px 6px; border-radius: 8px; }
+.cal-del:hover { background: #fde8e8; color: #c0392b; }
+.cal-empty { text-align: center; color: var(--text-secondary); font-size: 13px; padding: 22px 0; }
+
+@media (max-width: 768px) {
+  .cal-cell { min-height: 40px; font-size: 11px; padding: 4px 2px; }
+  .cal-cell .dlist { display: none; }
+  .cal-time { max-width: 100%; flex: 1; }
+  .cal-cat { flex: 1; max-width: none; }
+}
 </style>
 </head>
 <body>
@@ -1203,7 +1260,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
     </div>
 
     <div class="nav-group" data-group="modules">
-      <div class="nav-section" data-fixed>七大道场</div>
+      <div class="nav-section" data-fixed>道场 · 法器</div>
       <a class="nav-item" data-page="module1" onclick="switchPage('module1')">
         <span class="icon">📊</span>
         <span class="nav-txt"><span class="nav-name">术法参悟阁</span><span class="nav-sub">新媒体运营</span></span>
@@ -1238,6 +1295,11 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
         <span class="icon">🔮</span>
         <span class="nav-txt"><span class="nav-name">星象命数台</span><span class="nav-sub">八字+星座天运</span></span>
         <span class="badge badge-blue">乙木</span>
+      </a>
+      <a class="nav-item" data-page="calendar" onclick="switchPage('calendar')">
+        <span class="icon">🗓️</span>
+        <span class="nav-txt"><span class="nav-name">灵机日历</span><span class="nav-sub">每日待办·接单排期</span></span>
+        <span class="badge badge-yellow" id="calNavCount" style="display:none"></span>
       </a>
     </div>
   </nav>
@@ -1291,6 +1353,7 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
       <div class="pearl-btn" onclick="switchPage('module6')"><span class="icon">🧧</span><span class="label">道途玄鉴</span></div>
       <div class="pearl-btn" onclick="switchPage('console')"><span class="icon">📚</span><span class="label">控制台</span></div>
       <div class="pearl-btn" onclick="switchPage('module7')"><span class="icon">☁️</span><span class="label">星象命数台</span></div>
+      <div class="pearl-btn" onclick="switchPage('calendar')"><span class="icon">🗓️</span><span class="label">灵机日历</span></div>
     </div>
 
     <div class="callout callout-info" style="margin-bottom:18px;">
@@ -2135,6 +2198,45 @@ details.tools .tools-body hr.divider { margin: 12px 0; }
 </details>
 </section>
 
+  <!-- ── 灵机日历 · 每日待办 ── -->
+  <section class="page" id="page-calendar">
+    <h1>🗓️ 灵机日历 · 每日待办与接单排期</h1>
+    <p class="subheading">接广告、拍摄剪辑投递、日常修行，按天排好，勾掉即了</p>
+
+    <div class="card cal-card">
+      <div class="cal-toolbar">
+        <button class="cal-nav-btn" onclick="calShiftMonth(-1)" title="上一月">‹</button>
+        <div class="cal-title" id="calTitle">—</div>
+        <button class="cal-nav-btn" onclick="calShiftMonth(1)" title="下一月">›</button>
+        <button class="cal-today-btn" onclick="calGoToday()">今天</button>
+      </div>
+      <div class="cal-weekdays">
+        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <div class="card cal-day-card">
+      <div class="cal-day-head">
+        <div class="cal-day-title" id="calDayTitle">—</div>
+        <div class="cal-day-stat" id="calDayStat"></div>
+      </div>
+      <div class="cal-add-row">
+        <select id="calCat" class="cal-cat" aria-label="分类">
+          <option value="商务">💼 商务</option>
+          <option value="拍摄">🎬 拍摄</option>
+          <option value="剪辑">✂️ 剪辑</option>
+          <option value="投递">📤 投递</option>
+          <option value="其他">📌 其他</option>
+        </select>
+        <input id="calTime" class="cal-time" type="time" aria-label="时间">
+        <input id="calText" class="cal-text" type="text" placeholder="今天要做什么？接单 / 拍摄 / 剪辑…" onkeydown="if(event.key==='Enter')calAddTodo()">
+        <button class="cal-add-btn" onclick="calAddTodo()">＋ 添加</button>
+      </div>
+      <div class="cal-todo-list" id="calTodoList"></div>
+    </div>
+  </section>
+
 </main>
 
 <script>
@@ -2149,7 +2251,7 @@ function switchPage(name) {
   if (nav) nav.classList.add('active');
 
   // 底部 Tab 高亮映射
-  const tabMap = { today: 'today', module7: 'fortune', console: 'me' };
+  const tabMap = { today: 'today', module7: 'fortune', console: 'me', calendar: 'calendar' };
   const tabName = tabMap[name] || '';
   if (tabName) {
     const tab = document.querySelector('.bottom-tab[data-tab="' + tabName + '"]');
@@ -3244,11 +3346,172 @@ function initCheckin() {
   if (typeof renderReport === 'function') renderReport();
 }
 
+/* ════════ 灵机日历 · 每日待办 ════════ */
+var calView = { y: 0, m: 0 };   // 当前显示的年月（m:0-11）
+var calSel = '';                // 选中的日期 'YYYY-MM-DD'
+var CAL_CAT_CLASS = { '商务': 'cat-biz', '拍摄': 'cat-shoot', '剪辑': 'cat-edit', '投递': 'cat-post', '其他': 'cat-other' };
+var CAL_CAT_COLOR = { '商务': '#3b82f6', '拍摄': '#a855f7', '剪辑': '#ec4899', '投递': '#22c55e', '其他': '#d4a574' };
+var CAL_WK = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+function calLoad() {
+  try { return JSON.parse(localStorage.getItem('gw_calendar_v1') || '{}'); } catch (e) { return {}; }
+}
+function calSave(obj) { localStorage.setItem('gw_calendar_v1', JSON.stringify(obj)); }
+function calKey(y, m, d) {
+  var mm = (m + 1 < 10 ? '0' : '') + (m + 1);
+  var dd = (d < 10 ? '0' : '') + d;
+  return y + '-' + mm + '-' + dd;
+}
+function calDateStr(ds) {
+  var p = ds.split('-');
+  var dt = new Date(+p[0], +p[1] - 1, +p[2]);
+  return (+p[0]) + '年' + (+p[1]) + '月' + (+p[2]) + '日 ' + CAL_WK[dt.getDay()];
+}
+function initCalendar() {
+  var now = new Date();
+  calView.y = now.getFullYear();
+  calView.m = now.getMonth();
+  calSel = calKey(now.getFullYear(), now.getMonth(), now.getDate());
+  renderCalendar();
+}
+function calShiftMonth(dir) {
+  calView.m += dir;
+  if (calView.m < 0) { calView.m = 11; calView.y--; }
+  else if (calView.m > 11) { calView.m = 0; calView.y++; }
+  renderCalendar();
+}
+function calGoToday() {
+  var now = new Date();
+  calView.y = now.getFullYear(); calView.m = now.getMonth();
+  calSel = calKey(now.getFullYear(), now.getMonth(), now.getDate());
+  renderCalendar();
+}
+function renderCalendar() {
+  var grid = document.getElementById('calGrid');
+  var title = document.getElementById('calTitle');
+  if (!grid || !title) return;
+  title.textContent = calView.y + '年' + (calView.m + 1) + '月';
+  var data = calLoad();
+  var startW = new Date(calView.y, calView.m, 1).getDay();
+  var daysInMonth = new Date(calView.y, calView.m + 1, 0).getDate();
+  var prevDays = new Date(calView.y, calView.m, 0).getDate();
+  var cells = [];
+  for (var i = startW - 1; i >= 0; i--) cells.push({ d: prevDays - i, other: true });
+  for (var d = 1; d <= daysInMonth; d++) cells.push({ d: d, other: false });
+  var pad = 0;
+  while (cells.length % 7 !== 0) { pad++; cells.push({ d: pad, other: true }); }
+
+  var now = new Date();
+  var today = calKey(now.getFullYear(), now.getMonth(), now.getDate());
+  var html = '';
+  for (var c = 0; c < cells.length; c++) {
+    var cell = cells[c];
+    var cls = 'cal-cell' + (cell.other ? ' other' : '');
+    var dateStr = cell.other ? '' : calKey(calView.y, calView.m, cell.d);
+    if (!cell.other && dateStr === today) cls += ' today';
+    if (!cell.other && dateStr === calSel) cls += ' selected';
+    var list = (!cell.other && data[dateStr]) ? data[dateStr] : [];
+    var dots = '';
+    for (var t = 0; t < list.length && t < 4; t++) {
+      dots += '<span class="cal-dot" style="background:' + (CAL_CAT_COLOR[list[t].cat] || '#d4a574') + '"></span>';
+    }
+    var count = list.length ? '<span class="dcount">' + list.length + '</span>' : '';
+    html += '<div class="' + cls + '"' + (cell.other ? '' : ' onclick="calSelect(\'' + dateStr + '\')"') + '>' +
+      '<span class="dnum">' + cell.d + '</span>' +
+      (list.length ? '<div class="dlist">' + dots + '</div>' : '') + count + '</div>';
+  }
+  grid.innerHTML = html;
+  renderCalDay();
+  updateCalNavBadge(data);
+}
+function calSelect(ds) { calSel = ds; renderCalendar(); }
+function renderCalDay() {
+  var titleEl = document.getElementById('calDayTitle');
+  var statEl = document.getElementById('calDayStat');
+  var listEl = document.getElementById('calTodoList');
+  if (!titleEl || !listEl) return;
+  titleEl.textContent = calDateStr(calSel);
+  var data = calLoad();
+  var list = data[calSel] || [];
+  var done = 0;
+  for (var i = 0; i < list.length; i++) if (list[i].done) done++;
+  statEl.textContent = list.length ? ('共 ' + list.length + ' 项 · 已完成 ' + done + ' 项') : '';
+  if (!list.length) { listEl.innerHTML = '<div class="cal-empty">这一天还没有待办，在上方添加一条吧 ✦</div>'; return; }
+  var sorted = list.slice().sort(function (a, b) {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return (a.time || '') < (b.time || '') ? -1 : 1;
+  });
+  var html = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var t = sorted[i];
+    var cc = CAL_CAT_CLASS[t.cat] || 'cat-other';
+    html += '<div class="cal-todo' + (t.done ? ' done' : '') + '">' +
+      '<button class="cal-check' + (t.done ? ' on' : '') + '" onclick="calToggle(\'' + calSel + '\',\'' + t.id + '\')">' + (t.done ? '✓' : '') + '</button>' +
+      '<span class="cal-chip ' + cc + '">' + (t.cat || '其他') + '</span>' +
+      (t.time ? '<span class="cal-time-mini">🕐 ' + t.time + '</span>' : '') +
+      '<span class="cal-todo-text">' + escapeHtml(t.text) + '</span>' +
+      '<button class="cal-del" onclick="calDel(\'' + calSel + '\',\'' + t.id + '\')" title="删除">✕</button></div>';
+  }
+  listEl.innerHTML = html;
+}
+function calAddTodo() {
+  var textEl = document.getElementById('calText');
+  var catEl = document.getElementById('calCat');
+  var timeEl = document.getElementById('calTime');
+  if (!textEl) return;
+  var text = (textEl.value || '').trim();
+  if (!text) { textEl.focus(); return; }
+  var data = calLoad();
+  if (!data[calSel]) data[calSel] = [];
+  data[calSel].push({
+    id: 't' + Date.now() + Math.floor(Math.random() * 1000),
+    text: text, cat: (catEl ? catEl.value : '其他'),
+    time: (timeEl ? timeEl.value : ''), done: false
+  });
+  calSave(data);
+  textEl.value = '';
+  if (timeEl) timeEl.value = '';
+  renderCalendar();
+}
+function calToggle(ds, id) {
+  var data = calLoad();
+  if (!data[ds]) return;
+  for (var i = 0; i < data[ds].length; i++) {
+    if (data[ds][i].id === id) { data[ds][i].done = !data[ds][i].done; break; }
+  }
+  calSave(data); renderCalendar();
+}
+function calDel(ds, id) {
+  var data = calLoad();
+  if (!data[ds]) return;
+  data[ds] = data[ds].filter(function (x) { return x.id !== id; });
+  if (!data[ds].length) delete data[ds];
+  calSave(data); renderCalendar();
+}
+function updateCalNavBadge(data) {
+  var badge = document.getElementById('calNavCount');
+  if (!badge) return;
+  var now = new Date();
+  var cnt = 0;
+  for (var i = 0; i <= 7; i++) {
+    var dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    var key = calKey(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    if (data[key] && data[key].length) cnt += data[key].length;
+  }
+  if (cnt > 0) { badge.style.display = ''; badge.textContent = cnt + ' 待办'; }
+  else { badge.style.display = 'none'; }
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
 initHotReferences();
 initDecompose();
 updateDashboardInfo();
 initRPG();
 initCheckin();
+initCalendar();
 </script>
 
 <script>
@@ -3274,6 +3537,9 @@ if ('serviceWorker' in navigator) {
   </div>
   <div class="bottom-tab" data-tab="fortune" onclick="switchPage('module7')">
     <span class="icon">🔮</span>推演
+  </div>
+  <div class="bottom-tab" data-tab="calendar" onclick="switchPage('calendar')">
+    <span class="icon">🗓️</span>日历
   </div>
   <div class="bottom-tab" data-tab="me" onclick="switchPage('console')">
     <span class="icon">👤</span>我的
