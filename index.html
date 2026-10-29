@@ -3564,6 +3564,11 @@ if ('serviceWorker' in navigator) {
     <button class="sync-btn" id="btnSaveCloud">💾 保存云端</button>
     <button class="sync-btn alt" id="btnCloudSync">☁ 立即同步</button>
   </div>
+  <label style="display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;margin:10px 0 4px;">
+    <span>⚡ 实时同步 <small style="font-weight:400;color:var(--text-secondary);">（改动自动上云·后台拉取）</small></span>
+    <input type="checkbox" id="rtToggle" checked style="width:18px;height:18px;accent-color:var(--accent2);">
+  </label>
+  <div class="sync-hint" id="rtState"></div>
   <div class="sync-hint" id="syncStatus">未配置云端</div>
 </div>
 
@@ -3630,17 +3635,38 @@ function initSync() {
     localStorage.setItem('gw_gitee_token', (tokenI.value || '').trim());
     localStorage.setItem('gw_gitee_repo', localStorage.getItem('gw_gitee_repo') || 'growth-workbench');
     setSyncStatus('云端配置已保存');
-    sessionStorage.removeItem('gw_cloud_loaded');
-    cloudPull();
+    startRealtimeTimers();
+    autoPull(false).then(() => autoPush());
   };
   const csync = document.getElementById('btnCloudSync');
-  if (csync) csync.onclick = () => { cloudPull(); setTimeout(cloudPush, 600); };
+  if (csync) csync.onclick = () => { autoPull(false).then(() => autoPush()); };
 
-  // 已配置则启动时自动从云端拉取
-  if (giteeCfg().owner && giteeCfg().token) cloudPull();
+  // 实时同步开关
+  const rt = document.getElementById('rtToggle');
+  if (rt) {
+    rt.checked = realtimeOn();
+    rt.onchange = () => {
+      localStorage.setItem('gw_realtime_sync', rt.checked ? '1' : '0');
+      setRTState();
+      if (rt.checked) { startRealtimeTimers(); autoPull(false).then(() => autoPush()); }
+    };
+  }
+  setRTState();
+
+  // 已配置则启动实时同步 + 首次从云端拉取
+  if (giteeCfg().owner && giteeCfg().token) {
+    startRealtimeTimers();
+    autoPull(false);
+  }
 }
 
-/* ── 自动云端同步（Gitee 后端）── */
+/* ── 实时云端同步（Gitee 后端）── */
+var _origSetItem = Storage.prototype.setItem;
+var _applyingRemote = false;
+var _rtTimersStarted = false;
+var _lastPull = 0;
+var _cloudTimer = null;
+
 const GITEE_API = 'https://gitee.com/api/v5';
 function giteeCfg() {
   return {
@@ -3654,6 +3680,15 @@ function b64Utf8(s) { return btoa(unescape(encodeURIComponent(s))); }
 function utf8DecodeB64(s) { return decodeURIComponent(escape(atob(s.replace(/\s/g, '')))); }
 // 绝不写入云端的敏感键（令牌只存本地，避免泄露到公开仓库）
 const CLOUD_EXCLUDE = ['gw_gitee_token'];
+// 与 buildSnapshot 同步的键过滤（实时补丁只追踪这些键）
+function isSyncedKey(k) {
+  return CLOUD_EXCLUDE.indexOf(k) < 0 && (
+    ['workbench-tasks-v1', 'gw_fills_v1', 'gw_rpg_v1'].indexOf(k) >= 0 ||
+    k.indexOf('note-') === 0 || k.indexOf('nav-') === 0 || k.indexOf('gw_') === 0
+  );
+}
+function getSyncMeta() { try { return JSON.parse(localStorage.getItem('gw_sync_meta') || '{}'); } catch (e) { return {}; } }
+function setSyncMeta(m) { try { _origSetItem.call(localStorage, 'gw_sync_meta', JSON.stringify(m)); } catch (e) {} }
 function buildSnapshot() {
   const keep = ['workbench-tasks-v1', 'gw_fills_v1', 'gw_rpg_v1'];
   const store = {};
@@ -3667,7 +3702,7 @@ function buildSnapshot() {
       catch (e) { store[k] = localStorage.getItem(k); }
     }
   }
-  return { _v: 2, _ts: new Date().toISOString(), store: store };
+  return { _v: 2, _ts: new Date().toISOString(), _meta: getSyncMeta(), store: store };
 }
 function giteeFriendlyErr(e) {
   const msg = (e && e.message) ? e.message : String(e || '未知错误');
@@ -3701,52 +3736,119 @@ function giteePut(snapshot) {
     }));
   return giteeGet().then(ex => doReq('PUT', ex.sha)).catch(() => doReq('POST'));
 }
+// 云端恢复：按「按键时间戳」逐键合并，避免两台设备互相覆盖（只采纳比本地新的键）
 function importSnapshot(snap) {
   const store = (snap && snap.store) ? snap.store : snap;
-  if (!store) return false;
-  let changed = false;
+  if (!store) return [];
+  const meta = (snap && snap._meta) ? snap._meta : {};
+  const snapTs = snap._ts || new Date().toISOString();
+  const localMeta = getSyncMeta();
+  const changed = [];
   Object.keys(store).forEach(k => {
-    if (k === 'gw_gitee_token') return; // 令牌不从云端恢复，避免覆盖本地配置
-    const v = store[k];
-    const nv = (typeof v === 'string') ? v : JSON.stringify(v);
-    if (localStorage.getItem(k) !== nv) { localStorage.setItem(k, nv); changed = true; }
+    if (k === 'gw_gitee_token' || CLOUD_EXCLUDE.indexOf(k) >= 0) return;
+    const remoteTs = meta[k] || snapTs;
+    const lts = localMeta[k] || 0;
+    if (remoteTs > lts) {
+      const v = store[k];
+      const nv = (typeof v === 'string') ? v : JSON.stringify(v);
+      if (localStorage.getItem(k) !== nv) { _origSetItem.call(localStorage, k, nv); changed.push(k); }
+      localMeta[k] = remoteTs;
+    }
   });
+  setSyncMeta(localMeta);
   return changed;
 }
 function setSyncStatus(t) { const el = document.getElementById('syncStatus'); if (el) el.textContent = t; }
-function cloudPull() {
-  const c = giteeCfg();
-  if (!c.owner || !c.token) { setSyncStatus('未配置云端'); return; }
-  setSyncStatus('从云端拉取…');
-  giteeGet().then(res => {
-    const changed = importSnapshot(res.obj);
-    setSyncStatus('云端已同步 ✓');
-    setCheckinSync('done');
-    if (typeof showToast === 'function') showToast('已从云端恢复', 'win');
-    if (changed && !sessionStorage.getItem('gw_cloud_loaded')) {
-      sessionStorage.setItem('gw_cloud_loaded', '1');
-      setTimeout(() => location.reload(), 400);
-    }
-  }).catch(e => {
-    const m = (e && e.message) || '';
-    if (/404/.test(m)) setSyncStatus('云端暂无数据，填写后将自动建');
-    else setSyncStatus(giteeFriendlyErr(e));
-  });
+function stampLastSync() {
+  try { _origSetItem.call(localStorage, 'gw_last_sync', new Date().toISOString()); } catch (e) {}
+  setRTState();
 }
-function cloudPush() {
+function realtimeOn() { return localStorage.getItem('gw_realtime_sync') !== '0'; }
+function setRTState() {
+  const el = document.getElementById('rtState');
+  if (!el) return;
   const c = giteeCfg();
-  if (!c.owner || !c.token) { setCheckinSync('idle'); setSyncStatus('未配置云端'); return; }
-  setCheckinSync('syncing');
-  setSyncStatus('同步到云端…');
+  if (!c.owner || !c.token) { el.textContent = '未配置云端，先填用户名 + 令牌'; return; }
+  const ls = localStorage.getItem('gw_last_sync');
+  const t = ls ? ('上次 ' + new Date(ls).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })) : '尚未同步';
+  el.textContent = (realtimeOn() ? '⚡ 实时同步：开 · ' : '⚡ 实时同步：关 · ') + t;
+}
+// 推送（silent=true 时不闪动打卡徽标，用于自动后台同步）
+function pushNow(silent) {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) { if (!silent) { setCheckinSync('idle'); setSyncStatus('未配置云端'); } return; }
+  if (!silent) { setCheckinSync('syncing'); setSyncStatus('同步到云端…'); }
   giteePut(buildSnapshot())
-    .then(() => { setSyncStatus('云端已同步 ✓'); setCheckinSync('done'); })
-    .catch(e => { setSyncStatus(giteeFriendlyErr(e)); setCheckinSync('fail'); });
+    .then(() => { if (!silent) { setSyncStatus('云端已同步 ✓'); setCheckinSync('done'); } stampLastSync(); })
+    .catch(e => { if (!silent) { setSyncStatus(giteeFriendlyErr(e)); setCheckinSync('fail'); } });
 }
-let _cloudTimer = null;
+function cloudPush() { pushNow(false); }
+// 拉取（noApply=true 时只合并不刷新界面，用于推送前的预合并）
+function autoPull(noApply) {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return Promise.resolve(false);
+  return giteeGet().then(res => {
+    _lastPull = Date.now();
+    _applyingRemote = true;
+    const changed = importSnapshot(res.obj);
+    _applyingRemote = false;
+    setRTState();
+    if (changed.length && !noApply) applyRemote(changed);
+    return changed.length > 0;
+  }).catch(e => { return false; });
+}
+function applyRemote(changed) {
+  stampLastSync();
+  if (typeof showToast === 'function') showToast('云端有 ' + changed.length + ' 项更新，已同步', 'win');
+  if (document.hidden) { location.reload(); return; }
+  const ae = document.activeElement;
+  const editing = ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT');
+  if (editing) {
+    const h = function () { try { ae.removeEventListener('blur', h); } catch (e) {} location.reload(); };
+    ae.addEventListener('blur', h, { once: true });
+  } else {
+    setTimeout(function () { location.reload(); }, 600);
+  }
+}
+function autoPush() {
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return;
+  // 距上次拉取 >15s 先拉取合并（吸收其他设备的改动），再推送，避免覆盖
+  if (Date.now() - _lastPull > 15000) autoPull(true).then(doPush);
+  else doPush();
+  function doPush() { pushNow(true); }
+}
 function scheduleCloudSync() {
+  if (!realtimeOn()) return;
+  const c = giteeCfg();
+  if (!c.owner || !c.token) return;
   if (_cloudTimer) clearTimeout(_cloudTimer);
-  _cloudTimer = setTimeout(cloudPush, 2000);
+  _cloudTimer = setTimeout(autoPush, 1500);
 }
+function startRealtimeTimers() {
+  if (_rtTimersStarted) return;
+  _rtTimersStarted = true;
+  const pull = function () { if (realtimeOn()) autoPull(false); };
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) pull(); });
+  window.addEventListener('focus', pull);
+  window.addEventListener('online', function () { pull(); autoPush(); });
+  setInterval(pull, 90000);
+}
+// 拦截所有 localStorage 写入：记录按键时间戳 + 触发防抖自动推送（实时同步核心）
+(function installSyncPatch() {
+  Storage.prototype.setItem = function (k, v) {
+    _origSetItem.call(this, k, v);
+    if (_applyingRemote) return;
+    if (typeof isSyncedKey === 'function' && isSyncedKey(k)) {
+      try {
+        const m = getSyncMeta();
+        m[k] = Date.now();
+        setSyncMeta(m);
+      } catch (e) {}
+      scheduleCloudSync();
+    }
+  };
+})();
 initSync();
 </script>
 </body>
